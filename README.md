@@ -14,4 +14,3 @@ Enable GitHub Pages on this repo (Settings > Pages > main branch, root) and it w
 
 ## Note
 This tool documents care; it does not replace protocol knowledge or clinical judgment. No PHI is stored.
-# soap
