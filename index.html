@@ -15,7 +15,8 @@ html,body{margin:0;background:var(--paper);color:var(--ink);font-family:"IBM Ple
 header{background:var(--navy);color:#fff;padding:18px 20px 14px}
 header h1{margin:0;font-size:20px;font-weight:600;letter-spacing:.01em}
 header p{margin:4px 0 0;font-size:13px;opacity:.75}
-main{max-width:860px;margin:0 auto;padding:12px 14px 120px}
+main{max-width:860px;margin:0 auto;padding:12px 14px 0}
+body{padding-bottom:40px}
 section.block{background:var(--white);border:1px solid var(--line);border-radius:10px;margin:14px 0;display:grid;grid-template-columns:54px 1fr}
 section.block .tag{background:var(--navy);color:#fff;border-radius:9px 0 0 9px;display:flex;align-items:flex-start;justify-content:center;padding-top:14px;font-size:30px;font-weight:700;line-height:1}
 section.block .tag.pre{background:var(--red)}
@@ -41,13 +42,13 @@ input:focus,select:focus,textarea:focus,button:focus{outline:2px solid var(--nav
 .other{margin-top:8px;display:none}
 .other.show{display:block}
 .hint{font-size:12.5px;color:var(--muted);margin:4px 0 0}
-.bar{position:fixed;left:0;right:0;bottom:0;background:var(--white);border-top:1px solid var(--line);padding:10px 14px;display:flex;gap:10px;max-width:100%;justify-content:center}
+.bar{max-width:860px;margin:6px auto 0;padding:10px 14px;display:flex;gap:10px;max-width:100%;justify-content:center}
 .bar button{font:inherit;font-weight:600;border-radius:8px;padding:12px 18px;border:1px solid var(--line);background:var(--white);color:var(--ink);cursor:pointer;flex:1 1 0;max-width:280px}
 .bar button.primary{background:var(--red);color:#fff;border-color:var(--red)}
-#out{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:16px;margin-top:14px;display:none}
+#out{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px auto 0;max-width:832px;width:calc(100% - 28px);display:none}
 #out h2{margin:0 0 8px;font-size:16px}
 #narr{white-space:pre-wrap;font-size:14.5px;line-height:1.55;min-height:60px}
-#flags{background:#FFF7E0;border:1px solid #E8C97A;border-radius:10px;padding:14px 16px;margin-top:14px;display:none}
+#flags{background:#FFF7E0;border:1px solid #E8C97A;border-radius:10px;padding:14px 16px;margin:14px auto 0;max-width:832px;width:calc(100% - 28px);display:none}
 #flags h2{margin:0 0 6px;font-size:16px}
 #flags ul{margin:0;padding-left:20px}
 #flags li{margin:3px 0}
@@ -58,7 +59,7 @@ input:focus,select:focus,textarea:focus,button:focus{outline:2px solid var(--nav
 .rows .r button{border:1px solid var(--line);background:var(--white);border-radius:7px;min-height:38px;width:38px;cursor:pointer;font-size:18px;line-height:1}
 .add{font:inherit;font-size:13.5px;font-weight:500;background:var(--field);border:1px solid var(--line);border-radius:7px;padding:8px 12px;cursor:pointer;color:var(--navy)}
 @media (max-width:600px){.rows .r,.rows.acc .r{grid-template-columns:1fr 1fr 1fr;grid-auto-rows:auto}}
-#toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:8px 14px;border-radius:999px;font-size:13px;display:none}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:8px 14px;border-radius:999px;font-size:13px;display:none}
 @media (max-width:520px){section.block{grid-template-columns:44px 1fr}section.block .tag{font-size:24px}}
 @media (prefers-reduced-motion:no-preference){.chips label{transition:background .12s}}
 </style>
@@ -70,14 +71,14 @@ input:focus,select:focus,textarea:focus,button:focus{outline:2px solid var(--nav
 </header>
 <main id="app"></main>
 
-<div id="flags"><h2>Missing or worth checking</h2><ul id="flaglist"></ul></div>
-<div id="out"><h2>Narrative</h2><div id="narr"></div></div>
-<div id="toast">Copied</div>
 <div class="bar">
   <button id="clear">Clear all</button>
   <button id="gen" class="primary">Generate narrative</button>
   <button id="copy">Copy</button>
 </div>
+<div id="flags"><h2>Missing or worth checking</h2><ul id="flaglist"></ul></div>
+<div id="out"><h2>Narrative</h2><div id="narr"></div><div style="margin-top:12px;display:flex;gap:10px"><button id="copy2" class="add" style="flex:1;padding:12px;font-weight:600;background:var(--navy);color:#fff;border-color:var(--navy)">Copy narrative</button><button id="top" class="add" style="padding:12px">Back to top</button></div></div>
+<div id="toast">Copied</div>
 
 <script>
 // ---------- form definition ----------
@@ -487,11 +488,12 @@ document.getElementById("gen").onclick=()=>{
   document.getElementById("narr").textContent=build();
   document.getElementById("out").style.display="block";document.getElementById("flags").scrollIntoView({behavior:"smooth"});
 };
-document.getElementById("copy").onclick=async()=>{
+const doCopy=async()=>{
   const t=document.getElementById("narr").textContent||build();
   try{await navigator.clipboard.writeText(t);}catch(e){const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();}
   const s=document.getElementById("toast");s.style.display="block";setTimeout(()=>s.style.display="none",1400);
 };
+document.getElementById("copy").onclick=doCopy;document.getElementById("copy2").onclick=doCopy;document.getElementById("top").onclick=()=>window.scrollTo({top:0,behavior:"smooth"});
 document.getElementById("clear").onclick=()=>{
   if(!confirm("Clear everything?"))return;
   document.querySelectorAll("input,select,textarea").forEach(e=>{if(e.type==="checkbox")e.checked=false;else if(e.tagName==="SELECT")e.selectedIndex=0;else e.value="";});
