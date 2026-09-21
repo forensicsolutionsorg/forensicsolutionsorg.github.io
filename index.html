@@ -66,45 +66,107 @@ input:focus,select:focus,textarea:focus,button:focus{outline:2px solid var(--nav
 #dlg .b{display:flex;gap:8px;justify-content:flex-end}
 #dlg button{font:inherit;font-weight:600;border-radius:8px;padding:10px 16px;border:1px solid var(--line);background:var(--field);color:var(--ink);cursor:pointer}
 #dlg button.p{background:var(--navy);color:#fff;border-color:var(--navy)}
-#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:8px 14px;border-radius:999px;font-size:13px;display:none}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:8px 14px;border-radius:999px;font-size:13px;display:none;z-index:60}
 .rows .r{display:grid;gap:6px;margin-bottom:6px;align-items:center;grid-template-columns:1.6fr 1fr .8fr 1fr .8fr auto}
 .rows.acc .r{grid-template-columns:.8fr .8fr 1.4fr .7fr .9fr .8fr auto}
 .rows.vit .r{grid-template-columns:repeat(10,1fr) auto}
 .rows .r input,.rows .r select{min-height:38px;padding:6px 8px;font-size:14px}
+.vh-input,.rows .r label{display:block;min-width:0}.vh-label{display:block;font-size:10px;color:var(--muted);margin-bottom:2px}
 .rows .r input.abn{background:var(--abn);border-color:var(--red)}
 .rows .r button{border:1px solid var(--line);background:var(--white);color:var(--ink);border-radius:7px;min-height:38px;width:38px;cursor:pointer;font-size:18px;line-height:1}
 .add{font:inherit;font-size:13.5px;font-weight:500;background:var(--field);border:1px solid var(--line);border-radius:7px;padding:8px 12px;cursor:pointer;color:var(--navy)}
 .vh{display:grid;grid-template-columns:repeat(10,1fr) auto;gap:6px;font-size:11.5px;color:var(--muted);margin-bottom:3px}
+.tri button{font:inherit;border:1px solid var(--line);background:var(--field);color:var(--ink);border-radius:999px;padding:7px 12px;cursor:pointer}
+.tri button[data-state="admits"]{background:var(--green);color:#fff;border-color:var(--green)}
+.tri button[data-state="denies"]{background:var(--red);color:#fff;border-color:var(--red)}
+.tri button[data-state="admits"]::before{content:"\2713\00a0"}.tri button[data-state="denies"]::before{content:"\2715\00a0"}
 .vh span:last-child{width:38px}
 #refusal{display:none}
 @media (max-width:600px){.rows .r,.rows.acc .r,.rows.vit .r{grid-template-columns:1fr 1fr 1fr}.vh{display:none}.rows.vit .r input::placeholder{color:var(--muted)}}
 @media (max-width:520px){section.block{grid-template-columns:44px 1fr}section.block .tag{font-size:24px}}
+/* ---- section nav / progress / summary bar / quick-start / review / mobile cards / print (added) ---- */
+#secnav{position:sticky;top:0;z-index:45;background:var(--hdr);color:var(--hdrtext);display:flex;gap:4px;overflow-x:auto;padding:6px 10px;scrollbar-width:thin}
+#secnav button{font:inherit;font-size:12px;font-weight:500;color:var(--hdrtext);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:6px 10px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:5px;flex:0 0 auto}
+#secnav button.current{background:var(--red);border-color:var(--red)}
+#secnav .dot{width:8px;height:8px;border-radius:50%;background:#8a93a3;display:inline-block;flex:0 0 auto}
+#secnav .dot.ok{background:var(--green)}
+#secnav .dot.warn{background:#E0A62B}
+#secnav .badge{background:var(--red);color:#fff;border-radius:999px;font-size:10px;min-width:15px;height:15px;line-height:15px;text-align:center;padding:0 3px;display:inline-block}
+#sumbar{position:sticky;top:33px;z-index:44;background:var(--white);border-bottom:1px solid var(--line);font-size:12.5px;color:var(--muted);padding:6px 14px;display:none;gap:12px;flex-wrap:wrap;align-items:center}
+#sumbar.show{display:flex}
+#sumbar strong{color:var(--ink)}
+#sumbar .swarn{color:var(--red);font-weight:600}
+#sumbar .draft{margin-left:auto;font-size:11.5px;opacity:.8}
+.sechead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.sechead h2{margin:0}
+.secactions{display:flex;gap:6px;flex:0 0 auto}
+.seclink{font:inherit;font-size:11.5px;color:var(--navy);background:none;border:1px solid var(--line);border-radius:999px;padding:4px 9px;cursor:pointer}
+section.block.collapsed .secbody{display:none}
+section.block .sechead .toggleSec::before{content:"\25BE\00a0"}
+section.block.collapsed .sechead .toggleSec::before{content:"\25B8\00a0"}
+.chip-summary{font-size:12px;color:var(--muted);margin:-4px 0 6px}
+.chip-summary strong{color:var(--ink)}
+.recent-row{margin:0 0 6px}
+.recent-row .more{border-style:solid}
+.startpanel{background:var(--field);border:1px dashed var(--line);border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12.5px}
+.primary-cc{flex:2 1 260px}
+.primary-cc select{border-color:var(--navy);background:var(--white);font-weight:600}
+.startpanel button{font:inherit;font-size:12px;color:#fff;background:var(--navy);border:1px solid var(--navy);border-radius:7px;padding:7px 12px;cursor:pointer;margin-top:6px}
+.readystate{border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:13.5px;font-weight:600}
+.readystate.ready{background:var(--okbg);border:1px solid var(--okline);color:var(--green)}
+.readystate.notready{background:var(--warn);border:1px solid var(--warnline);color:#8a6a10}
+:root[data-theme="dark"] .readystate.notready{color:#e0c060}
+#flaggroups details{margin:8px 0}
+#flaggroups summary{cursor:pointer;font-weight:600;font-size:13.5px}
+#flaggroups li{margin:3px 0}
+#flaggroups a.golink{font-size:12px;margin-left:6px;color:var(--navy);text-decoration:underline;cursor:pointer}
+#reviewSection #flags,#reviewSection #out{max-width:none;margin:14px 0 0;width:100%}
+button[disabled]{opacity:.5;cursor:not-allowed}
+@media (max-width:560px){
+ .rows .r{grid-template-columns:1fr 1fr!important;border:1px solid var(--line);border-radius:8px;padding:20px 8px 8px;position:relative;background:var(--field)}
+ .rows .r label{display:block}
+ .rows .r .vh-label{display:block!important}
+ .rows .r button{position:absolute;top:4px;right:4px;width:26px;min-height:26px;padding:0}
+ .vh{display:none}
+}
+@media print{
+ #secnav,#sumbar,.bar,header .ctrl,.startpanel,.sechead .secactions,#toast,#ov,.more,.chip-summary,.recent-row{display:none!important}
+ section.block.collapsed .secbody{display:block!important}
+ #flags{display:none!important}
+ #printstamp{display:block!important;font-size:11px;color:#555;margin:0 0 8px}
+}
+#printstamp{display:none}
+
 </style>
 </head>
 <body>
 <header><div class="hwrap">
   <h1>SOAP Narrative Builder</h1>
-  <p>Rhode Island EMS protocols. Check what applies, fill the blanks, generate.</p>
+  <p>Rhode Island EMS protocols · Protocol reference v2026.1 · Last reviewed September 2026. Check what applies, fill the blanks, generate.</p>
   <div class="ctrl">
-    <input type="text" id="search" placeholder="Search chips (e.g. wheez)">
-    <select id="preset"><option value="">Presets</option></select>
-    <button id="savep" title="Save current form as a preset">Save preset</button>
-    <button id="delp" title="Delete selected custom preset">Delete</button>
     <select id="style"><option value="full">Full sentences</option><option value="terse">Terse charting</option></select>
     <select id="hdrs"><option value="1">SOAP headers on</option><option value="0">Headers off</option></select>
     <button id="theme">Dark mode</button>
   </div>
 </div></header>
-<main id="app"></main>
+<nav id="secnav" aria-label="Section navigation"></nav>
+<div id="sumbar" aria-live="polite"></div>
+<main id="app" aria-describedby="orientation"></main>
+<p id="orientation" class="hint" style="max-width:832px;margin:10px auto;padding:0 14px">First use: select a complaint, record what was actually assessed (including reassessment vitals), choose a disposition, then review the audit before copying. Blank fields remain blank; this tool does not infer care.</p>
 <div class="bar">
-  <button id="clear">Clear all</button>
-  <button id="gen" class="primary">Generate narrative</button>
-  <button id="copy">Copy</button>
+  <button id="clear" title="Clear all fields">Clear all</button>
+  <button id="gen" class="primary" title="Generate narrative (Ctrl/Cmd+Enter)">Generate narrative</button>
+  <button id="copy" title="Copy narrative (Ctrl/Cmd+Shift+C)" disabled>Copy</button>
+  <button id="print" title="Print / export PDF">Print / export PDF</button>
 </div>
-<div id="flags"><h2>Missing or worth checking</h2><ul id="flaglist"></ul></div>
-<div id="out"><h2>Narrative</h2><div id="narr"></div><div style="margin-top:12px;display:flex;gap:10px"><button id="copy2" class="add" style="flex:1;padding:12px;font-weight:600;background:var(--navy);color:#fff;border-color:var(--navy)">Copy narrative</button><button id="top" class="add" style="padding:12px">Back to top</button></div></div>
+<section class="block" id="reviewSection"><div class="tag">R</div><div class="body">
+<h2>Review</h2>
+<div id="readystate" class="readystate" style="display:none"></div>
+<div id="flags" aria-live="polite"><h2>QA audit: required, recommended, or not applicable</h2><div id="flaggroups"></div></div>
+<div id="out"><p id="printstamp"></p><h2>Narrative</h2><div id="narr"></div><div style="margin-top:12px;display:flex;gap:10px"><button id="copy2" class="add" style="flex:1;padding:12px;font-weight:600;background:var(--navy);color:#fff;border-color:var(--navy)" disabled>Copy narrative</button><button id="top" class="add" style="padding:12px">Back to top</button></div></div>
+</div></section>
 <div id="ov"><div id="dlg"><p id="dlgmsg"></p><input type="text" id="dlgin" style="display:none"><div class="b"><button id="dlgno">Cancel</button><button id="dlgok" class="p">OK</button></div></div></div>
-<div id="toast">Copied</div>
+<div id="toast" role="status" aria-live="polite">Copied</div>
 
 <script>
 // =====================================================================
@@ -126,7 +188,7 @@ const D = {
   meds:["compliant with medications","non compliant with medications","takes anticoagulants","takes antiplatelets","takes insulin","takes oral hypoglycemics","takes beta blockers","takes opioids","takes no medications","medication list obtained","medication list unavailable"],
   src:["patient","family","bystanders","facility staff","police","caregiver","medical alert service"],
   gen:["no acute distress","mild distress","moderate distress","severe distress","tripoding","diaphoretic","pale","flushed","cyanotic","anxious","calm and cooperative","agitated","lethargic","unresponsive","obese","well appearing","ill appearing","disheveled"],
-  loc:["A&Ox4","A&Ox3","A&Ox2","A&Ox1","A&Ox0","confused","GCS 15","responds to verbal","responds to pain","unresponsive","postictal","intoxicated appearing"],
+  loc:["A&Ox4","A&Ox3","A&Ox2","A&Ox1","A&Ox0","confused","responds to verbal","responds to pain","unresponsive","postictal","intoxicated appearing"],
   air:["patent","self maintained","obstructed","stridor","snoring respirations","gurgling","secretions present","maintained with OPA","maintained with NPA","maintained with iGel","intubated"],
   breath:["unlabored","labored","tachypneic","bradypneic","shallow","rapid and deep","accessory muscle use","speaking in full sentences","speaking in short sentences","1 to 2 word dyspnea","agonal","apneic"],
   lung:["clear bilaterally","diminished bilaterally","diminished left","diminished right","wheezes bilaterally","wheezes expiratory","rales bilaterally","rales bibasilar","rhonchi","absent left","absent right","stridor"],
@@ -136,7 +198,8 @@ const D = {
   abd:["soft","non tender","tender","rigid","distended","guarding","rebound tenderness","RUQ tenderness","RLQ tenderness","LUQ tenderness","LLQ tenderness","epigastric tenderness","suprapubic tenderness","bruising","pulsatile mass","pelvis stable","pelvis unstable"],
   ext:["moves all extremities","CSM intact x4","CSM intact in affected extremity","CSM absent distal to injury","pedal edema","no edema","deformity","swelling","bruising","tenderness","open wound","weakness left side","weakness right side","equal grip strength","unequal grip strength","pronator drift present","no pronator drift","calf tenderness"],
   neuro:["no focal deficits","speech clear","slurred speech (dysarthria)","expressive aphasia","receptive aphasia","unable to follow commands","follows commands","facial droop left","facial droop right","left arm drift","right arm drift","left leg weakness","right leg weakness","left sided weakness","right sided weakness","decreased sensation left","decreased sensation right","normal sensation","gaze deviation left","gaze deviation right","gaze normal","visual field deficit","diplopia","unilateral neglect","ataxia","finger to nose abnormal","nystagmus","vertigo","gait unsteady","gait normal","unable to ambulate","Babinski present","nuchal rigidity","seizure activity witnessed","symptoms resolving","symptoms fluctuating","symptoms stable","stroke screen negative"],
-  ecg:["not obtained","sinus rhythm","sinus tachycardia","sinus bradycardia","atrial fibrillation","atrial flutter","SVT","1st degree AVB","2nd degree AVB","3rd degree AVB","PVCs","paced rhythm","ventricular tachycardia","ventricular fibrillation","asystole","PEA","no ST changes","ST elevation","ST depression","STEMI criteria met","STEMI criteria not met","LBBB","RBBB","artifact limits interpretation"],
+  ecg:["not obtained","12-lead not indicated","no acute ST/T changes","ST elevation","ST depression","STEMI criteria met","STEMI criteria not met","LBBB","RBBB","artifact limits interpretation"],
+  monitor:["not applied","sinus rhythm","sinus tachycardia","sinus bradycardia","atrial fibrillation","atrial flutter","SVT","1st degree AV block","2nd degree AV block","3rd degree AV block","frequent PVCs","paced rhythm","ventricular tachycardia","ventricular fibrillation","asystole","PEA","artifact limits interpretation"],
   impress:["Chest pain, suspected cardiac","Chest pain, non cardiac","STEMI","Acute coronary syndrome","Respiratory distress","COPD exacerbation","Asthma exacerbation","CHF exacerbation","Pneumonia","Stroke/TIA","Seizure","Syncope","Altered mental status","Hypoglycemia","Hyperglycemia","Opioid overdose","Alcohol intoxication","Anaphylaxis","Allergic reaction","Abdominal pain","GI bleed","Dehydration","Sepsis","Cardiac arrest","Dysrhythmia","Behavioral emergency","Trauma, minor","Trauma, multisystem","Head injury","Extremity fracture/dislocation","Fall with injury","Fall without injury","Back pain","Generalized weakness","No acute findings","Lift assist, no injury","Other"],
   proto:["Routine Patient Care","Chest Pain / Acute Coronary Syndrome","STEMI","Respiratory Distress","Bronchospasm","CHF / Pulmonary Edema","Stroke","Seizures","Altered Mental Status","Hypoglycemia / Hyperglycemia","Cardiac Arrest","Bradycardia","Tachycardia","Anaphylaxis / Allergic Reaction","Overdose / Poisoning","Pain Management","Nausea / Vomiting","Trauma / Spinal Motion Restriction","Traumatic Brain Injury","Hemorrhage Control","Burns","Behavioral Emergencies","Sepsis","Refusal of Care","Other"],
   tx:["Scene safety and BSI","Primary and secondary assessment","Patient placed in position of comfort","Patient placed supine","Oxygen via nasal cannula","Oxygen via non rebreather","BVM ventilation","CPAP applied","Suctioning performed","OPA/NPA inserted","iGel placed","Endotracheal intubation","Cardiac monitor applied","12 lead ECG obtained and transmitted","Serial 12 leads obtained","IV access established","IO access established","Normal saline bolus","Blood glucose obtained","Aspirin administered","Nitroglycerin administered","Albuterol nebulizer","Ipratropium nebulizer","Epinephrine IM","Naloxone administered","Dextrose administered","Glucagon administered","Ondansetron administered","Fentanyl administered","Ketamine administered","Midazolam administered","Diphenhydramine administered","Amiodarone administered","Adenosine administered","Spinal motion restriction","Splint applied","Wound dressed and bandaged","Direct pressure applied","Tourniquet applied","Pelvic binder applied","Cooling measures","Warming measures","CPR initiated","Defibrillation","Cardioversion","Pacing","Restraints applied","Stroke alert called","STEMI alert called","Trauma alert called","Sepsis alert called","Assisted patient to standing","Assisted patient to bed/chair","Continuous reassessment"],
@@ -223,19 +286,20 @@ const DOSES = {
 // =====================================================================
 const sel=(id,opts,blank)=>`<select id="${id}">${blank?'<option value="">Not documented</option>':''}${opts.map(o=>`<option>${o}</option>`).join("")}</select>`;
 const chips=(id,opts)=>`<div class="chips" data-group="${id}">${opts.map(o=>`<label><input type="checkbox" value="${o}">${o}</label>`).join("")}<label><input type="checkbox" value="__other">other</label></div><div class="other" id="${id}_o"><input type="text" id="${id}_t" placeholder="Add your own wording"></div>`;
-const tri=(id,opts)=>`<div class="chips tri" data-tri="${id}" data-group="${id}">${opts.map(o=>`<label data-state="" data-v="${o}">${o}</label>`).join("")}</div>`;
+const tri=(id,opts)=>`<div class="chips tri" data-tri="${id}" data-group="${id}" role="group" aria-label="Associated symptoms">${opts.map((o,i)=>`<button type="button" data-state="" data-v="${o}" aria-pressed="false" aria-label="${o}: not documented" tabindex="${i===0?0:-1}">${o}</button>`).join("")}</div>`;
 const VH='<div class="vh"><span>Time</span><span>BP</span><span>HR</span><span>RR</span><span>SpO2</span><span>EtCO2</span><span>BGL</span><span>Temp</span><span>Pain</span><span>GCS</span><span></span></div>';
 
 const sections=[
  {tag:"",pre:true,title:"Patient",html:`
+  <div class="startpanel" id="startpanel">Start by selecting the chief complaint. Then record the patient's age, outcome, and only the findings you actually assessed. <button type="button" id="qsContinue" style="display:none">Continue to Subjective &rarr;</button></div>
   <div class="row">
    <div><label class="f">Age</label><input type="number" id="age" min="0" inputmode="numeric"></div>
    <div><label class="f">Unit</label><select id="ageu"><option>year</option><option>month</option><option>day</option></select></div>
-   <div><label class="f">Sex (optional)</label><select id="sex"><option value="">Not stated</option><option>male</option><option>female</option></select></div>
+   <div><label class="f">Sex</label><select id="sex"><option value="">Select sex</option><option>male</option><option>female</option><option>intersex</option><option>not specified</option></select></div>
    <div><label class="f">Weight kg (peds dosing)</label><input type="number" id="wt" min="0" inputmode="decimal"></div>
   </div>
   <div class="row" style="margin-top:10px">
-   <div><label class="f">Chief complaint</label>${sel("cc",D.cc,true).replace("Not documented","Select complaint")}</div>
+   <div class="primary-cc"><label class="f">Start with chief complaint</label>${sel("cc",D.cc,true).replace("Not documented","Select complaint").replace("<select id=\"cc\">","<select id=\"cc\" autofocus>")}</div>
    <div><label class="f">Patient found</label>${sel("found",D.found,true)}</div>
    <div><label class="f">Outcome</label><select id="outcome"><option value="transport">Transported</option><option value="refusal">Refusal / no transport</option><option value="nopt">No patient contact / cancelled</option></select></div>
   </div>
@@ -255,13 +319,13 @@ const sections=[
   <fieldset><legend>Baseline and living situation</legend>${chips("base",D.base)}</fieldset>
   <fieldset><legend>Past medical history</legend>${chips("pmh",D.pmh)}<input type="text" id="pmh_t" placeholder="Other history" style="margin-top:8px"></fieldset>
   <fieldset><legend>Medications</legend>${chips("meds",D.meds)}</fieldset>
-  <fieldset><legend>Allergies</legend><input type="text" id="allg" placeholder="Leave blank for NKDA"></fieldset>
+  <fieldset><legend>Allergies</legend>${chips("allg",["NKDA"])}<input type="text" id="allg_t" placeholder="Document allergies or suspected allergen" style="margin-top:8px"></fieldset>
   <fieldset><legend>Last oral intake</legend><input type="text" id="loi" placeholder="e.g. lunch approx 1200"></fieldset>
   <fieldset><legend>Last known well (stroke, seizure, AMS)</legend><input type="text" id="lkw" placeholder="e.g. 0730, witnessed by spouse"></fieldset>
   <fieldset><legend>Additional subjective (your words)</legend><textarea id="s_t"></textarea></fieldset>`},
  {tag:"O",title:"Objective",html:`
   <fieldset><legend>General appearance</legend>${chips("gen",D.gen)}</fieldset>
-  <fieldset><legend>Level of consciousness</legend>${chips("loc",D.loc)}</fieldset>
+  <fieldset><legend>Level of consciousness / orientation</legend>${chips("loc",D.loc)}</fieldset>
   <fieldset><legend>Airway</legend>${chips("air",D.air)}</fieldset>
   <fieldset><legend>Breathing</legend>${chips("breath",D.breath)}</fieldset>
   <fieldset><legend>Lung sounds</legend>${chips("lung",D.lung)}</fieldset>
@@ -280,8 +344,9 @@ const sections=[
    </div>
    <p class="hint" id="lamsnote">LAMS total appears here. 4 or more suggests large vessel occlusion.</p>
   </fieldset>
-  <fieldset><legend>Vital signs (first row is initial, add rows for reassessments)</legend>${VH}<div class="rows vit" id="vitrows"></div><button type="button" class="add" id="addvit">Add vitals</button><p class="hint">Values outside the expected range for this patient's age turn red.</p></fieldset>
-  <fieldset><legend>ECG / 12 lead</legend>${chips("ecg",D.ecg)}</fieldset>
+  <fieldset><legend>Vital signs (first row is initial, add rows for reassessments)</legend>${VH}<div class="rows vit" id="vitrows"></div><button type="button" class="add" id="addvit">Add vitals</button> <button type="button" class="add" id="dupvit">Duplicate last vitals</button><p class="hint">Values outside the expected range for this patient's age turn red. Record the actual GCS when assessed; it is not assumed.</p></fieldset>
+  <fieldset><legend>12-lead ECG findings</legend>${chips("ecg",D.ecg)}</fieldset>
+  <fieldset><legend>Cardiac monitor findings</legend>${chips("monitor",D.monitor)}</fieldset>
   <fieldset><legend>Additional objective findings (your words)</legend><textarea id="o_t"></textarea></fieldset>`},
  {tag:"A",title:"Assessment",html:`
   <div class="row"><div><label class="f">Primary impression</label>${sel("imp1",D.impress,true).replace("Not documented","Select impression")}</div><div><label class="f">Secondary impression</label>${sel("imp2",D.impress,true)}</div></div>
@@ -289,12 +354,13 @@ const sections=[
   <div style="margin-top:10px"><label class="f">RI protocol followed</label>${sel("proto",D.proto,true)}</div>
   <div class="other" id="proto_o"><input type="text" id="proto_t" placeholder="Protocol name"></div>
   <fieldset style="margin-top:12px"><legend>Clinical reasoning (your words)</legend><textarea id="a_t" placeholder="Why this impression, what was ruled in or out, differentials considered"></textarea></fieldset>`},
- {tag:"P",title:"Plan",html:`
+ {tag:"Tx",title:"Treatment",html:`
   <fieldset><legend>Interventions</legend>${chips("tx",D.tx)}</fieldset>
   <fieldset><legend>Vascular access</legend><div class="rows acc" id="accrows"></div><button type="button" class="add" id="addacc">Add IV / IO</button></fieldset>
   <fieldset><legend>Medications given</legend><div class="rows" id="medrows"></div><button type="button" class="add" id="addmed">Add medication</button>
    <textarea id="med_t" placeholder="Anything else about medications (contraindications, withheld and why, med not carried)" style="margin-top:8px"></textarea></fieldset>
-  <fieldset><legend>Response to treatment</legend>${chips("resp",D.resp)}</fieldset>
+  <fieldset><legend>Response to treatment / reassessment notes</legend>${chips("resp",D.resp)}<textarea id="resp_t" placeholder="Reassessment findings, response, or reason no reassessment was obtained" style="margin-top:8px"></textarea></fieldset>`},
+ {tag:"Dx",title:"Disposition",html:`
   <fieldset id="transport"><legend>Transport</legend>
    <div class="row"><div><label class="f">Destination</label>${sel("dest",D.dest,true)}</div><div><label class="f">Mode</label>${sel("mode",D.mode,true)}</div><div><label class="f">Position</label>${sel("pos",D.pos,true)}</div></div>
    <div class="other" id="dest_o"><input type="text" id="dest_t" placeholder="Destination"></div>
@@ -310,10 +376,21 @@ const sections=[
     <div><label class="f">Online medical control</label><select id="refomc"><option value="">Not documented</option><option>not contacted, not required</option><option>contacted and refusal approved</option><option>contacted, patient refused despite physician advice</option></select></div>
     <div><label class="f">Patient left</label><select id="refleft"><option value="">Not documented</option><option>in care of family</option><option>in care of self</option><option>in care of police</option><option>in care of facility staff</option><option>in care of caregiver</option></select></div>
    </div>
+   <fieldset id="noptDetails"><legend>No contact / cancelled details</legend><textarea id="nopt_t" placeholder="Dispatch cancellation, no patient found, patient unavailable, or other factual disposition detail"></textarea></fieldset>
   </div>
   <fieldset><legend>Additional plan (your words)</legend><textarea id="p_t"></textarea></fieldset>`}
 ];
-document.getElementById("app").innerHTML=sections.map(s=>`<section class="block"><div class="tag${s.pre?' pre':''}">${s.tag||'&#9679;'}</div><div class="body"><h2>${s.title}</h2>${s.html}</div></section>`).join("");
+document.getElementById("app").innerHTML=sections.map((s,i)=>`<section class="block" id="sec-${i}" data-title="${s.title}"><div class="tag${s.pre?' pre':''}">${s.tag||'&#9679;'}</div><div class="body"><div class="sechead"><h2>${s.title}</h2><div class="secactions"><button type="button" class="seclink clearSec" data-idx="${i}" title="Reset only this section">Clear section</button><button type="button" class="seclink toggleSec" data-idx="${i}" aria-expanded="true">Collapse</button></div></div><div class="secbody">${s.html}</div></div></section>`).join("");
+// per-section collapse + clear (added)
+document.querySelectorAll(".toggleSec").forEach(btn=>btn.addEventListener("click",()=>{const sec=document.getElementById("sec-"+btn.dataset.idx);const collapsed=sec.classList.toggle("collapsed");btn.setAttribute("aria-expanded",collapsed?"false":"true");btn.textContent=collapsed?"Expand":"Collapse";}));
+document.querySelectorAll(".clearSec").forEach(btn=>btn.addEventListener("click",async()=>{const sec=document.getElementById("sec-"+btn.dataset.idx);if(!(await ask(`Clear all fields in "${sec.dataset.title}"?`)))return;
+  sec.querySelectorAll("input,select,textarea").forEach(e=>{if(e.type==="checkbox")e.checked=false;else if(e.tagName==="SELECT")e.selectedIndex=0;else e.value="";});
+  sec.querySelectorAll(".other").forEach(e=>e.classList.remove("show"));
+  sec.querySelectorAll(".tri button").forEach(l=>{l.dataset.state="";l.setAttribute("aria-pressed","false");l.setAttribute("aria-label",l.dataset.v+": not documented");});
+  sec.querySelectorAll("#medrows .r,#accrows .r,#vitrows .r").forEach(e=>e.remove());
+  if(sec.querySelector("#vitrows"))addVit();
+  sec.querySelectorAll(".chips").forEach(g=>g.dataset.exp="");
+  applyLayout();outcomeUI();pedsUI();lamsUI();toast("Section cleared");}));
 
 // =====================================================================
 // HELPERS
@@ -321,17 +398,18 @@ document.getElementById("app").innerHTML=sections.map(s=>`<section class="block"
 const $=id=>document.getElementById(id);
 const v=id=>($(id)?.value||"").trim();
 const picked=id=>{const a=[...document.querySelectorAll(`[data-group="${id}"] input:checked`)].map(i=>i.value).filter(x=>x!=="__other");const t=v(id+"_t");if(t)a.push(t);return a;};
-const triv=id=>{const a=[],d=[];document.querySelectorAll(`[data-tri="${id}"] label`).forEach(l=>{if(l.dataset.state==="admits")a.push(l.dataset.v);else if(l.dataset.state==="denies")d.push(l.dataset.v);});const oa=v(id+"_a"),od=v(id+"_d");if(oa)a.push(oa);if(od)d.push(od);return{a,d};};
+const triv=id=>{const a=[],d=[];document.querySelectorAll(`[data-tri="${id}"] button`).forEach(l=>{if(l.dataset.state==="admits")a.push(l.dataset.v);else if(l.dataset.state==="denies")d.push(l.dataset.v);});const oa=v(id+"_a"),od=v(id+"_d");if(oa)a.push(oa);if(od)d.push(od);return{a,d};};
 const selv=id=>{const x=v(id);return x==="Other"?v(id+"_t"):x;};
 const list=a=>a.length<2?a.join(""):a.length===2?a.join(" and "):a.slice(0,-1).join(", ")+", and "+a[a.length-1];
 const cap=s=>s?s[0].toUpperCase()+s.slice(1):s;
 const end=s=>/[.!?]$/.test(s)?s:s+".";
 const ageYears=()=>{const a=parseFloat(v("age"));if(isNaN(a))return null;const u=v("ageu");return u==="year"?a:u==="month"?a/12:a/365;};
 const isPeds=()=>{const y=ageYears();return y!==null&&y<18;};
-const store={get(k,d){try{const x=localStorage.getItem(k);return x?JSON.parse(x):d;}catch(e){return d;}},set(k,val){try{localStorage.setItem(k,JSON.stringify(val));}catch(e){}}};
+const storageNotice=m=>{console.error(m);const t=document.getElementById("toast");if(t){t.textContent=m;t.style.display="block";setTimeout(()=>t.style.display="none",2400);}};
+const store={get(k,d){try{const x=localStorage.getItem(k);return x?JSON.parse(x):d;}catch(e){storageNotice("Saved settings unavailable in this browser.");return d;}},set(k,val){try{localStorage.setItem(k,JSON.stringify(val));return true;}catch(e){storageNotice("Could not save settings; your narrative is still available.");return false;}}};
 
 const lams=()=>{const f=v("lams_f"),a=v("lams_a"),g=v("lams_g");if(f===""&&a===""&&g==="")return null;const t=(+f||0)+(+a||0)+(+g||0);return{f,a,g,t,complete:f!==""&&a!==""&&g!==""};};
-const lamsUI=()=>{const L=lams();$("lamsnote").textContent=L?`LAMS total ${L.t}${L.complete?"":" (incomplete)"}${L.t>=4?": suggests large vessel occlusion, consider LVO capable destination":""}`:"LAMS total appears here. 4 or more suggests large vessel occlusion.";};
+const lamsUI=()=>{const L=lams();$("lamsnote").textContent=L?(L.complete?`LAMS total ${L.t}${L.t>=4?": suggests large vessel occlusion, consider LVO capable destination":""}`:"LAMS assessment incomplete; complete facial droop, arm drift, and grip strength before interpreting the score."):"LAMS total appears here. 4 or more suggests large vessel occlusion.";};
 ["lams_f","lams_a","lams_g"].forEach(id=>$(id).addEventListener("change",lamsUI));
 // in page dialogs (browser popups are blocked in some embedded viewers)
 function dlg(msg,{input=false,cancel=true,def=""}={}){return new Promise(res=>{const ov=$("ov"),inp=$("dlgin");$("dlgmsg").textContent=msg;inp.style.display=input?"block":"none";inp.value=def;$("dlgno").style.display=cancel?"inline-block":"none";ov.classList.add("show");
@@ -342,9 +420,10 @@ const say=m=>dlg(m,{cancel:false});const ask=m=>dlg(m);const askText=(m,def)=>dl
 document.querySelectorAll(".chips:not(.tri)").forEach(g=>g.addEventListener("change",()=>{const o=g.querySelector('input[value="__other"]');const box=$(g.dataset.group+"_o");if(box)box.classList.toggle("show",o.checked);}));
 ["cc","imp1","proto","dest"].forEach(id=>{const s=$(id);const f=()=>$(id+"_o").classList.toggle("show",s.value==="Other");s.addEventListener("change",f);f();});
 // tri state
-document.querySelectorAll(".tri label").forEach(l=>l.addEventListener("click",()=>{const s=l.dataset.state;l.dataset.state=s===""?"admits":s==="admits"?"denies":"";}));
+const triButtons=[...document.querySelectorAll(".tri button")];
+triButtons.forEach(l=>{l.addEventListener("click",()=>{const s=l.dataset.state;l.dataset.state=s===""?"admits":s==="admits"?"denies":"";l.setAttribute("aria-pressed",l.dataset.state!=="");l.setAttribute("aria-label",l.dataset.v+": "+(l.dataset.state||"not documented"));});l.addEventListener("keydown",e=>{const i=triButtons.indexOf(l);if(e.key==="ArrowRight"||e.key==="ArrowDown"){e.preventDefault();triButtons[(i+1)%triButtons.length].focus();}if(e.key==="ArrowLeft"||e.key==="ArrowUp"){e.preventDefault();triButtons[(i-1+triButtons.length)%triButtons.length].focus();}});});
 // outcome toggles refusal wizard / transport
-const outcomeUI=()=>{const o=v("outcome");$("refusal").style.display=o==="refusal"?"block":"none";$("transport").style.display=o==="transport"?"block":"none";};
+const outcomeUI=()=>{const o=v("outcome");$("refusal").style.display=o==="refusal"?"block":"none";$("transport").style.display=o==="transport"?"block":"none";$("noptDetails").style.display=o==="nopt"?"block":"none";};
 $("outcome").addEventListener("change",outcomeUI);outcomeUI();
 // peds note
 const pedsUI=()=>{$("pedsnote").textContent=isPeds()?"Pediatric patient: age based vital ranges and weight based dose checks are active."+(v("wt")?"":" Enter weight for dose checks."):"";};
@@ -356,9 +435,10 @@ const pedsUI=()=>{$("pedsnote").textContent=isPeds()?"Pediatric patient: age bas
 const labelChecked=l=>l.dataset.state?l.dataset.state!=="":(l.querySelector("input")?.checked||false);
 const labelVal=l=>l.dataset.v||l.querySelector("input")?.value||"";
 function applyLayout(){
-  const cc=v("cc"), pri=PRI[cc]||{}, q=v("search").toLowerCase();
+  const cc=v("cc"), pri=PRI[cc]||{}, recent=store.get("soap_recent",{});
   document.querySelectorAll(".chips").forEach(g=>{
-    const id=g.dataset.group, p=pri[id]||null, labels=[...g.querySelectorAll("label")];
+    if(g.classList.contains("tri"))return;
+    const id=g.dataset.group, p=pri[id]||(recent[id]&&recent[id].length?recent[id]:null), labels=[...g.querySelectorAll("label")];
     // reorder: priority first
     if(p){const rank=x=>{const i=p.indexOf(labelVal(x));return i<0?999:i;};labels.slice().sort((a,b)=>rank(a)-rank(b)).forEach(l=>g.appendChild(l));}
     let btn=g.parentElement.querySelector(`.more[data-for="${id}"]`);
@@ -367,15 +447,22 @@ function applyLayout(){
     const limit=p?p.length:10; let hidden=0;
     all.forEach((l,i)=>{const val=labelVal(l), isOther=val==="__other";
       let show=true;
-      if(q){show=isOther?false:val.toLowerCase().includes(q)||labelChecked(l);}
-      else if(!exp&&!isOther&&!labelChecked(l)){const pos=p?p.indexOf(val):i;show=p?pos>=0:i<limit;}
+      if(!exp&&!isOther&&!labelChecked(l)){const pos=p?p.indexOf(val):i;show=p?pos>=0:i<limit;}
       if(!show)hidden++;l.classList.toggle("hide",!show);});
-    btn.style.display=(q||hidden===0&&!exp)?"none":"inline-block";
+    btn.style.display=(hidden===0&&!exp)?"none":"inline-block";
     btn.textContent=exp?"Show fewer":`Show all (${hidden} more)`;
   });
+  updateChipSummaries();
 }
+function updateChipSummaries(){document.querySelectorAll(".chips:not(.tri)").forEach(g=>{
+  const id=g.dataset.group,checked=[...g.querySelectorAll("input:checked")].map(i=>i.value).filter(x=>x!=="__other");
+  let sumEl=g.parentElement.querySelector(`.chip-summary[data-for="${id}"]`);
+  if(!sumEl){sumEl=document.createElement("div");sumEl.className="chip-summary";sumEl.dataset.for=id;g.parentNode.insertBefore(sumEl,g);}
+  sumEl.textContent=checked.length?`${checked.length} selected: ${checked.slice(0,4).join(", ")}${checked.length>4?"…":""}`:"";
+  sumEl.style.display=checked.length?"block":"none";});}
+function recordRecent(group,val){const rec=store.get("soap_recent",{});const arr=(rec[group]||[]).filter(x=>x!==val);arr.unshift(val);rec[group]=arr.slice(0,6);store.set("soap_recent",rec);}
+document.addEventListener("change",e=>{if(e.target.matches&&e.target.matches(".chips:not(.tri) input[type=checkbox]")&&e.target.checked&&e.target.value!=="__other"){recordRecent(e.target.closest(".chips").dataset.group,e.target.value);}});
 $("cc").addEventListener("change",applyLayout);
-$("search").addEventListener("input",applyLayout);
 document.querySelectorAll(".chips").forEach(g=>g.addEventListener("click",()=>setTimeout(applyLayout,0)));
 
 // =====================================================================
@@ -389,19 +476,19 @@ const SITES=["left AC","right AC","left forearm","right forearm","left hand","ri
 const opts=(a,blank)=>(blank?`<option value="">${blank}</option>`:"")+a.map(o=>`<option>${o}</option>`).join("");
 const VF=["time","bp","hr","rr","spo2","etco2","bgl","temp","pain","gcs"];
 function addVit(vals){const r=document.createElement("div");r.className="r";
-  r.innerHTML=VF.map(f=>`<input type="text" class="${f}" placeholder="${f==="spo2"?"SpO2":f==="etco2"?"EtCO2":f.toUpperCase()}" inputmode="${f==="bp"?"numeric":"decimal"}">`).join("")+`<button type="button" title="Remove">&times;</button>`;
+  r.innerHTML=VF.map(f=>`<label class="vh-input"><span class="vh-label">${f==="spo2"?"SpO2":f==="etco2"?"EtCO2":f.toUpperCase()}</span><input type="text" class="${f}" aria-label="${f==="spo2"?"oxygen saturation":f}" placeholder="${f==="spo2"?"SpO2":f==="etco2"?"EtCO2":f.toUpperCase()}" inputmode="${f==="bp"?"numeric":"decimal"}"></label>`).join("")+`<button type="button" title="Remove vital signs row" aria-label="Remove vital signs row">&times;</button>`;
   r.querySelector("button").onclick=()=>{if($("vitrows").children.length>1)r.remove();};
   r.addEventListener("input",markVitals);
   if(vals)VF.forEach(f=>r.querySelector("."+f).value=vals[f]||"");
   $("vitrows").appendChild(r);}
-function addMed(vals){const r=document.createElement("div");r.className="r";r.innerHTML=`<select class="drug">${opts(DRUGS,"Medication")}</select><input type="text" class="dose" placeholder="Dose" inputmode="decimal"><select class="unit">${opts(UNITS)}</select><select class="route">${opts(ROUTES,"Route")}</select><input type="text" class="time" placeholder="Time" inputmode="numeric"><button type="button" title="Remove">&times;</button>`;
+function addMed(vals){const r=document.createElement("div");r.className="r";r.innerHTML=`<label><span class="vh-label">Medication</span><select class="drug" aria-label="Medication">${opts(DRUGS,"Medication")}</select></label><label><span class="vh-label">Dose</span><input type="text" class="dose" aria-label="Dose" placeholder="Dose" inputmode="decimal"></label><label><span class="vh-label">Unit</span><select class="unit" aria-label="Unit">${opts(UNITS)}</select></label><label><span class="vh-label">Route</span><select class="route" aria-label="Route">${opts(ROUTES,"Route")}</select></label><label><span class="vh-label">Time</span><input type="text" class="time" aria-label="Medication time" placeholder="Time" inputmode="numeric"></label><button type="button" title="Remove medication row" aria-label="Remove medication row">&times;</button>`;
   r.querySelector("button").onclick=()=>r.remove();
   const drug=r.querySelector(".drug");
   drug.onchange=async e=>{if(e.target.value==="Other"){const n=await askText("Medication name");if(n){const o=document.createElement("option");o.textContent=n;o.selected=true;e.target.appendChild(o);}else e.target.value="";}
     const d=DOSES[e.target.value];if(d)r.querySelector(".unit").value=(isPeds()&&d.peds?d.peds[2]:d.adult[2]);};
   if(vals){["drug","dose","unit","route","time"].forEach(f=>r.querySelector("."+f).value=vals[f]||"");}
   $("medrows").appendChild(r);}
-function addAcc(vals){const r=document.createElement("div");r.className="r";r.innerHTML=`<select class="type"><option>IV</option><option>IO</option><option>Saline lock</option></select><select class="gauge">${opts(GAUGE,"Gauge")}</select><select class="site">${opts(SITES,"Site")}</select><input type="text" class="att" placeholder="Attempts" inputmode="numeric"><select class="ok"><option>patent</option><option>unsuccessful</option><option>infiltrated</option><option>flushed and locked</option></select><input type="text" class="time" placeholder="Time" inputmode="numeric"><button type="button" title="Remove">&times;</button>`;
+function addAcc(vals){const r=document.createElement("div");r.className="r";r.innerHTML=`<label><span class="vh-label">Access</span><select class="type" aria-label="Access type"><option>IV</option><option>IO</option><option>Saline lock</option></select></label><label><span class="vh-label">Gauge</span><select class="gauge" aria-label="Gauge">${opts(GAUGE,"Gauge")}</select></label><label><span class="vh-label">Site</span><select class="site" aria-label="Access site">${opts(SITES,"Site")}</select></label><label><span class="vh-label">Attempts</span><input type="text" class="att" aria-label="Access attempts" placeholder="Attempts" inputmode="numeric"></label><label><span class="vh-label">Status</span><select class="ok" aria-label="Access status"><option>patent</option><option>unsuccessful</option><option>infiltrated</option><option>flushed and locked</option></select></label><label><span class="vh-label">Time</span><input type="text" class="time" aria-label="Access time" placeholder="Time" inputmode="numeric"></label><button type="button" title="Remove access row" aria-label="Remove access row">&times;</button>`;
   r.querySelector("button").onclick=()=>r.remove();
   if(vals){["type","gauge","site","att","ok","time"].forEach(f=>r.querySelector("."+f).value=vals[f]||"");}
   $("accrows").appendChild(r);}
@@ -438,28 +525,23 @@ const BUILTIN={
 };
 function capture(){const p={cc:v("cc"),found:v("found"),outcome:v("outcome"),tri:triv("sx"),chips:{},fields:{},meds:medRows(),acc:accRows()};
   document.querySelectorAll(".chips:not(.tri)").forEach(g=>{const a=[...g.querySelectorAll("input:checked")].map(i=>i.value).filter(x=>x!=="__other");if(a.length)p.chips[g.dataset.group]=a;});
-  ["imp1","imp2","proto","mode","pos","toc","tocby","dest","refsig","refomc","refleft","onset","dur","prov","qual","rad","lams_f","lams_a","lams_g","lams_s"].forEach(id=>{if(v(id))p.fields[id]=v(id);});
+  ["imp1","imp2","proto","mode","pos","toc","tocby","dest","refsig","refomc","refleft","onset","dur","prov","qual","rad","lams_f","lams_a","lams_g","lams_s","resp_t","nopt_t"].forEach(id=>{if(v(id))p.fields[id]=v(id);});
   return p;}
-function clearForm(){document.querySelectorAll("input,select,textarea").forEach(e=>{if(e.type==="checkbox")e.checked=false;else if(e.tagName==="SELECT")e.selectedIndex=0;else if(!["search"].includes(e.id))e.value="";});
+function clearForm(){document.querySelectorAll("input,select,textarea").forEach(e=>{if(e.type==="checkbox")e.checked=false;else if(e.tagName==="SELECT")e.selectedIndex=0;else e.value="";});
   document.querySelectorAll(".other").forEach(e=>e.classList.remove("show"));
-  document.querySelectorAll(".tri label").forEach(l=>l.dataset.state="");
+  document.querySelectorAll(".tri button").forEach(l=>{l.dataset.state="";l.setAttribute("aria-pressed","false");l.setAttribute("aria-label",l.dataset.v+": not documented");});
   document.querySelectorAll("#medrows .r,#accrows .r,#vitrows .r").forEach(e=>e.remove());addVit();
   document.querySelectorAll(".chips").forEach(g=>g.dataset.exp="");
-  $("flags").style.display="none";$("out").style.display="none";outcomeUI();pedsUI();lamsUI();applyLayout();}
+  $("flags").style.display="none";$("out").style.display="none";$("copy").disabled=true;$("copy2").disabled=true;$("gen").textContent="Generate narrative";$("readystate").style.display="none";outcomeUI();pedsUI();lamsUI();applyLayout();updateChipSummaries();store.set("soap_draft",null);updateSummary();updateNavState();}
 function apply(p){clearForm();
   $("cc").value=p.cc||"";$("found").value=p.found||"";$("outcome").value=p.outcome||"transport";
   Object.entries(p.chips||{}).forEach(([g,arr])=>arr.forEach(val=>{const i=document.querySelector(`[data-group="${g}"] input[value="${CSS.escape(val)}"]`);if(i)i.checked=true;}));
-  (p.tri?.a||[]).forEach(val=>{const l=document.querySelector(`[data-tri="sx"] label[data-v="${CSS.escape(val)}"]`);if(l)l.dataset.state="admits";});
-  (p.tri?.d||[]).forEach(val=>{const l=document.querySelector(`[data-tri="sx"] label[data-v="${CSS.escape(val)}"]`);if(l)l.dataset.state="denies";});
+  (p.tri?.a||[]).forEach(val=>{const l=document.querySelector(`[data-tri="sx"] button[data-v="${CSS.escape(val)}"]`);if(l){l.dataset.state="admits";l.setAttribute("aria-pressed","true");l.setAttribute("aria-label",val+": admits");}});
+  (p.tri?.d||[]).forEach(val=>{const l=document.querySelector(`[data-tri="sx"] button[data-v="${CSS.escape(val)}"]`);if(l){l.dataset.state="denies";l.setAttribute("aria-pressed","true");l.setAttribute("aria-label",val+": denies");}});
   Object.entries(p.fields||{}).forEach(([id,val])=>{if($(id))$(id).value=val;});
   (p.meds||[]).forEach(addMed);(p.acc||[]).forEach(addAcc);
   ["cc","imp1","proto","dest"].forEach(id=>$(id).dispatchEvent(new Event("change")));
-  outcomeUI();lamsUI();applyLayout();}
-function presetList(){const custom=store.get("soap_presets",{});const s=$("preset");s.innerHTML='<option value="">Presets</option>'+Object.keys(BUILTIN).map(k=>`<option value="b:${k}">${k}</option>`).join("")+Object.keys(custom).map(k=>`<option value="c:${k}">${k} (custom)</option>`).join("");}
-$("preset").addEventListener("change",async e=>{const val=e.target.value;if(!val)return;const [t,name]=[val[0],val.slice(2)];const p=t==="b"?BUILTIN[name]:store.get("soap_presets",{})[name];e.target.value="";if(!p)return;if(await ask(`Load preset "${name}"? This replaces the current form.`)){apply(p);toast("Preset loaded");}});
-$("savep").onclick=async()=>{const n=await askText("Preset name");if(!n)return;const c=store.get("soap_presets",{});c[n]=capture();store.set("soap_presets",c);presetList();toast("Preset saved");};
-$("delp").onclick=async()=>{const c=store.get("soap_presets",{});const names=Object.keys(c);if(!names.length){say("No custom presets saved.");return;}const n=await askText("Delete which custom preset?\n"+names.join("\n"));if(n&&c[n]&&await ask(`Delete "${n}"?`)){delete c[n];store.set("soap_presets",c);presetList();toast("Preset deleted");}};
-presetList();
+  outcomeUI();lamsUI();applyLayout();updateSummary();updateNavState();qsCheck();}
 
 // =====================================================================
 // NARRATIVE
@@ -467,9 +549,16 @@ presetList();
 function vitStr(x){const o=[];if(x.bp)o.push("BP "+x.bp);if(x.hr)o.push("HR "+x.hr);if(x.rr)o.push("RR "+x.rr);if(x.spo2)o.push("SpO2 "+x.spo2+"%");if(x.etco2)o.push("EtCO2 "+x.etco2);if(x.bgl)o.push("BGL "+x.bgl);if(x.temp)o.push("Temp "+x.temp);if(x.pain)o.push("pain "+x.pain+"/10");if(x.gcs)o.push("GCS "+x.gcs);return o.join(", ");}
 function build(){
   const age=v("age"),ageu=v("ageu"),sex=v("sex"),cc=selv("cc")||"unspecified complaint",outcome=v("outcome");
-  const ageTxt=age?`${age} ${ageu} old`:"";
+  const ageTxt=age?`${age}-year-old`:"";
   const pt=[ageTxt,sex||"patient"].filter(Boolean).join(" ");
   const S=[],O=[],A=[],P=[];
+  const style=v("style"),hdr=v("hdrs")==="1";
+  if(outcome==="nopt"){
+    const nd=v("nopt_t");
+    const disposition=nd?`No patient contact or transport occurred. Dispatch/disposition note: ${end(nd)}`:"No patient contact or transport occurred; specific cancellation/no-contact details not documented.";
+    const text=style==="terse"?terse(disposition):disposition;
+    return hdr?`P:\n${text}`:text;
+  }
   let intro=`Patient is a ${pt} ${/lift assist|interfacility/i.test(cc)?"requesting "+cc.toLowerCase():"complaining of "+cc.toLowerCase()}`;
   const found=v("found");if(found)intro+=`, found ${found}`;S.push(end(intro));
   const src=picked("src");if(src.length)S.push(`History obtained from ${list(src)}.`);
@@ -479,10 +568,12 @@ function build(){
   const ev=picked("events");if(ev.length)S.push(cap(list(ev))+".");
   const sx=triv("sx");if(sx.a.length)S.push(`Patient reports associated ${list(sx.a)}.`);if(sx.d.length)S.push(`Patient denies ${list(sx.d)}.`);
   const sf=picked("self");if(sf.length)S.push(`Prior to EMS arrival, patient ${list(sf)}.`);
-  const bs=picked("base");if(bs.length)S.push(`Patient is ${list(bs)}.`);
+  const bs=picked("base");if(bs.length)S.push(`Baseline and living situation: ${list(bs)}.`);
   const pmh=picked("pmh"),pmht=v("pmh_t");if(pmh.length||pmht)S.push(`PMH includes ${list([...pmh,pmht].filter(Boolean))}.`);
   const meds=picked("meds");if(meds.length)S.push(cap(list(meds))+".");
-  S.push(`Allergies: ${v("allg")||"NKDA"}.`);
+  const allergyChoices=picked("allg"),allergyText=v("allg_t");
+  const allergySummary=allergyChoices.includes("NKDA")?"NKDA":([...(allergyChoices.filter(x=>x!=="NKDA")),allergyText].filter(Boolean).join(", ")||"not documented");
+  S.push(`Allergies: ${allergySummary}.`);
   const loi=v("loi");if(loi)S.push(`Last oral intake ${loi}.`);const lkw=v("lkw");if(lkw)S.push(`Last known well ${lkw}.`);
   const st=v("s_t");if(st)S.push(end(st));
   // O
@@ -494,9 +585,10 @@ function build(){
   [["heent","HEENT/neck"],["chest","Chest"],["abd","Abdomen/pelvis"],["ext","Extremities"],["neuro","Neuro"]].forEach(([g,l])=>{const a=picked(g);if(a.length)O.push(`${l}: ${list(a)}.`);});
   const L=lams();if(L){const w=[];const lab={f:{0:"absent",1:"present"},a:{0:"absent",1:"drifts down",2:"falls rapidly"},g:{0:"normal",1:"weak grip",2:"no grip"}};
     if(L.f!=="")w.push(`facial droop ${lab.f[L.f]} (${L.f})`);if(L.a!=="")w.push(`arm drift ${lab.a[L.a]} (${L.a})`);if(L.g!=="")w.push(`grip strength ${lab.g[L.g]} (${L.g})`);
-    O.push(`LAMS: ${w.join(", ")}${v("lams_s")?", "+v("lams_s")+" side affected":""}, total ${L.t}${L.t>=4?", suggestive of large vessel occlusion":""}.`);}
+    O.push(`LAMS: ${w.join(", ")}${v("lams_s")?", "+v("lams_s")+" side affected":""}, ${L.complete?`total ${L.t}${L.t>=4?", suggestive of large vessel occlusion":""}`:"incomplete; total not interpreted"}.`);}
   const vr=vitRows();if(vr.length){O.push(`Initial vitals${vr[0].time?" at "+vr[0].time:""}: ${vitStr(vr[0])}.`);}
   const ecg=picked("ecg");if(ecg.length)O.push(`ECG: ${list(ecg)}.`);
+  const monitor=picked("monitor");if(monitor.length)O.push(`Cardiac monitor: ${list(monitor)}.`);
   const ot=v("o_t");if(ot)O.push(end(ot));
   // A
   const i1=selv("imp1"),i2=v("imp2");if(i1)A.push(`Field impression: ${i1}${i2?"; secondary impression "+i2:""}.`);
@@ -504,10 +596,11 @@ function build(){
   const at=v("a_t");if(at)A.push(end(at));
   // P
   const tx=picked("tx");if(tx.length)P.push(`Interventions: ${list(tx)}.`);
+  const support=tx.filter(x=>/oxygen|CPAP|BVM|iGel|intubat|OPA|NPA|suction|ventilat/i.test(x));if(support.length)P.push(`Airway/oxygen support documented: ${list(support)}.`);
   const acc=accRows();if(acc.length)P.push(acc.map(a=>{let t=`${a.type} access ${a.ok==="unsuccessful"?"attempted":"established"}`;const d=[a.gauge,a.site].filter(Boolean).join(" ");if(d)t+=`, ${d}`;if(a.att)t+=`, ${a.att} attempt${a.att==="1"?"":"s"}`;if(a.ok!=="unsuccessful")t+=`, ${a.ok}`;if(a.time)t+=` at ${a.time}`;return t+".";}).join(" "));
   const mr=medRows();if(mr.length)P.push("Medications: "+mr.map(m=>[m.drug,m.dose?m.dose+" "+m.unit:"",m.route,m.time?"at "+m.time:""].filter(Boolean).join(" ")).join("; ")+".");
   const mt=v("med_t");if(mt)P.push(end(mt));
-  const rs=picked("resp");if(rs.length)P.push(`Patient ${list(rs)} following treatment.`);
+  const rs=picked("resp"),rt=v("resp_t");if(rs.length)P.push(`Patient ${list(rs)} following treatment.`);if(rt)P.push(end(rt));
   if(vr.length>1)P.push(vr.slice(1).map(x=>`Reassessment${x.time?" at "+x.time:""}: ${vitStr(x)}.`).join(" "));
   if(outcome==="transport"){
     const dest=selv("dest"),mode=v("mode"),pos=v("pos");
@@ -515,7 +608,7 @@ function build(){
     const toc=v("toc"),tocby=v("tocby");if(toc||tocby)P.push(`Care transferred to ${toc||"receiving staff"}${tocby?" with report given "+tocby:" with full verbal report"}, no change in patient condition noted at time of transfer.`);
   } else if(outcome==="refusal"){
     const c=picked("refcap"),r=picked("refrisk"),al=picked("refalt"),w=picked("refwit");
-    P.push("Patient refused transport against medical advice.");
+    P.push("Disposition documented as refusal / no transport; only the elements selected below are documented.");
     if(c.length)P.push(`Capacity assessment: patient is ${list(c)}.`);
     if(r.length)P.push(`Risks of refusal explained to patient including ${list(r)}, and patient verbalized understanding.`);
     if(al.length)P.push(cap(list(al))+".");
@@ -523,9 +616,8 @@ function build(){
     if(sig)P.push(cap(sig)+(w.length?` witnessed by ${list(w)}`:"")+".");else if(w.length)P.push(`Refusal witnessed by ${list(w)}.`);
     if(omc)P.push(`Online medical control ${omc}.`);
     if(left)P.push(`Patient left ${left}${vr.length?" with vital signs within acceptable limits as documented":""}.`);
-  } else {P.push("No patient contact made.");}
+  } else {const nd=v("nopt_t");P.push(nd?`No patient contact or transport occurred. Dispatch/disposition note: ${end(nd)}`:"No patient contact or transport occurred; specific cancellation/no-contact details not documented.");}
   const pt2=v("p_t");if(pt2)P.push(end(pt2));
-  const style=v("style"),hdr=v("hdrs")==="1";
   const fmt=a=>{let t=a.length?a.join(" "):"No findings documented.";if(style==="terse")t=terse(t);return t;};
   const blk=(h,a)=>(hdr?h+":\n":"")+fmt(a);
   return [blk("S",S),blk("O",O),blk("A",A),blk("P",P)].join("\n\n");
@@ -550,6 +642,8 @@ function check(){
   const tx=picked("tx"),meds=medRows(),acc=accRows(),SX=triv("sx"),sxAll=[...SX.a,...SX.d],vr=vitRows(),v0=vr[0]||{};
   const reass=vr.length>1;
   if(outcome==="nopt")return{f:[],dose:[]};
+  if(!v("sex"))f.push("Sex");
+  if(picked("allg").includes("NKDA")&&v("allg_t"))f.push("Allergy documentation: remove NKDA when an allergy is entered");
   if(!v0.bp||!v0.hr||!v0.rr||!v0.spo2)f.push("Full set of initial vitals (BP, HR, RR, SpO2)");
   if(!picked("loc").length)f.push("Level of consciousness / orientation");
   if(!picked("skin").length)f.push("Skin findings");
@@ -590,7 +684,7 @@ function check(){
   if(any(/chest pain|cardiac|coronary|stemi|dysrhythmia|syncope|palpit/)){
     if(!picked("ecg").length||has("ecg",/not obtained/))f.push("12 lead ECG interpretation");
     if(!has("tx",/12 lead/))f.push("12 lead ECG listed as an intervention");
-    if(!has("tx",/Cardiac monitor/))f.push("Cardiac monitor");
+    if(!has("tx",/Cardiac monitor/)&&!picked("monitor").length)f.push("Cardiac monitor findings");
     if(!has("tx",/IV access|IO access/)&&!acc.length)f.push("IV access");
   }
   if(any(/chest pain|coronary|stemi/)){
@@ -639,14 +733,14 @@ function check(){
   if(any(/allergic|anaphylaxis/)){
     if(!picked("air").length)f.push("Airway status");if(!picked("lung").length)f.push("Lung sounds");
     if(!has("skin",/hives|urticaria|angioedema|flushed|warm|pale/)&&!/hives|urticaria|rash|swelling/i.test(v("o_t")))f.push("Skin findings (hives, swelling)");
-    if(!v("allg"))f.push("Suspected allergen / exposure");
+    if(!picked("allg").length&&!v("allg_t"))f.push("Suspected allergen / exposure");
     if(/anaphylaxis/.test(ctx)&&!meds.some(m=>/Epinephrine/.test(m.drug)))f.push("Epinephrine IM for anaphylaxis, or reason withheld");
   }
   if(any(/fall|motor vehicle|assault|trauma|injury|fracture|head injury|extremity|back pain|lift/)){
     if(!v("onset")&&!has("events",/fall|injury|found down|witnessed/)&&!/mechanism|fell|struck|hit|mvc|feet|stairs/i.test(v("s_t")))f.push("Mechanism of injury / how the patient ended up there");
     if(!has("ext",/CSM/))f.push("CSM distal to injury or x4");
     if(!/lift/.test(ctx)&&!has("tx",/Spinal motion restriction/)&&!/smr|spinal|c-collar|cleared|nexus/i.test(v("a_t")+v("p_t")))f.push("Spinal motion restriction applied, or why it was not indicated");
-    if(!v0.gcs&&!has("loc",/GCS 15|A&Ox4/))f.push("GCS");
+    if(!v0.gcs&&!has("loc",/A&Ox4/))f.push("GCS");
     if(!sxAll.some(x=>/loss of consciousness|neck pain/.test(x))&&!/loc|consciousness/i.test(v("s_t")))f.push("Loss of consciousness and neck pain, present or denied");
     if(!picked("meds").some(x=>/anticoagulant/.test(x))&&/fall|head/.test(ctx))f.push("Anticoagulant use (fall or head injury)");
     if(!v("sev")&&!v0.pain&&!/lift|no injury/.test(ctx))f.push("Pain severity 0 to 10");
@@ -666,20 +760,84 @@ function check(){
   if(any(/sepsis|fever/)){if(!v0.temp)f.push("Temperature");if(!v0.etco2)f.push("EtCO2");if(!/infection|uti|pneumonia|wound|source/i.test(v("s_t")+v("a_t")))f.push("Suspected source of infection");}
   return{f,dose};
 }
-function showFlags(){const {f,dose}=check(),box=$("flags"),ul=$("flaglist"),vr=vitRows();
+const REQUIRED_RE=/^Sex$|initial|primary|destination|capacity|risk|transport|signature|contact|vital|medication|dose|route|access|ECG|GCS|LAMS|airway|lung|blood glucose|mechanism/i;
+// message keyword -> field/group selector, used for "go to field" links and section warning badges (added)
+const FIELD_MAP=[
+ [/full set of initial vitals|EtCO2|blood glucose|temperature|GCS|reassessment/i,"#vitrows"],
+ [/level of consciousness/i,'[data-group="loc"]'],
+ [/skin findings/i,'[data-group="skin"]'],
+ [/primary field impression/i,"#imp1"],
+ [/protocol followed/i,"#proto"],
+ [/history/i,'[data-group="src"]'],
+ [/associated symptoms|loss of consciousness and neck pain|vomiting, diarrhea/i,'[data-tri="sx"]'],
+ [/events leading/i,'[data-group="events"]'],
+ [/baseline/i,'[data-group="base"]'],
+ [/transport destination/i,"#dest"],
+ [/transferred to/i,"#toc"],
+ [/refusal:/i,"#refusal"],
+ [/response to treatment/i,'[data-group="resp"]'],
+ [/medication|dose|route|naloxone|epinephrine|insulin|aspirin(?! alert)/i,"#medrows"],
+ [/access row|IV access|IO access/i,"#accrows"],
+ [/12 lead ECG|ECG interpretation/i,'[data-group="ecg"]'],
+ [/cardiac monitor|STEMI alert|CPR|oxygen, CPAP|spinal motion restriction/i,'[data-group="tx"]'],
+ [/cardiac monitor findings/i,'[data-group="monitor"]'],
+ [/lung sounds/i,'[data-group="lung"]'],
+ [/pain severity/i,"#sev"],
+ [/pain quality/i,"#qual"],
+ [/onset/i,"#onset"],
+ [/last known well/i,"#lkw"],
+ [/LAMS/i,"#lams_f"],
+ [/speech assessment|gaze deviation|symptom trend|ambulatory status|neuro exam/i,'[data-group="neuro"]'],
+ [/anticoagulant|oral hypoglycemic/i,'[data-group="meds"]'],
+ [/seizure duration/i,"#dur"],
+ [/seizure witnessed/i,'[data-group="events"]'],
+ [/postictal/i,'[data-group="loc"]'],
+ [/history of seizure/i,'[data-group="pmh"]'],
+ [/pupils/i,'[data-group="heent"]'],
+ [/last oral intake/i,"#loi"],
+ [/substance, amount|mechanism of injury|witnessed or unwitnessed, bystander CPR|suspected source of infection/i,"#s_t"],
+ [/airway status|airway management/i,'[data-group="air"]'],
+ [/allergen/i,"#allg_t"],
+ [/CSM/i,'[data-group="ext"]'],
+ [/abdominal exam/i,'[data-group="abd"]'],
+ [/initial rhythm/i,'[data-group="ecg"]'],
+ [/ROSC or termination/i,"#p_t"],
+ [/patient weight/i,"#wt"]
+];
+function flagLink(msg){const m=FIELD_MAP.find(([re])=>re.test(msg));if(!m)return"";return ` <a href="javascript:void(0)" class="golink" data-sel='${m[1].replace(/'/g,"&#39;")}'>Go to field</a>`;}
+function goToFlag(sel){const el=document.querySelector(sel);if(!el)return;const blk=el.closest(".block");if(blk&&blk.classList.contains("collapsed")){blk.classList.remove("collapsed");const btn=blk.querySelector(".toggleSec");if(btn){btn.setAttribute("aria-expanded","true");btn.textContent="Collapse";}}
+  (blk||el).scrollIntoView?.({behavior:"smooth",block:"center"});
+  setTimeout(()=>{if(el.focus)el.focus({preventScroll:true});},350);}
+function updateReadyState(ready,reqCount,recCount){const el=$("readystate");el.style.display="block";el.classList.toggle("ready",ready);el.classList.toggle("notready",!ready);
+  el.textContent=ready?`Ready to copy — required items complete${recCount?`, ${recCount} recommended item${recCount===1?"":"s"} open`:""}.`:`Not ready — ${reqCount} required item${reqCount===1?"":"s"} remaining.`;}
+function computeSectionBuckets(){const {f,dose}=check();const all=[...dose,...f];const buckets={};
+  all.forEach(msg=>{const m=FIELD_MAP.find(([re])=>re.test(msg));let id="reviewSection";if(m){const el=document.querySelector(m[1]);const blk=el&&el.closest(".block");if(blk)id=blk.id;}buckets[id]=(buckets[id]||0)+1;});
+  buckets.reviewSection=all.length;return buckets;}
+function showFlags(){const {f,dose}=check(),box=$("flags"),wrap=$("flaggroups"),vr=vitRows();
   const ab=[];vr.forEach((x,i)=>{const a=abnormal(x);if(a.length)ab.push(`${i===0?"Initial":"Reassessment "+i}: ${a.map(k=>k.toUpperCase()).join(", ")}`);});
   box.style.display="block";
-  if(!f.length&&!dose.length&&!ab.length){box.classList.add("ok");ul.innerHTML="<li>Nothing obvious missing for this complaint.</li>";return;}
+  const li=(msg,dose)=>`<li${dose?' class="dose"':''}>${msg}${flagLink(msg)}</li>`;
+  if(!f.length&&!dose.length&&!ab.length){box.classList.add("ok");
+    wrap.innerHTML=`<details open><summary>Required (0)</summary><ul><li>Nothing obvious missing for this complaint.</li></ul></details><details><summary>Recommended (0)</summary><ul><li>Review the narrative against your ePCR and protocol.</li></ul></details><p class="hint">Not applicable: complaint-specific checks not triggered.</p>`;
+    updateReadyState(true,0,0);return;}
   box.classList.remove("ok");
-  ul.innerHTML=dose.map(x=>`<li class="dose">Dose check: ${x}</li>`).join("")+f.map(x=>`<li>${x}</li>`).join("")+(ab.length?`<li>Abnormal values flagged in vitals (${ab.join("; ")}). Make sure the narrative addresses them.</li>`:"");}
+  const required=f.filter(x=>REQUIRED_RE.test(x)),recommended=f.filter(x=>!REQUIRED_RE.test(x));
+  if(ab.length)recommended.push(`Abnormal values flagged in vitals (${ab.join("; ")}); address them in the narrative.`);
+  wrap.innerHTML=`<details open><summary>Required (${dose.length+required.length})</summary><ul>${dose.map(m=>li(m,true)).join("")}${required.map(m=>li(m,false)).join("")||(dose.length?"":"<li>Nothing required is missing.</li>")}</ul></details>`+
+    `<details${recommended.length?" open":""}><summary>Recommended (${recommended.length})</summary><ul>${recommended.map(m=>li(m,false)).join("")||"<li>No additional recommendations.</li>"}</ul></details>`+
+    `<p class="hint">Not applicable: checks for other complaints or dispositions were not triggered.</p>`;
+  wrap.querySelectorAll(".golink").forEach(a=>a.addEventListener("click",()=>goToFlag(a.dataset.sel)));
+  updateReadyState(dose.length+required.length===0,dose.length+required.length,recommended.length);
+  updateNavState();}
 
 // =====================================================================
 // ACTIONS
 // =====================================================================
 const toast=m=>{const s=$("toast");s.textContent=m;s.style.display="block";setTimeout(()=>s.style.display="none",1400);};
-$("gen").onclick=()=>{if(!v("age")){say("Patient age is required.");$("age").focus();return;}if(!v("cc")){say("Chief complaint is required.");$("cc").focus();return;}showFlags();$("narr").textContent=build();$("out").style.display="block";$("flags").scrollIntoView?.({behavior:"smooth"});};
-const doCopy=async()=>{const t=$("narr").textContent||build();try{await navigator.clipboard.writeText(t);}catch(e){const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();}toast("Copied");};
+$("gen").onclick=()=>{if(!v("age")){say("Patient age is required.");$("age").focus();return;}if(!v("sex")){say("Sex is required.");$("sex").focus();return;}if(!v("cc")){say("Chief complaint is required.");$("cc").focus();return;}showFlags();$("narr").textContent=build();$("out").style.display="block";$("copy").disabled=false;$("copy2").disabled=false;$("gen").textContent="Update narrative";updateSummary();$("flags").scrollIntoView?.({behavior:"smooth"});};
+const doCopy=async()=>{const t=$("narr").textContent||build();let ok=false;try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(t);ok=true;}}catch(e){}if(!ok)try{const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();ok=document.execCommand("copy");ta.remove();}catch(e){}if(ok)toast("Copied");else storageNotice("Copy failed. Select the narrative and copy it manually.");};
 $("copy").onclick=doCopy;$("copy2").onclick=doCopy;$("top").onclick=()=>window.scrollTo({top:0,behavior:"smooth"});
+$("print").onclick=()=>{if(!$("narr").textContent){$("narr").textContent=build();$("out").style.display="block";$("copy").disabled=false;$("copy2").disabled=false;$("gen").textContent="Update narrative";}$("printstamp").textContent=`Generated ${new Date().toLocaleString()} • SOAP Narrative Builder, RI EMS protocol reference v2026.1`;window.print();};
 $("clear").onclick=async()=>{if(await ask("Clear everything?")){clearForm();window.scrollTo({top:0});}};
 ["style","hdrs"].forEach(id=>$(id).addEventListener("change",()=>{store.set("soap_"+id,v(id));if($("out").style.display==="block")$("narr").textContent=build();}));
 $("style").value=store.get("soap_style","full");$("hdrs").value=store.get("soap_hdrs","1");
@@ -687,6 +845,72 @@ const setTheme=t=>{document.documentElement.dataset.theme=t;$("theme").textConte
 $("theme").onclick=()=>setTheme(document.documentElement.dataset.theme==="dark"?"light":"dark");
 setTheme(store.get("soap_theme",window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));
 applyLayout();pedsUI();
+
+// =====================================================================
+// SECTION NAV, SUMMARY BAR, QUICK START, DRAFT AUTOSAVE (added)
+// =====================================================================
+const NAV_ITEMS=[...sections.map((s,i)=>({id:`sec-${i}`,label:s.title})),{id:"reviewSection",label:"Review"}];
+const touchedSections=new Set();
+function buildSecNav(){const nav=$("secnav");nav.innerHTML=NAV_ITEMS.map(it=>`<button type="button" data-target="${it.id}"><span class="dot" data-dot="${it.id}"></span>${it.label}<span class="badge" data-badge="${it.id}" style="display:none"></span></button>`).join("");
+  nav.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{const el=document.getElementById(b.dataset.target);if(!el)return;if(el.classList.contains("collapsed")){el.classList.remove("collapsed");const t=el.querySelector(".toggleSec");if(t){t.setAttribute("aria-expanded","true");t.textContent="Collapse";}}setCurrentSection(b.dataset.target);el.scrollIntoView?.({behavior:"smooth",block:"start"});}));}
+function setCurrentSection(id){document.querySelectorAll("#secnav button").forEach(b=>b.classList.toggle("current",b.dataset.target===id));}
+function updateNavState(){const nav=$("secnav");if(!nav.innerHTML)return;const buckets=computeSectionBuckets();
+  NAV_ITEMS.forEach(it=>{const dot=nav.querySelector(`[data-dot="${it.id}"]`),badge=nav.querySelector(`[data-badge="${it.id}"]`),btn=nav.querySelector(`[data-target="${it.id}"]`);
+    const count=buckets[it.id]||0;
+    if(count>0){dot.className="dot warn";badge.style.display="inline-block";badge.textContent=count;}
+    else{badge.style.display="none";dot.className="dot"+(touchedSections.has(it.id)?" ok":"");}
+    if(it.id==="reviewSection"){badge.style.display=count>0?"inline-block":"none";}
+  });}
+function updateSummary(){const sb=$("sumbar"),age=v("age"),ageu=v("ageu"),cc=selv("cc"),outcome=v("outcome"),imp1=selv("imp1");
+  if(!age&&!cc){sb.classList.remove("show");return;}
+  const {f,dose}=check(),warn=f.length+dose.length;
+  const outLabel={transport:"Transport",refusal:"Refusal",nopt:"No contact"}[outcome]||"Outcome not set";
+  sb.classList.add("show");
+  sb.innerHTML=`<span><strong>${age?age+" "+ageu:"Age not set"}</strong></span><span>${cc||"Complaint not set"}</span><span>${outLabel}</span><span>${imp1?"Impression: "+imp1:"Impression pending"}</span><span class="${warn?"swarn":""}">${warn} warning${warn===1?"":"s"}</span><span class="draft" id="draftind"></span>`;
+  updateDraftIndicatorText();}
+function updateDraftIndicatorText(){const el=$("draftind");if(!el)return;const ts=store.get("soap_draft_ts",null);el.textContent=ts?`Draft saved ${new Date(ts).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}`:"";}
+document.addEventListener("input",()=>{requestAnimationFrame(()=>{updateSummary();scheduleAutosave();});});
+document.addEventListener("change",e=>{const blk=e.target.closest&&e.target.closest(".block");if(blk)touchedSections.add(blk.id);requestAnimationFrame(()=>{updateSummary();updateNavState();scheduleAutosave();});});
+document.getElementById("app").addEventListener("click",e=>{const blk=e.target.closest&&e.target.closest(".block");if(blk)touchedSections.add(blk.id);});
+
+// quick start reveal
+function qsCheck(){const done=v("age")&&v("cc")&&v("outcome");const btn=$("qsContinue");if(btn)btn.style.display=done?"inline-block":"none";}
+document.addEventListener("DOMContentLoaded",qsCheck);
+$("qsContinue")?.addEventListener("click",()=>{const el=$("sec-1")||document.getElementById("sec-1");if(!el)return;el.scrollIntoView?.({behavior:"smooth",block:"start"});const first=el.querySelector("input,select,textarea,button:not(.seclink)");first?.focus({preventScroll:true});});
+["age","cc","outcome"].forEach(id=>$(id)?.addEventListener("input",qsCheck));
+["cc","outcome"].forEach(id=>$(id)?.addEventListener("change",qsCheck));
+
+// duplicate last vitals
+$("dupvit")?.addEventListener("click",()=>{const rows=vitRows();if(!rows.length){toast("No vitals recorded yet");return;}const last={...rows[rows.length-1]};last.time="";addVit(last);markVitals();toast("Vitals duplicated; adjust time and reassessed values");});
+
+// keyboard shortcuts: Ctrl/Cmd+Enter generate, Ctrl/Cmd+Shift+C copy
+document.addEventListener("keydown",e=>{const mod=e.metaKey||e.ctrlKey;
+  if(mod&&e.key==="Enter"){e.preventDefault();$("gen").click();}
+  else if(mod&&e.shiftKey&&(e.key==="C"||e.key==="c")){e.preventDefault();$("copy").click();}});
+
+// full-form draft autosave / restore
+function serializeForm(){const data={vals:{},chips:{},tri:triv("sx"),meds:medRows(),acc:accRows(),vit:vitRows()};
+  document.querySelectorAll('#app input[type="text"],#app input[type="number"],#app select,#app textarea').forEach(e=>{if(!e.id||e.closest(".rows"))return;data.vals[e.id]=e.value;});
+  document.querySelectorAll('#app .chips:not(.tri)').forEach(g=>{const a=[...g.querySelectorAll("input:checked")].map(i=>i.value).filter(x=>x!=="__other");if(a.length)data.chips[g.dataset.group]=a;});
+  return data;}
+function applyDraft(data){
+  Object.entries(data.vals||{}).forEach(([id,val])=>{const el=$(id);if(el)el.value=val;});
+  Object.entries(data.chips||{}).forEach(([g,arr])=>arr.forEach(val=>{const i=document.querySelector(`[data-group="${g}"] input[value="${CSS.escape(val)}"]`);if(i)i.checked=true;}));
+  (data.tri?.a||[]).forEach(val=>{const l=document.querySelector(`[data-tri="sx"] button[data-v="${CSS.escape(val)}"]`);if(l){l.dataset.state="admits";l.setAttribute("aria-pressed","true");l.setAttribute("aria-label",val+": admits");}});
+  (data.tri?.d||[]).forEach(val=>{const l=document.querySelector(`[data-tri="sx"] button[data-v="${CSS.escape(val)}"]`);if(l){l.dataset.state="denies";l.setAttribute("aria-pressed","true");l.setAttribute("aria-label",val+": denies");}});
+  document.querySelectorAll("#medrows .r,#accrows .r,#vitrows .r").forEach(e=>e.remove());
+  (data.meds||[]).forEach(addMed);(data.acc||[]).forEach(addAcc);
+  if(data.vit&&data.vit.length)data.vit.forEach(addVit);else addVit();
+  ["cc","imp1","proto","dest"].forEach(id=>$(id).dispatchEvent(new Event("change")));
+  outcomeUI();pedsUI();lamsUI();applyLayout();markVitals();updateSummary();updateNavState();qsCheck();}
+let autosaveTimer=null;
+function scheduleAutosave(){clearTimeout(autosaveTimer);autosaveTimer=setTimeout(()=>{if(!v("age")&&!v("cc"))return;store.set("soap_draft",serializeForm());store.set("soap_draft_ts",Date.now());updateDraftIndicatorText();},700);}
+(async function initDraftPrompt(){const d=store.get("soap_draft",null);if(d&&(d.vals?.age||d.vals?.cc)){if(await ask("Restore your unsaved draft from this browser?")){applyDraft(d);toast("Draft restored");}else{store.set("soap_draft",null);}}})();
+
+buildSecNav();updateNavState();updateSummary();qsCheck();updateChipSummaries();
+setCurrentSection("sec-0");
+if("IntersectionObserver" in window){const sectionObserver=new IntersectionObserver(entries=>{const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];if(visible)setCurrentSection(visible.target.id);},{rootMargin:"-72px 0px -55% 0px",threshold:[0,.25,.5]});document.querySelectorAll("main .block,#reviewSection").forEach(section=>sectionObserver.observe(section));}
+
 </script>
 </body>
 </html>
