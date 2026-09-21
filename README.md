@@ -9,8 +9,5 @@ Open `index.html` in any browser. No install, no server, nothing leaves the devi
 - Completeness flags based on chief complaint and impression (for example, 12 lead missing on a chest pain call, last known well missing on a stroke)
 - Copy button for pasting into ImageTrend Elite
 
-## Hosting
-Enable GitHub Pages on this repo (Settings > Pages > main branch, root) and it will be live at `https://<user>.github.io/<repo>/`.
-
 ## Note
 This tool documents care; it does not replace protocol knowledge or clinical judgment. No PHI is stored.
