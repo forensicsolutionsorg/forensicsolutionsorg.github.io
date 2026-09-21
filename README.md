@@ -13,9 +13,6 @@ server, or account is required.
 - Accessible tri-state symptom controls, in-page dialogs, copy error reporting, and print/PDF export with a timestamp
 - Inline audit links to source fields, a Required/Recommended review panel, local draft autosave/restore, and keyboard shortcuts (Ctrl/Cmd+Enter to generate, Ctrl/Cmd+Shift+C to copy)
 
-## Hosting
-Enable GitHub Pages on this repo (Settings > Pages > main branch, root) and it will be live at `https://<user>.github.io/<repo>/`.
-
 ## Privacy and clinical note
 This tool documents care; it does not replace protocol knowledge or clinical judgment.
 The app does not send data to a server. Drafts and display preferences may be stored
