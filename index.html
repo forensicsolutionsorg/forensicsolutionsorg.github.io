@@ -476,7 +476,7 @@ const SITES=["left AC","right AC","left forearm","right forearm","left hand","ri
 const opts=(a,blank)=>(blank?`<option value="">${blank}</option>`:"")+a.map(o=>`<option>${o}</option>`).join("");
 const VF=["time","bp","hr","rr","spo2","etco2","bgl","temp","pain","gcs"];
 function addVit(vals){const r=document.createElement("div");r.className="r";
-  r.innerHTML=VF.map(f=>`<label class="vh-input"><span class="vh-label">${f==="spo2"?"SpO2":f==="etco2"?"EtCO2":f.toUpperCase()}</span><input type="text" class="${f}" aria-label="${f==="spo2"?"oxygen saturation":f}" placeholder="${f==="spo2"?"SpO2":f==="etco2"?"EtCO2":f.toUpperCase()}" inputmode="${f==="bp"?"numeric":"decimal"}"></label>`).join("")+`<button type="button" title="Remove vital signs row" aria-label="Remove vital signs row">&times;</button>`;
+  r.innerHTML=VF.map(f=>`<label class="vh-input"><span class="vh-label">${f==="spo2"?"SpO2":f==="etco2"?"EtCO2":f.toUpperCase()}</span><input type="text" class="${f}" aria-label="${f==="spo2"?"oxygen saturation":f==="bp"?"blood pressure, e.g. 120/80":f}" placeholder="${f==="spo2"?"SpO2":f==="etco2"?"EtCO2":f==="bp"?"120/80":f.toUpperCase()}" inputmode="${f==="bp"?"text":"decimal"}"></label>`).join("")+`<button type="button" title="Remove vital signs row" aria-label="Remove vital signs row">&times;</button>`;
   r.querySelector("button").onclick=()=>{if($("vitrows").children.length>1)r.remove();};
   r.addEventListener("input",markVitals);
   if(vals)VF.forEach(f=>r.querySelector("."+f).value=vals[f]||"");
