@@ -160,6 +160,26 @@ body{padding-bottom:84px}
 .draftinfo{font-size:12px;color:var(--muted);margin-top:4px}
 .wizardHide{display:none!important}
 @media print{#wizardbar{display:none!important}}
+#protoOv{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-start;justify-content:center;z-index:51;padding:20px;overflow-y:auto}
+#protoOv.show{display:flex}
+#protoDlg{background:var(--white);border-radius:10px;max-width:640px;width:100%;margin-top:30px;padding:16px;max-height:85vh;display:flex;flex-direction:column}
+#protoDlg h2{margin:0 0 10px;font-size:17px}
+#protoSearch{font:inherit;font-size:14px;width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:7px;margin-bottom:10px}
+#protoList{overflow-y:auto;flex:1 1 auto;display:flex;flex-direction:column;gap:8px}
+.proto-card{border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.proto-card h3{margin:0 0 4px;font-size:14.5px}
+.proto-card p{margin:3px 0;font-size:13px;line-height:1.45}
+.proto-card .pc-label{font-weight:600;color:var(--muted)}
+#protoDlg .b{text-align:right;margin-top:10px}
+#protoLibBtn{font:inherit}
+#protoNote{display:none;font-size:12.5px;color:var(--muted);margin:6px 0 0;background:var(--field);border:1px solid var(--line);border-radius:7px;padding:7px 10px}
+#protoNote.show{display:block}
+#protoNote a{cursor:pointer;color:var(--navy);font-weight:600;text-decoration:underline}
+#txSuggest{display:none;margin:0 0 10px;padding:8px 10px;background:var(--field);border:1px solid var(--line);border-radius:8px}
+#txSuggest.show{display:block}
+#txSuggest .ts-label{font-size:12px;color:var(--muted);margin:0 0 6px}
+#txSuggest .ts-chip{font:inherit;font-size:12.5px;background:var(--white);border:1px solid var(--line);border-radius:999px;padding:5px 10px;margin:0 6px 6px 0;cursor:pointer}
+#txSuggest .ts-chip[aria-pressed="true"]{background:var(--green);color:#fff;border-color:var(--green)}
 </style>
 </head>
 <body>
@@ -170,6 +190,7 @@ body{padding-bottom:84px}
     <select id="style"><option value="full">Full sentences</option><option value="terse">Terse charting</option></select>
     <select id="hdrs"><option value="1">SOAP headers on</option><option value="0">Headers off</option></select>
     <button id="guided" type="button" title="Step through Patient, History, Exam, Treatment, Review one at a time">Guided mode: off</button>
+    <button id="protoLibBtn" type="button" title="Search RI EMS protocol summaries">Protocol reference</button>
     <button id="theme">Dark mode</button>
   </div>
 </div></header>
@@ -191,6 +212,7 @@ body{padding-bottom:84px}
 <div id="out"><p id="printstamp"></p><h2>Narrative</h2><div id="staleBanner" role="status"><span>&#9888; Changes since last generation &mdash; update before copying or printing.</span><button type="button" id="staleUpdate">Update narrative</button></div><div id="narr"></div><div style="margin-top:12px;display:flex;gap:10px"><button id="copy2" class="add" style="flex:1;padding:12px;font-weight:600;background:var(--navy);color:#fff;border-color:var(--navy)" disabled>Copy narrative</button><button id="top" class="add" style="padding:12px">Back to top</button></div></div>
 </div></section>
 <div id="ov"><div id="dlg"><p id="dlgmsg"></p><input type="text" id="dlgin" style="display:none"><div class="b"><button id="dlgno">Cancel</button><button id="dlgok" class="p">OK</button></div></div></div>
+<div id="protoOv"><div id="protoDlg"><h2>RI EMS protocol reference</h2><input type="text" id="protoSearch" placeholder="Search protocols, indications, treatments…"><div id="protoList"></div><div class="b"><button id="protoClose" type="button">Close</button></div></div></div>
 <div id="toast" role="status" aria-live="polite">Copied</div>
 <div id="stickybar"><button id="stickyReview" type="button">Review narrative</button><button id="stickyCopy" type="button" class="primary" disabled>Copy narrative</button></div>
 
@@ -380,8 +402,10 @@ const sections=[
   <div class="other" id="imp1_o"><input type="text" id="imp1_t" placeholder="Describe impression"></div>
   <div style="margin-top:10px"><label class="f">RI protocol followed</label>${sel("proto",D.proto,true)}</div>
   <div class="other" id="proto_o"><input type="text" id="proto_t" placeholder="Protocol name"></div>
+  <p id="protoNote"></p>
   <fieldset style="margin-top:12px"><legend>Clinical reasoning (your words)</legend><textarea id="a_t" placeholder="Why this impression, what was ruled in or out, differentials considered"></textarea></fieldset>`},
  {tag:"Tx",title:"Treatment",html:`
+  <div id="txSuggest"><p class="ts-label"></p><div class="ts-chips"></div></div>
   <fieldset><legend>Interventions</legend>${chips("tx",D.tx)}</fieldset>
   <fieldset><legend>Vascular access</legend><div class="rows acc" id="accrows"></div><button type="button" class="add" id="addacc">Add IV / IO</button></fieldset>
   <fieldset><legend>Medications given</legend><div class="rows" id="medrows"></div><button type="button" class="add" id="addmed">Add medication</button>
@@ -488,7 +512,11 @@ function applyLayout(){
     if(!q)btn.textContent=exp?"Show fewer":`Show all (${hidden} more)`;
   });
   updateChipSummaries();
+  syncTxSuggestState();
 }
+function syncTxSuggestState(){document.querySelectorAll("#txSuggest .ts-chip").forEach(btn=>{
+  const box=document.querySelector(`.chips[data-group="tx"] input[value="${CSS.escape(btn.dataset.tx)}"]`);
+  btn.setAttribute("aria-pressed",box&&box.checked?"true":"false");});}
 function triSearchWire(){document.querySelectorAll('[data-tri-list]').forEach(list=>{
   const id=list.dataset.triList,total=list.querySelectorAll(".tri-item").length,box=$(id+"_search");
   if(!box)return;box.style.display=total>14?"block":"none";
@@ -719,6 +747,71 @@ const PROTO_MATCH=[
  [/abdominal|nausea|vomiting/,["Nausea / Vomiting"]],
  [/sepsis|fever/,["Sepsis"]],
 ];
+// =====================================================================
+// PROTOCOL REFERENCE LIBRARY
+// Short, non-dosing summaries per RI EMS protocol: indications, key
+// treatments (also used to drive treatment-chip suggestions), and
+// contraindications/cautions. Not a substitute for the official protocol.
+// =====================================================================
+const PROTO_INFO={
+ "Routine Patient Care":{indications:"Baseline assessment and monitoring for any patient without a more specific protocol.",tx:["Scene safety and BSI","Primary and secondary assessment","Continuous reassessment"],caution:"Escalate to a specific protocol as soon as one applies."},
+ "Chest Pain / Acute Coronary Syndrome":{indications:"Chest pain or anginal equivalent suspicious for cardiac ischemia.",tx:["Cardiac monitor applied","12 lead ECG obtained and transmitted","IV access established","Aspirin administered","Nitroglycerin administered","Oxygen via nasal cannula"],caution:"Withhold aspirin if allergy or active bleeding; withhold nitroglycerin if hypotensive, right-sided MI, or recent ED medication use."},
+ "STEMI":{indications:"12 lead ECG meets STEMI criteria.",tx:["12 lead ECG obtained and transmitted","Serial 12 leads obtained","STEMI alert called","IV access established","Aspirin administered","Nitroglycerin administered"],caution:"Minimize scene time; transport to a PCI capable facility."},
+ "Respiratory Distress":{indications:"Dyspnea not clearly bronchospastic (e.g., pulmonary, cardiac, or unclear etiology).",tx:["Oxygen via nasal cannula","Oxygen via non rebreather","CPAP applied","Cardiac monitor applied","IV access established"],caution:"Use CPAP cautiously with hypotension, vomiting, or altered mental status."},
+ "Bronchospasm":{indications:"Wheezing/bronchospasm consistent with asthma or COPD exacerbation.",tx:["Albuterol nebulizer","Ipratropium nebulizer","Oxygen via nasal cannula","Cardiac monitor applied"],caution:"Monitor heart rate with repeated nebulized beta agonists, especially in cardiac patients."},
+ "CHF / Pulmonary Edema":{indications:"Signs of acute decompensated heart failure (JVD, rales, pedal edema, orthopnea).",tx:["CPAP applied","Nitroglycerin administered","Oxygen via nasal cannula","Cardiac monitor applied","12 lead ECG obtained and transmitted"],caution:"Withhold nitroglycerin if hypotensive; caution with concurrent PDE5 inhibitor use."},
+ "Stroke":{indications:"Acute focal neuro deficit or positive stroke screen within the treatment window.",tx:["Stroke alert called","Blood glucose obtained","Cardiac monitor applied","IV access established","Oxygen via nasal cannula"],caution:"Establish last known well time; rule out hypoglycemia as a stroke mimic."},
+ "Seizures":{indications:"Active or recently active seizure activity.",tx:["Midazolam administered","Blood glucose obtained","Suctioning performed","OPA/NPA inserted","Oxygen via nasal cannula","IV access established"],caution:"Monitor airway and respiratory status closely after benzodiazepine administration."},
+ "Altered Mental Status":{indications:"Decreased or altered level of consciousness without a more specific cause identified.",tx:["Blood glucose obtained","Naloxone administered","Cardiac monitor applied","IV access established","Oxygen via nasal cannula"],caution:"Consider and rule out hypoglycemia, opioid toxicity, and stroke."},
+ "Hypoglycemia / Hyperglycemia":{indications:"Blood glucose outside normal range with symptoms consistent with it.",tx:["Blood glucose obtained","Dextrose administered","Glucagon administered","IV access established"],caution:"Reassess blood glucose and mental status after treatment; glucagon if no IV access."},
+ "Cardiac Arrest":{indications:"Pulseless, apneic patient.",tx:["CPR initiated","Defibrillation","IO access established","Epinephrine IM","Airway management"],caution:"Minimize interruptions to compressions; confirm resuscitation/DNR status early."},
+ "Bradycardia":{indications:"Symptomatic bradycardia with hypotension, altered mental status, or signs of poor perfusion.",tx:["Cardiac monitor applied","12 lead ECG obtained and transmitted","Pacing","IV access established"],caution:"Treat the symptomatic patient, not the number alone."},
+ "Tachycardia":{indications:"Symptomatic tachycardia with hypotension, altered mental status, or signs of poor perfusion.",tx:["Cardiac monitor applied","12 lead ECG obtained and transmitted","Cardioversion","Adenosine administered","IV access established"],caution:"Distinguish stable vs unstable; confirm rhythm before cardioversion/antiarrhythmics."},
+ "Anaphylaxis / Allergic Reaction":{indications:"Allergic reaction with airway, breathing, or circulatory involvement.",tx:["Epinephrine IM","Oxygen via nasal cannula","Diphenhydramine administered","IV access established","Albuterol nebulizer"],caution:"Epinephrine is first-line for anaphylaxis; do not delay it for antihistamines."},
+ "Overdose / Poisoning":{indications:"Suspected toxic ingestion/exposure or opioid overdose with respiratory depression.",tx:["Naloxone administered","Oxygen via nasal cannula","IV access established","Cardiac monitor applied"],caution:"Titrate naloxone to adequate respirations, not full arousal, to reduce withdrawal/agitation."},
+ "Pain Management":{indications:"Acute pain from a known cause without a contraindication to analgesia.",tx:["Fentanyl administered","IV access established","Cardiac monitor applied"],caution:"Monitor for hypotension/respiratory depression; use caution with hemodynamic instability."},
+ "Nausea / Vomiting":{indications:"Nausea/vomiting, isolated or associated with another complaint.",tx:["Ondansetron administered","IV access established"],caution:"Treat the underlying cause as indicated by the primary complaint."},
+ "Trauma / Spinal Motion Restriction":{indications:"Mechanism or exam findings concerning for spinal injury.",tx:["Spinal motion restriction","Primary and secondary assessment","IV access established"],caution:"Selective spinal motion restriction per exam criteria; avoid unnecessary restriction."},
+ "Traumatic Brain Injury":{indications:"Head injury with altered mental status or concerning mechanism/exam.",tx:["Oxygen via nasal cannula","Spinal motion restriction","Blood glucose obtained","Cardiac monitor applied"],caution:"Avoid hypoxia and hypotension, which worsen secondary brain injury; monitor GCS trend."},
+ "Hemorrhage Control":{indications:"Significant external bleeding.",tx:["Direct pressure applied","Tourniquet applied","Wound dressed and bandaged","IV access established"],caution:"Apply a tourniquet early for life-threatening extremity hemorrhage; note application time."},
+ "Burns":{indications:"Thermal, chemical, or electrical burn injury.",tx:["Cooling measures","Wound dressed and bandaged","IV access established","Oxygen via nasal cannula"],caution:"Stop the burning process first; avoid over-cooling large body surface area burns (hypothermia risk)."},
+ "Behavioral Emergencies":{indications:"Behavioral/psychiatric emergency with safety concerns.",tx:["Restraints applied","Blood glucose obtained","Continuous reassessment"],caution:"Rule out medical causes of altered behavior; use restraint only per policy, with documented justification."},
+ "Sepsis":{indications:"Suspected infection with signs of systemic compromise (e.g., fever, tachycardia, hypotension).",tx:["IV access established","Normal saline bolus","Oxygen via nasal cannula","Cardiac monitor applied"],caution:"Identify and document suspected source; call ahead if sepsis criteria are met."},
+ "Refusal of Care":{indications:"Patient with capacity declines evaluation and/or transport.",tx:["Primary and secondary assessment"],caution:"Confirm and document decision-making capacity, risks explained, and alternatives offered before accepting a refusal."},
+ "Other":{indications:"No listed protocol applies; describe the situation and care provided in your own words.",tx:[],caution:"Document the clinical rationale clearly since no specific protocol is referenced."},
+};
+function renderProtoLibrary(filter){
+  const q=(filter||"").trim().toLowerCase();
+  const html=D.proto.map(name=>{
+    const info=PROTO_INFO[name];if(!info)return "";
+    const hay=(name+" "+info.indications+" "+info.tx.join(" ")+" "+info.caution).toLowerCase();
+    if(q&&!hay.includes(q))return "";
+    return `<div class="proto-card"><h3>${escapeHTML(name)}</h3><p><span class="pc-label">Indications: </span>${escapeHTML(info.indications)}</p>${info.tx.length?`<p><span class="pc-label">Typical treatments: </span>${escapeHTML(info.tx.join(", "))}</p>`:""}<p><span class="pc-label">Caution: </span>${escapeHTML(info.caution)}</p></div>`;
+  }).join("");
+  $("protoList").innerHTML=html||`<p class="hint">No protocols match "${escapeHTML(filter)}".</p>`;
+}
+$("protoLibBtn").onclick=()=>{$("protoSearch").value="";renderProtoLibrary("");$("protoOv").classList.add("show");setTimeout(()=>$("protoSearch").focus(),50);};
+$("protoClose").onclick=()=>$("protoOv").classList.remove("show");
+$("protoSearch").addEventListener("input",()=>renderProtoLibrary($("protoSearch").value));
+function updateProtoUI(){
+  const name=selv("proto"),info=name&&PROTO_INFO[name];
+  const note=$("protoNote");
+  if(info){note.innerHTML=`<span class="pc-label">${escapeHTML(name)}: </span>${escapeHTML(info.indications)} <span class="pc-label">Caution:</span> ${escapeHTML(info.caution)} <a id="protoNoteLink">Full reference</a>`;note.classList.add("show");
+    const link=document.getElementById("protoNoteLink");if(link)link.onclick=()=>{$("protoSearch").value=name;renderProtoLibrary(name);$("protoOv").classList.add("show");};
+  }else{note.classList.remove("show");note.innerHTML="";}
+  const sug=$("txSuggest"),label=sug.querySelector(".ts-label"),wrap=sug.querySelector(".ts-chips");
+  const suggestions=(info&&info.tx||[]).filter(t=>D.tx.includes(t));
+  if(!suggestions.length){sug.classList.remove("show");wrap.innerHTML="";return;}
+  label.textContent=`Suggested treatments for ${name} (based on the protocol reference):`;
+  wrap.innerHTML=suggestions.map(t=>{const box=document.querySelector(`.chips[data-group="tx"] input[value="${CSS.escape(t)}"]`);const pressed=box&&box.checked?"true":"false";return `<button type="button" class="ts-chip" data-tx="${escapeHTML(t)}" aria-pressed="${pressed}">${escapeHTML(t)}</button>`;}).join("");
+  sug.classList.add("show");
+}
+document.querySelector("#txSuggest").addEventListener("click",e=>{
+  const btn=e.target.closest(".ts-chip");if(!btn)return;
+  const box=document.querySelector(`.chips[data-group="tx"] input[value="${CSS.escape(btn.dataset.tx)}"]`);
+  if(!box)return;box.checked=!box.checked;box.dispatchEvent(new Event("change",{bubbles:true}));btn.setAttribute("aria-pressed",box.checked?"true":"false");applyLayout();
+});
+$("proto").addEventListener("change",updateProtoUI);
 function check(){
   const f=[],dose=[];
   const cc=(selv("cc")||"").toLowerCase(),imp=((selv("imp1")||"")+" "+v("imp2")).toLowerCase(),ctx=cc+" "+imp,outcome=v("outcome");
@@ -948,7 +1041,7 @@ $("style").value=store.get("soap_style","full");$("hdrs").value=store.get("soap_
 const setTheme=t=>{document.documentElement.dataset.theme=t;$("theme").textContent=t==="dark"?"Light mode":"Dark mode";store.set("soap_theme",t);};
 $("theme").onclick=()=>setTheme(document.documentElement.dataset.theme==="dark"?"light":"dark");
 setTheme(store.get("soap_theme",window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));
-applyLayout();pedsUI();
+applyLayout();pedsUI();updateProtoUI();
 
 // =====================================================================
 // SECTION NAV, SUMMARY BAR, QUICK START, DRAFT AUTOSAVE (added)
