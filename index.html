@@ -130,12 +130,21 @@ button[disabled]{opacity:.5;cursor:not-allowed}
  .vh{display:none}
 }
 @media print{
- #secnav,#sumbar,.bar,header .ctrl,.startpanel,.sechead .secactions,#toast,#ov,.more,.chip-summary,.recent-row{display:none!important}
+ #secnav,#sumbar,.bar,header .ctrl,.startpanel,#sec-0,.sechead .secactions,#toast,#ov,.more,.chip-summary,.recent-row{display:none!important}
  section.block.collapsed .secbody{display:block!important}
  #flags{display:none!important}
  #printstamp{display:block!important;font-size:11px;color:#555;margin:0 0 8px}
 }
 #printstamp{display:none}
+.ai-panel{background:var(--field);border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:12px}
+.ai-panel summary{cursor:pointer;font-weight:600}
+.ai-panel textarea{margin-top:8px;min-height:132px}
+.ai-panel .row{margin-top:8px}
+.ai-panel button{margin-top:10px}
+.ai-status{font-size:12.5px;color:var(--muted);margin:8px 0 0;min-height:18px}
+.ai-status.error{color:var(--red);font-weight:500}
+.ai-draft{margin-top:12px;padding:12px;background:var(--white);border:1px solid var(--line);border-radius:8px;white-space:pre-wrap;display:none}
+.ai-draft h3{margin:0 0 6px;font-size:14px}
 
 </style>
 </head>
@@ -290,6 +299,17 @@ const tri=(id,opts)=>`<div class="chips tri" data-tri="${id}" data-group="${id}"
 const VH='<div class="vh"><span>Time</span><span>BP</span><span>HR</span><span>RR</span><span>SpO2</span><span>EtCO2</span><span>BGL</span><span>Temp</span><span>Pain</span><span>GCS</span><span></span></div>';
 
 const sections=[
+ {tag:"AI",pre:true,title:"AI draft",html:`
+  <details class="ai-panel" open>
+   <summary>Draft a SOAP narrative from free-form notes</summary>
+   <p class="hint">Paste or type your notes in any format. This sends the text to OpenAI only when you select Generate AI draft. Do not use this feature unless your organization permits sending PHI to OpenAI. AI can be wrong; verify every statement against the source record and your ePCR.</p>
+   <label class="f" for="ai_input">Patient notes</label>
+   <textarea id="ai_input" data-no-draft placeholder="Example: 62M with chest pressure since 1400, found sitting upright... Include only facts you want included."></textarea>
+   <p class="hint">Uses <strong id="ai_model_label"></strong>, the configured lowest-cost model. Requests are sent through this site's AI service; users never provide or receive the OpenAI API key.</p>
+   <button type="button" class="add" id="ai_generate">Generate AI draft</button>
+   <p class="ai-status" id="ai_status" aria-live="polite"></p>
+   <div class="ai-draft" id="ai_draft"><h3>AI draft — review before use</h3><div id="ai_narr"></div><button type="button" class="add" id="ai_use">Use as narrative</button></div>
+  </details>`},
  {tag:"",pre:true,title:"Patient",html:`
   <div class="startpanel" id="startpanel">Start by selecting the chief complaint. Then record the patient's age, outcome, and only the findings you actually assessed. <button type="button" id="qsContinue" style="display:none">Continue to Subjective &rarr;</button></div>
   <div class="row">
@@ -528,6 +548,7 @@ function capture(){const p={cc:v("cc"),found:v("found"),outcome:v("outcome"),tri
   ["imp1","imp2","proto","mode","pos","toc","tocby","dest","refsig","refomc","refleft","onset","dur","prov","qual","rad","lams_f","lams_a","lams_g","lams_s","resp_t","nopt_t"].forEach(id=>{if(v(id))p.fields[id]=v(id);});
   return p;}
 function clearForm(){document.querySelectorAll("input,select,textarea").forEach(e=>{if(e.type==="checkbox")e.checked=false;else if(e.tagName==="SELECT")e.selectedIndex=0;else e.value="";});
+  $("ai_draft").style.display="none";$("ai_narr").textContent="";$("ai_status").textContent="";
   document.querySelectorAll(".other").forEach(e=>e.classList.remove("show"));
   document.querySelectorAll(".tri button").forEach(l=>{l.dataset.state="";l.setAttribute("aria-pressed","false");l.setAttribute("aria-label",l.dataset.v+": not documented");});
   document.querySelectorAll("#medrows .r,#accrows .r,#vitrows .r").forEach(e=>e.remove());addVit();
@@ -623,6 +644,38 @@ function build(){
   return [blk("S",S),blk("O",O),blk("A",A),blk("P",P)].join("\n\n");
 }
 function terse(t){return t.replace(/\bPatient is a /g,"Pt is a ").replace(/\bPatient\b/g,"Pt").replace(/\bpatient\b/g,"pt").replace(/complaining of/g,"c/o").replace(/reports associated/g,"+").replace(/History obtained from/g,"Hx per").replace(/Prior to EMS arrival, /g,"PTA ").replace(/following treatment/g,"post tx").replace(/Care provided per Rhode Island EMS /g,"Per RI EMS ").replace(/ protocol\./g," protocol.").replace(/Care transferred to/g,"Care transferred to").replace(/no change in patient condition noted at time of transfer/g,"no change in pt condition at transfer").replace(/Field impression:/g,"Impression:").replace(/with report given/g,"w/ report").replace(/, and /g,", ").replace(/ and /g," & ").replace(/described as/g,"desc").replace(/duration approximately/g,"duration ~").replace(/Interventions:/g,"Tx:").replace(/\. /g,"; ").replace(/\.$/,"");}
+
+// =====================================================================
+// OPT-IN AI NARRATIVE DRAFT
+// =====================================================================
+const AI_MODEL="gpt-6-luna";
+const AI_PROXY_URL="https://soap-ai-proxy.YOUR_SUBDOMAIN.workers.dev/v1/narrative";
+const aiStatus=(message,error=false)=>{const el=$("ai_status");el.textContent=message;el.classList.toggle("error",error);};
+async function generateAiDraft(){
+  const notes=v("ai_input");
+  if(!notes){aiStatus("Enter patient notes before generating an AI draft.",true);$("ai_input").focus();return;}
+  if(AI_PROXY_URL.includes("YOUR_SUBDOMAIN")){aiStatus("The site AI service has not been configured yet. See the deployment instructions.",true);return;}
+  const button=$("ai_generate");button.disabled=true;button.textContent="Generating AI draft...";aiStatus("Sending notes to OpenAI...");
+  try{
+    const response=await fetch(AI_PROXY_URL,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({notes})
+    });
+    let payload;
+    try{payload=await response.json();}catch(error){throw new Error("OpenAI returned an invalid response.");}
+    if(!response.ok){const detail=payload?.error?.message||`OpenAI returned HTTP ${response.status}.`;throw new Error(detail);}
+    const narrative=payload?.narrative?.trim();
+    if(!narrative)throw new Error("OpenAI returned no narrative text.");
+    $("ai_narr").textContent=narrative;$("ai_draft").style.display="block";aiStatus("AI draft generated. Review it against the source record before using it.");$("ai_draft").scrollIntoView?.({behavior:"smooth",block:"center"});
+  }catch(error){
+    console.error("AI narrative generation failed.",error);
+    aiStatus(`AI draft could not be generated: ${error instanceof Error?error.message:"Unexpected request error."}`,true);
+  }finally{button.disabled=false;button.textContent="Generate AI draft";}
+}
+$("ai_model_label").textContent=AI_MODEL;
+$("ai_generate").addEventListener("click",generateAiDraft);
+$("ai_use").addEventListener("click",()=>{const narrative=$("ai_narr").textContent;if(!narrative)return;$("narr").textContent=narrative;$("out").style.display="block";$("copy").disabled=false;$("copy2").disabled=false;$("out").scrollIntoView?.({behavior:"smooth",block:"center"});});
 
 // =====================================================================
 // COMPLETENESS + DOSE CHECK
@@ -890,7 +943,7 @@ document.addEventListener("keydown",e=>{const mod=e.metaKey||e.ctrlKey;
 
 // full-form draft autosave / restore
 function serializeForm(){const data={vals:{},chips:{},tri:triv("sx"),meds:medRows(),acc:accRows(),vit:vitRows()};
-  document.querySelectorAll('#app input[type="text"],#app input[type="number"],#app select,#app textarea').forEach(e=>{if(!e.id||e.closest(".rows"))return;data.vals[e.id]=e.value;});
+  document.querySelectorAll('#app input[type="text"],#app input[type="number"],#app select,#app textarea').forEach(e=>{if(!e.id||e.closest(".rows")||e.matches("[data-no-draft]"))return;data.vals[e.id]=e.value;});
   document.querySelectorAll('#app .chips:not(.tri)').forEach(g=>{const a=[...g.querySelectorAll("input:checked")].map(i=>i.value).filter(x=>x!=="__other");if(a.length)data.chips[g.dataset.group]=a;});
   return data;}
 function applyDraft(data){
