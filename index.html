@@ -694,6 +694,31 @@ function doseCheck(m){const d=DOSES[m.drug];if(!d)return null;const dose=parseFl
     const lo2=+(lo*wt).toFixed(2),hi2=Math.min(+(hi*wt).toFixed(2),maxT);if(dose<lo2*0.9||dose>hi2*1.1)return `${m.drug} ${dose} ${unit} is outside the usual pediatric range for ${wt} kg (${lo2} to ${hi2} ${unit}, max ${maxT} ${unit}).`;return null;}
   const [lo,hi,unit]=d.adult;if(m.unit!==unit)return `${m.drug}: dose entered in ${m.unit}, expected ${unit}.`;
   if(dose<lo*0.9||dose>hi*1.1)return `${m.drug} ${dose} ${unit} is outside the usual adult range (${lo===hi?lo:lo+" to "+hi} ${unit}).`;return null;}
+// complaint/impression keyword -> protocols from D.proto that are consistent with it,
+// used to flag a selected protocol that doesn't match the documented complaint.
+const PROTO_MATCH=[
+ [/stemi/,["STEMI"]],
+ [/chest pain|coronary/,["Chest Pain / Acute Coronary Syndrome","STEMI"]],
+ [/chf|pulmonary edema/,["CHF / Pulmonary Edema"]],
+ [/copd|asthma|bronchospasm|wheez/,["Bronchospasm","Respiratory Distress"]],
+ [/shortness of breath|respiratory|pneumonia|pulmonary/,["Respiratory Distress","Bronchospasm","CHF / Pulmonary Edema"]],
+ [/stroke|tia|cva/,["Stroke"]],
+ [/seizure/,["Seizures"]],
+ [/behavioral|psychiatric/,["Behavioral Emergencies"]],
+ [/altered|weakness|syncope|intoxication/,["Altered Mental Status"]],
+ [/diabetic|hypoglyc|hyperglyc/,["Hypoglycemia / Hyperglycemia"]],
+ [/cardiac arrest/,["Cardiac Arrest"]],
+ [/bradycardia/,["Bradycardia"]],
+ [/tachycardia/,["Tachycardia"]],
+ [/overdose|poison|opioid/,["Overdose / Poisoning"]],
+ [/allergic|anaphylaxis/,["Anaphylaxis / Allergic Reaction"]],
+ [/burn/,["Burns"]],
+ [/head injury|traumatic brain/,["Traumatic Brain Injury"]],
+ [/hemorrhage|bleed control/,["Hemorrhage Control"]],
+ [/fall|motor vehicle|assault|trauma|injury|fracture|extremity|back pain/,["Trauma / Spinal Motion Restriction","Traumatic Brain Injury","Hemorrhage Control"]],
+ [/abdominal|nausea|vomiting/,["Nausea / Vomiting"]],
+ [/sepsis|fever/,["Sepsis"]],
+];
 function check(){
   const f=[],dose=[];
   const cc=(selv("cc")||"").toLowerCase(),imp=((selv("imp1")||"")+" "+v("imp2")).toLowerCase(),ctx=cc+" "+imp,outcome=v("outcome");
@@ -708,6 +733,13 @@ function check(){
   if(!picked("skin").length)f.push("Skin findings");
   if(!selv("imp1"))f.push("Primary field impression");
   if(!selv("proto"))f.push("RI protocol followed");
+  else{
+    const protoSel=selv("proto");
+    if(!["Routine Patient Care","Refusal of Care","Other"].includes(protoSel)){
+      const match=PROTO_MATCH.find(([re])=>re.test(ctx));
+      if(match&&!match[1].includes(protoSel))f.push(`Protocol followed ("${protoSel}") doesn't match the chief complaint / impression — expected ${match[1].join(" or ")}`);
+    }
+  }
   if(!picked("src").length)f.push("Who provided the history");
   if(!sxAll.length)f.push("Associated symptoms admitted or denied");
   if(!picked("events").length&&!v("onset")&&!v("s_t"))f.push("Events leading up to the call");
@@ -819,7 +851,7 @@ function check(){
   if(any(/sepsis|fever/)){if(!v0.temp)f.push("Temperature");if(!v0.etco2)f.push("EtCO2");if(!/infection|uti|pneumonia|wound|source/i.test(v("s_t")+v("a_t")))f.push("Suspected source of infection");}
   return{f,dose};
 }
-const REQUIRED_RE=/^Sex$|initial|primary|destination|capacity|risk|transport|signature|contact|vital|medication|dose|route|access|ECG|GCS|LAMS|airway|lung|blood glucose|mechanism/i;
+const REQUIRED_RE=/^Sex$|initial|primary|destination|capacity|risk|transport|signature|contact|vital|medication|dose|route|access|ECG|GCS|LAMS|airway|lung|blood glucose|mechanism|protocol/i;
 // message keyword -> field/group selector, used for "go to field" links and section warning badges (added)
 const FIELD_MAP=[
  [/full set of initial vitals|EtCO2|blood glucose|temperature|GCS|reassessment/i,"#vitrows"],
