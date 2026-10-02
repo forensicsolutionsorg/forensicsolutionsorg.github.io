@@ -165,7 +165,7 @@ body{padding-bottom:84px}
 <body>
 <header><div class="hwrap">
   <h1>SOAP Narrative Builder</h1>
-  <p>Rhode Island EMS protocols · Protocol reference v2026.1 · Last reviewed September 2026. Check what applies, fill the blanks, generate.</p>
+  <p>Rhode Island EMS protocols · Protocol reference v2026.02 · Last reviewed October 2026. Check what applies, fill the blanks, generate.</p>
   <div class="ctrl">
     <select id="style"><option value="full">Full sentences</option><option value="terse">Terse charting</option></select>
     <select id="hdrs"><option value="1">SOAP headers on</option><option value="0">Headers off</option></select>
@@ -941,7 +941,7 @@ $("staleUpdate").onclick=()=>$("gen").click();
 $("stickyReview").onclick=()=>{if($("out").style.display!=="block")$("gen").click();else $("reviewSection").scrollIntoView?.({behavior:"smooth",block:"start"});};
 $("print").onclick=()=>{if($("out").style.display!=="block"){$("gen").click();if($("out").style.display!=="block")return;}
   if(isStale()){say("The narrative is out of date. Click \"Update narrative\" to refresh it, review the changes, then print.");return;}
-  $("printstamp").textContent=`Generated ${new Date().toLocaleString()} • SOAP Narrative Builder, RI EMS protocol reference v2026.1`;window.print();};
+  $("printstamp").textContent=`Generated ${new Date().toLocaleString()} • SOAP Narrative Builder, RI EMS protocol reference v2026.02`;window.print();};
 $("clear").onclick=async()=>{if(await ask("Start a new patient? This clears all current fields.")){clearForm();window.scrollTo({top:0});}};
 ["style","hdrs"].forEach(id=>$(id).addEventListener("change",()=>{store.set("soap_"+id,v(id));if($("out").style.display==="block")renderNarrative();}));
 $("style").value=store.get("soap_style","full");$("hdrs").value=store.get("soap_hdrs","1");
