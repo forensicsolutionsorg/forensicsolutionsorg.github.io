@@ -39,10 +39,6 @@ input:focus,select:focus,textarea:focus,button:focus{outline:2px solid var(--nav
 .chips label:has(input:checked){background:var(--navy);color:#fff;border-color:var(--navy)}
 .chips input{position:absolute;opacity:0;width:0;height:0}
 .chips label.hide{display:none}
-.tri label[data-state="admits"]{background:var(--green);color:#fff;border-color:var(--green)}
-.tri label[data-state="denies"]{background:var(--red);color:#fff;border-color:var(--red)}
-.tri label[data-state="admits"]::before{content:"\2713\00a0"}
-.tri label[data-state="denies"]::before{content:"\2715\00a0"}
 .more{font:inherit;font-size:12.5px;color:var(--navy);background:none;border:1px dashed var(--line);border-radius:999px;padding:6px 12px;cursor:pointer}
 .other{margin-top:8px;display:none}
 .other.show{display:block}
@@ -76,10 +72,6 @@ input:focus,select:focus,textarea:focus,button:focus{outline:2px solid var(--nav
 .rows .r button{border:1px solid var(--line);background:var(--white);color:var(--ink);border-radius:7px;min-height:38px;width:38px;cursor:pointer;font-size:18px;line-height:1}
 .add{font:inherit;font-size:13.5px;font-weight:500;background:var(--field);border:1px solid var(--line);border-radius:7px;padding:8px 12px;cursor:pointer;color:var(--navy)}
 .vh{display:grid;grid-template-columns:repeat(10,1fr) auto;gap:6px;font-size:11.5px;color:var(--muted);margin-bottom:3px}
-.tri button{font:inherit;border:1px solid var(--line);background:var(--field);color:var(--ink);border-radius:999px;padding:7px 12px;cursor:pointer}
-.tri button[data-state="admits"]{background:var(--green);color:#fff;border-color:var(--green)}
-.tri button[data-state="denies"]{background:var(--red);color:#fff;border-color:var(--red)}
-.tri button[data-state="admits"]::before{content:"\2713\00a0"}.tri button[data-state="denies"]::before{content:"\2715\00a0"}
 .vh span:last-child{width:38px}
 #refusal{display:none}
 @media (max-width:600px){.rows .r,.rows.acc .r,.rows.vit .r{grid-template-columns:1fr 1fr 1fr}.vh{display:none}.rows.vit .r input::placeholder{color:var(--muted)}}
@@ -136,25 +128,79 @@ button[disabled]{opacity:.5;cursor:not-allowed}
  #printstamp{display:block!important;font-size:11px;color:#555;margin:0 0 8px}
 }
 #printstamp{display:none}
-
+/* ---- sticky bottom action bar, explicit tri-state, staleness, search, guided mode, SOAP blocks (added) ---- */
+body{padding-bottom:84px}
+#stickybar{position:fixed;left:0;right:0;bottom:0;z-index:55;background:var(--white);border-top:1px solid var(--line);display:flex;gap:10px;padding:10px 14px calc(10px + env(safe-area-inset-bottom));box-shadow:0 -2px 10px rgba(0,0,0,.1)}
+#stickybar button{flex:1;font:inherit;font-weight:600;border-radius:8px;padding:12px;border:1px solid var(--line);background:var(--white);color:var(--ink);cursor:pointer;min-height:44px}
+#stickybar button.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+@media print{#stickybar{display:none!important}}
+.chips.tri{align-items:flex-start}
+.tri .tri-list{display:flex;flex-wrap:wrap;gap:7px;width:100%}
+.tri .tri-item{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--field);border:1px solid var(--line);border-radius:999px;padding:5px 6px 5px 12px;font-size:13.5px}
+.tri .tri-item .tri-label{flex:1 1 auto;min-width:0}
+.tri .tri-item .tri-btns{display:flex;gap:4px;flex:0 0 auto}
+.tri .tri-item button{font:inherit;font-size:11.5px;font-weight:600;border:1px solid var(--line);background:var(--white);color:var(--muted);border-radius:999px;padding:5px 9px;cursor:pointer;line-height:1}
+.tri .tri-item button[data-state="admits"][aria-pressed="true"]{background:var(--green);color:#fff;border-color:var(--green)}
+.tri .tri-item button[data-state="denies"][aria-pressed="true"]{background:var(--red);color:#fff;border-color:var(--red)}
+.tri .tri-item button[data-state=""][aria-pressed="true"]{background:var(--muted);color:#fff;border-color:var(--muted)}
+.tri .tri-item.hide{display:none}
+.chipsearch{display:block;width:100%;font:inherit;font-size:13px;color:var(--ink);background:var(--white);border:1px solid var(--line);border-radius:7px;padding:7px 10px;margin:0 0 7px;min-height:36px}
+.fieldErr{background:var(--abn)!important;border-color:var(--red)!important}
+#essentialsMsg{display:none;background:var(--abn);border:1px solid var(--red);border-radius:8px;padding:8px 10px;margin:8px 0 0}
+#staleBanner{display:none;background:var(--warn);border:1px solid var(--warnline);border-radius:8px;padding:9px 12px;margin:0 0 12px;font-size:13.5px;display:none;align-items:center;gap:10px;justify-content:space-between}
+#staleBanner.show{display:flex}
+#staleBanner button{font:inherit;font-size:12.5px;font-weight:600;color:#fff;background:var(--navy);border:1px solid var(--navy);border-radius:7px;padding:6px 10px;cursor:pointer;flex:0 0 auto}
+.soap-block{display:grid;grid-template-columns:34px 1fr;border:1px solid var(--line);border-radius:8px;margin-bottom:10px;overflow:hidden}
+.soap-block .soap-tag{background:var(--navy);color:#fff;display:flex;align-items:flex-start;justify-content:center;padding-top:10px;font-weight:700;font-size:14px}
+.soap-block .soap-text{padding:10px 12px;white-space:pre-wrap;font-size:14.5px;line-height:1.55;min-width:0}
+#wizardbar{display:none;position:sticky;top:33px;z-index:43;background:var(--white);border-bottom:1px solid var(--line);padding:8px 14px;gap:10px;align-items:center;justify-content:space-between}
+#wizardbar.show{display:flex}
+#wizardbar button{font:inherit;font-size:13px;font-weight:600;color:var(--navy);background:var(--field);border:1px solid var(--line);border-radius:7px;padding:7px 12px;cursor:pointer}
+#wizardbar span{font-size:12.5px;color:var(--muted);flex:1 1 auto;text-align:center}
+.draftinfo{font-size:12px;color:var(--muted);margin-top:4px}
+.wizardHide{display:none!important}
+@media print{#wizardbar{display:none!important}}
+#protoOv{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-start;justify-content:center;z-index:51;padding:20px;overflow-y:auto}
+#protoOv.show{display:flex}
+#protoDlg{background:var(--white);border-radius:10px;max-width:640px;width:100%;margin-top:30px;padding:16px;max-height:85vh;display:flex;flex-direction:column}
+#protoDlg h2{margin:0 0 10px;font-size:17px}
+#protoSearch{font:inherit;font-size:14px;width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:7px;margin-bottom:10px}
+#protoList{overflow-y:auto;flex:1 1 auto;display:flex;flex-direction:column;gap:8px}
+.proto-card{border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.proto-card h3{margin:0 0 4px;font-size:14.5px}
+.proto-card p{margin:3px 0;font-size:13px;line-height:1.45}
+.proto-card .pc-label{font-weight:600;color:var(--muted)}
+#protoDlg .b{text-align:right;margin-top:10px}
+#protoLibBtn{font:inherit}
+#protoNote{display:none;font-size:12.5px;color:var(--muted);margin:6px 0 0;background:var(--field);border:1px solid var(--line);border-radius:7px;padding:7px 10px}
+#protoNote.show{display:block}
+#protoNote a{cursor:pointer;color:var(--navy);font-weight:600;text-decoration:underline}
+#txSuggest{display:none;margin:0 0 10px;padding:8px 10px;background:var(--field);border:1px solid var(--line);border-radius:8px}
+#txSuggest.show{display:block}
+#txSuggest .ts-label{font-size:12px;color:var(--muted);margin:0 0 6px}
+#txSuggest .ts-chip{font:inherit;font-size:12.5px;background:var(--white);border:1px solid var(--line);border-radius:999px;padding:5px 10px;margin:0 6px 6px 0;cursor:pointer}
+#txSuggest .ts-chip[aria-pressed="true"]{background:var(--green);color:#fff;border-color:var(--green)}
 </style>
 </head>
 <body>
 <header><div class="hwrap">
   <h1>SOAP Narrative Builder</h1>
-  <p>Rhode Island EMS protocols · Protocol reference v2026.1 · Last reviewed September 2026. Check what applies, fill the blanks, generate.</p>
+  <p>Rhode Island EMS protocols · Protocol reference v2026.02 · Last reviewed October 2026. Check what applies, fill the blanks, generate.</p>
   <div class="ctrl">
     <select id="style"><option value="full">Full sentences</option><option value="terse">Terse charting</option></select>
     <select id="hdrs"><option value="1">SOAP headers on</option><option value="0">Headers off</option></select>
+    <button id="guided" type="button" title="Step through Patient, History, Exam, Treatment, Review one at a time">Guided mode: off</button>
+    <button id="protoLibBtn" type="button" title="Search RI EMS protocol summaries">Protocol reference</button>
     <button id="theme">Dark mode</button>
   </div>
 </div></header>
 <nav id="secnav" aria-label="Section navigation"></nav>
 <div id="sumbar" aria-live="polite"></div>
+<div id="wizardbar"><button id="wizBack" type="button">&larr; Back</button><span id="wizLabel"></span><button id="wizNext" type="button">Next &rarr;</button></div>
 <main id="app" aria-describedby="orientation"></main>
 <p id="orientation" class="hint" style="max-width:832px;margin:10px auto;padding:0 14px">First use: select a complaint, record what was actually assessed (including reassessment vitals), choose a disposition, then review the audit before copying. Blank fields remain blank; this tool does not infer care.</p>
 <div class="bar">
-  <button id="clear" title="Clear all fields">Clear all</button>
+  <button id="clear" title="Start a new patient (clears all fields)">New patient</button>
   <button id="gen" class="primary" title="Generate narrative (Ctrl/Cmd+Enter)">Generate narrative</button>
   <button id="copy" title="Copy narrative (Ctrl/Cmd+Shift+C)" disabled>Copy</button>
   <button id="print" title="Print / export PDF">Print / export PDF</button>
@@ -163,10 +209,12 @@ button[disabled]{opacity:.5;cursor:not-allowed}
 <h2>Review</h2>
 <div id="readystate" class="readystate" style="display:none"></div>
 <div id="flags" aria-live="polite"><h2>QA audit: required, recommended, or not applicable</h2><div id="flaggroups"></div></div>
-<div id="out"><p id="printstamp"></p><h2>Narrative</h2><div id="narr"></div><div style="margin-top:12px;display:flex;gap:10px"><button id="copy2" class="add" style="flex:1;padding:12px;font-weight:600;background:var(--navy);color:#fff;border-color:var(--navy)" disabled>Copy narrative</button><button id="top" class="add" style="padding:12px">Back to top</button></div></div>
+<div id="out"><p id="printstamp"></p><h2>Narrative</h2><div id="staleBanner" role="status"><span>&#9888; Changes since last generation &mdash; update before copying or printing.</span><button type="button" id="staleUpdate">Update narrative</button></div><div id="narr"></div><div style="margin-top:12px;display:flex;gap:10px"><button id="copy2" class="add" style="flex:1;padding:12px;font-weight:600;background:var(--navy);color:#fff;border-color:var(--navy)" disabled>Copy narrative</button><button id="top" class="add" style="padding:12px">Back to top</button></div></div>
 </div></section>
 <div id="ov"><div id="dlg"><p id="dlgmsg"></p><input type="text" id="dlgin" style="display:none"><div class="b"><button id="dlgno">Cancel</button><button id="dlgok" class="p">OK</button></div></div></div>
+<div id="protoOv"><div id="protoDlg"><h2>RI EMS protocol reference</h2><input type="text" id="protoSearch" placeholder="Search protocols, indications, treatments…"><div id="protoList"></div><div class="b"><button id="protoClose" type="button">Close</button></div></div></div>
 <div id="toast" role="status" aria-live="polite">Copied</div>
+<div id="stickybar"><button id="stickyReview" type="button">Review narrative</button><button id="stickyCopy" type="button" class="primary" disabled>Copy narrative</button></div>
 
 <script>
 // =====================================================================
@@ -286,7 +334,7 @@ const DOSES = {
 // =====================================================================
 const sel=(id,opts,blank)=>`<select id="${id}">${blank?'<option value="">Not documented</option>':''}${opts.map(o=>`<option>${o}</option>`).join("")}</select>`;
 const chips=(id,opts)=>`<div class="chips" data-group="${id}">${opts.map(o=>`<label><input type="checkbox" value="${o}">${o}</label>`).join("")}<label><input type="checkbox" value="__other">other</label></div><div class="other" id="${id}_o"><input type="text" id="${id}_t" placeholder="Add your own wording"></div>`;
-const tri=(id,opts)=>`<div class="chips tri" data-tri="${id}" data-group="${id}" role="group" aria-label="Associated symptoms">${opts.map((o,i)=>`<button type="button" data-state="" data-v="${o}" aria-pressed="false" aria-label="${o}: not documented" tabindex="${i===0?0:-1}">${o}</button>`).join("")}</div>`;
+const tri=(id,opts)=>`<div class="chips tri" data-tri="${id}" data-group="${id}" role="group" aria-label="Associated symptoms"><input type="text" class="chipsearch" id="${id}_search" placeholder="Search symptoms&hellip;" style="display:none"><div class="tri-list" data-tri-list="${id}">${opts.map(o=>`<div class="tri-item" data-v="${o}"><span class="tri-label">${o}</span><span class="tri-btns" role="group" aria-label="${o} status"><button type="button" data-state="admits" aria-pressed="false">Present</button><button type="button" data-state="denies" aria-pressed="false">Denied</button><button type="button" data-state="" aria-pressed="true">N/D</button></span></div>`).join("")}</div></div>`;
 const VH='<div class="vh"><span>Time</span><span>BP</span><span>HR</span><span>RR</span><span>SpO2</span><span>EtCO2</span><span>BGL</span><span>Temp</span><span>Pain</span><span>GCS</span><span></span></div>';
 
 const sections=[
@@ -304,7 +352,8 @@ const sections=[
    <div><label class="f">Outcome</label><select id="outcome"><option value="transport">Transported</option><option value="refusal">Refusal / no transport</option><option value="nopt">No patient contact / cancelled</option></select></div>
   </div>
   <div class="other" id="cc_o"><input type="text" id="cc_t" placeholder="Describe chief complaint"></div>
-  <p class="hint" id="pedsnote"></p>`},
+  <p class="hint" id="pedsnote"></p>
+  <p id="essentialsMsg"></p>`},
  {tag:"S",title:"Subjective",html:`
   <fieldset><legend>History source</legend>${chips("src",D.src)}</fieldset>
   <fieldset><legend>OPQRST</legend>
@@ -353,8 +402,10 @@ const sections=[
   <div class="other" id="imp1_o"><input type="text" id="imp1_t" placeholder="Describe impression"></div>
   <div style="margin-top:10px"><label class="f">RI protocol followed</label>${sel("proto",D.proto,true)}</div>
   <div class="other" id="proto_o"><input type="text" id="proto_t" placeholder="Protocol name"></div>
+  <p id="protoNote"></p>
   <fieldset style="margin-top:12px"><legend>Clinical reasoning (your words)</legend><textarea id="a_t" placeholder="Why this impression, what was ruled in or out, differentials considered"></textarea></fieldset>`},
  {tag:"Tx",title:"Treatment",html:`
+  <div id="txSuggest"><p class="ts-label"></p><div class="ts-chips"></div></div>
   <fieldset><legend>Interventions</legend>${chips("tx",D.tx)}</fieldset>
   <fieldset><legend>Vascular access</legend><div class="rows acc" id="accrows"></div><button type="button" class="add" id="addacc">Add IV / IO</button></fieldset>
   <fieldset><legend>Medications given</legend><div class="rows" id="medrows"></div><button type="button" class="add" id="addmed">Add medication</button>
@@ -386,7 +437,7 @@ document.querySelectorAll(".toggleSec").forEach(btn=>btn.addEventListener("click
 document.querySelectorAll(".clearSec").forEach(btn=>btn.addEventListener("click",async()=>{const sec=document.getElementById("sec-"+btn.dataset.idx);if(!(await ask(`Clear all fields in "${sec.dataset.title}"?`)))return;
   sec.querySelectorAll("input,select,textarea").forEach(e=>{if(e.type==="checkbox")e.checked=false;else if(e.tagName==="SELECT")e.selectedIndex=0;else e.value="";});
   sec.querySelectorAll(".other").forEach(e=>e.classList.remove("show"));
-  sec.querySelectorAll(".tri button").forEach(l=>{l.dataset.state="";l.setAttribute("aria-pressed","false");l.setAttribute("aria-label",l.dataset.v+": not documented");});
+  sec.querySelectorAll(".tri .tri-item").forEach(l=>setTriItemState(l,""));
   sec.querySelectorAll("#medrows .r,#accrows .r,#vitrows .r").forEach(e=>e.remove());
   if(sec.querySelector("#vitrows"))addVit();
   sec.querySelectorAll(".chips").forEach(g=>g.dataset.exp="");
@@ -398,7 +449,7 @@ document.querySelectorAll(".clearSec").forEach(btn=>btn.addEventListener("click"
 const $=id=>document.getElementById(id);
 const v=id=>($(id)?.value||"").trim();
 const picked=id=>{const a=[...document.querySelectorAll(`[data-group="${id}"] input:checked`)].map(i=>i.value).filter(x=>x!=="__other");const t=v(id+"_t");if(t)a.push(t);return a;};
-const triv=id=>{const a=[],d=[];document.querySelectorAll(`[data-tri="${id}"] button`).forEach(l=>{if(l.dataset.state==="admits")a.push(l.dataset.v);else if(l.dataset.state==="denies")d.push(l.dataset.v);});const oa=v(id+"_a"),od=v(id+"_d");if(oa)a.push(oa);if(od)d.push(od);return{a,d};};
+const triv=id=>{const a=[],d=[];document.querySelectorAll(`[data-tri="${id}"] .tri-item`).forEach(l=>{if(l.dataset.state==="admits")a.push(l.dataset.v);else if(l.dataset.state==="denies")d.push(l.dataset.v);});const oa=v(id+"_a"),od=v(id+"_d");if(oa)a.push(oa);if(od)d.push(od);return{a,d};};
 const selv=id=>{const x=v(id);return x==="Other"?v(id+"_t"):x;};
 const list=a=>a.length<2?a.join(""):a.length===2?a.join(" and "):a.slice(0,-1).join(", ")+", and "+a[a.length-1];
 const cap=s=>s?s[0].toUpperCase()+s.slice(1):s;
@@ -420,8 +471,9 @@ const say=m=>dlg(m,{cancel:false});const ask=m=>dlg(m);const askText=(m,def)=>dl
 document.querySelectorAll(".chips:not(.tri)").forEach(g=>g.addEventListener("change",()=>{const o=g.querySelector('input[value="__other"]');const box=$(g.dataset.group+"_o");if(box)box.classList.toggle("show",o.checked);}));
 ["cc","imp1","proto","dest"].forEach(id=>{const s=$(id);const f=()=>$(id+"_o").classList.toggle("show",s.value==="Other");s.addEventListener("change",f);f();});
 // tri state
-const triButtons=[...document.querySelectorAll(".tri button")];
-triButtons.forEach(l=>{l.addEventListener("click",()=>{const s=l.dataset.state;l.dataset.state=s===""?"admits":s==="admits"?"denies":"";l.setAttribute("aria-pressed",l.dataset.state!=="");l.setAttribute("aria-label",l.dataset.v+": "+(l.dataset.state||"not documented"));});l.addEventListener("keydown",e=>{const i=triButtons.indexOf(l);if(e.key==="ArrowRight"||e.key==="ArrowDown"){e.preventDefault();triButtons[(i+1)%triButtons.length].focus();}if(e.key==="ArrowLeft"||e.key==="ArrowUp"){e.preventDefault();triButtons[(i-1+triButtons.length)%triButtons.length].focus();}});});
+function setTriItemState(item,state){item.dataset.state=state;item.querySelectorAll(".tri-btns button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.state===state?"true":"false"));item.querySelector(".tri-label").setAttribute("title",item.querySelector(".tri-label").textContent+": "+(state||"not documented"));}
+document.querySelectorAll(".tri .tri-item").forEach(item=>{setTriItemState(item,"");item.querySelectorAll(".tri-btns button").forEach(btn=>btn.addEventListener("click",()=>setTriItemState(item,btn.dataset.state)));});
+document.querySelectorAll(".tri").forEach(group=>group.addEventListener("keydown",e=>{if(!["ArrowRight","ArrowLeft","ArrowDown","ArrowUp"].includes(e.key))return;const buttons=[...group.querySelectorAll(".tri-btns button")];const i=buttons.indexOf(document.activeElement);if(i<0)return;e.preventDefault();const dir=(e.key==="ArrowRight"||e.key==="ArrowDown")?1:-1;buttons[(i+dir+buttons.length)%buttons.length].focus();}));
 // outcome toggles refusal wizard / transport
 const outcomeUI=()=>{const o=v("outcome");$("refusal").style.display=o==="refusal"?"block":"none";$("transport").style.display=o==="transport"?"block":"none";$("noptDetails").style.display=o==="nopt"?"block":"none";};
 $("outcome").addEventListener("change",outcomeUI);outcomeUI();
@@ -441,19 +493,37 @@ function applyLayout(){
     const id=g.dataset.group, p=pri[id]||(recent[id]&&recent[id].length?recent[id]:null), labels=[...g.querySelectorAll("label")];
     // reorder: priority first
     if(p){const rank=x=>{const i=p.indexOf(labelVal(x));return i<0?999:i;};labels.slice().sort((a,b)=>rank(a)-rank(b)).forEach(l=>g.appendChild(l));}
+    const all=[...g.querySelectorAll("label")];
+    const searchable=all.filter(l=>labelVal(l)!=="__other").length>14;
+    let search=g.parentElement.querySelector(`.chipsearch[data-for="${id}"]`);
+    if(searchable&&!search){search=document.createElement("input");search.type="text";search.className="chipsearch";search.dataset.for=id;search.placeholder="Search…";search.addEventListener("input",applyLayout);g.before(search);}
+    if(search)search.style.display=searchable?"block":"none";
+    const q=(searchable&&search?search.value:"").trim().toLowerCase();
     let btn=g.parentElement.querySelector(`.more[data-for="${id}"]`);
     if(!btn){btn=document.createElement("button");btn.type="button";btn.className="more";btn.dataset.for=id;btn.addEventListener("click",()=>{g.dataset.exp=g.dataset.exp==="1"?"":"1";applyLayout();});g.after(btn);}
-    const exp=g.dataset.exp==="1", all=[...g.querySelectorAll("label")];
+    const exp=g.dataset.exp==="1";
     const limit=p?p.length:10; let hidden=0;
     all.forEach((l,i)=>{const val=labelVal(l), isOther=val==="__other";
       let show=true;
-      if(!exp&&!isOther&&!labelChecked(l)){const pos=p?p.indexOf(val):i;show=p?pos>=0:i<limit;}
+      if(q){show=isOther?false:(val.toLowerCase().includes(q)||labelChecked(l));}
+      else if(!exp&&!isOther&&!labelChecked(l)){const pos=p?p.indexOf(val):i;show=p?pos>=0:i<limit;}
       if(!show)hidden++;l.classList.toggle("hide",!show);});
-    btn.style.display=(hidden===0&&!exp)?"none":"inline-block";
-    btn.textContent=exp?"Show fewer":`Show all (${hidden} more)`;
+    btn.style.display=(q||(hidden===0&&!exp))?"none":"inline-block";
+    if(!q)btn.textContent=exp?"Show fewer":`Show all (${hidden} more)`;
   });
   updateChipSummaries();
+  syncTxSuggestState();
 }
+function syncTxSuggestState(){document.querySelectorAll("#txSuggest .ts-chip").forEach(btn=>{
+  const box=document.querySelector(`.chips[data-group="tx"] input[value="${CSS.escape(btn.dataset.tx)}"]`);
+  btn.setAttribute("aria-pressed",box&&box.checked?"true":"false");});}
+function triSearchWire(){document.querySelectorAll('[data-tri-list]').forEach(list=>{
+  const id=list.dataset.triList,total=list.querySelectorAll(".tri-item").length,box=$(id+"_search");
+  if(!box)return;box.style.display=total>14?"block":"none";
+  if(box.dataset.wired)return;box.dataset.wired="1";
+  box.addEventListener("input",()=>{const q=box.value.trim().toLowerCase();
+    list.querySelectorAll(".tri-item").forEach(item=>{const val=item.dataset.v.toLowerCase();const active=item.dataset.state;item.classList.toggle("hide",!(!q||val.includes(q)||active));});});});}
+triSearchWire();
 function updateChipSummaries(){document.querySelectorAll(".chips:not(.tri)").forEach(g=>{
   const id=g.dataset.group,checked=[...g.querySelectorAll("input:checked")].map(i=>i.value).filter(x=>x!=="__other");
   let sumEl=g.parentElement.querySelector(`.chip-summary[data-for="${id}"]`);
@@ -529,15 +599,16 @@ function capture(){const p={cc:v("cc"),found:v("found"),outcome:v("outcome"),tri
   return p;}
 function clearForm(){document.querySelectorAll("input,select,textarea").forEach(e=>{if(e.type==="checkbox")e.checked=false;else if(e.tagName==="SELECT")e.selectedIndex=0;else e.value="";});
   document.querySelectorAll(".other").forEach(e=>e.classList.remove("show"));
-  document.querySelectorAll(".tri button").forEach(l=>{l.dataset.state="";l.setAttribute("aria-pressed","false");l.setAttribute("aria-label",l.dataset.v+": not documented");});
+  document.querySelectorAll(".tri .tri-item").forEach(l=>setTriItemState(l,""));
   document.querySelectorAll("#medrows .r,#accrows .r,#vitrows .r").forEach(e=>e.remove());addVit();
   document.querySelectorAll(".chips").forEach(g=>g.dataset.exp="");
-  $("flags").style.display="none";$("out").style.display="none";$("copy").disabled=true;$("copy2").disabled=true;$("gen").textContent="Generate narrative";$("readystate").style.display="none";outcomeUI();pedsUI();lamsUI();applyLayout();updateChipSummaries();store.set("soap_draft",null);updateSummary();updateNavState();}
+  ["age","sex","cc"].forEach(id=>$(id).classList.remove("fieldErr"));$("essentialsMsg").style.display="none";
+  $("flags").style.display="none";$("out").style.display="none";$("copy").disabled=true;$("copy2").disabled=true;$("stickyCopy").disabled=true;$("gen").textContent="Generate narrative";$("readystate").style.display="none";lastSnapshot=null;$("staleBanner").classList.remove("show");outcomeUI();pedsUI();lamsUI();applyLayout();updateChipSummaries();store.set("soap_draft",null);updateSummary();updateNavState();}
 function apply(p){clearForm();
   $("cc").value=p.cc||"";$("found").value=p.found||"";$("outcome").value=p.outcome||"transport";
   Object.entries(p.chips||{}).forEach(([g,arr])=>arr.forEach(val=>{const i=document.querySelector(`[data-group="${g}"] input[value="${CSS.escape(val)}"]`);if(i)i.checked=true;}));
-  (p.tri?.a||[]).forEach(val=>{const l=document.querySelector(`[data-tri="sx"] button[data-v="${CSS.escape(val)}"]`);if(l){l.dataset.state="admits";l.setAttribute("aria-pressed","true");l.setAttribute("aria-label",val+": admits");}});
-  (p.tri?.d||[]).forEach(val=>{const l=document.querySelector(`[data-tri="sx"] button[data-v="${CSS.escape(val)}"]`);if(l){l.dataset.state="denies";l.setAttribute("aria-pressed","true");l.setAttribute("aria-label",val+": denies");}});
+  (p.tri?.a||[]).forEach(val=>{const l=document.querySelector(`[data-tri="sx"] .tri-item[data-v="${CSS.escape(val)}"]`);if(l)setTriItemState(l,"admits");});
+  (p.tri?.d||[]).forEach(val=>{const l=document.querySelector(`[data-tri="sx"] .tri-item[data-v="${CSS.escape(val)}"]`);if(l)setTriItemState(l,"denies");});
   Object.entries(p.fields||{}).forEach(([id,val])=>{if($(id))$(id).value=val;});
   (p.meds||[]).forEach(addMed);(p.acc||[]).forEach(addAcc);
   ["cc","imp1","proto","dest"].forEach(id=>$(id).dispatchEvent(new Event("change")));
@@ -547,17 +618,15 @@ function apply(p){clearForm();
 // NARRATIVE
 // =====================================================================
 function vitStr(x){const o=[];if(x.bp)o.push("BP "+x.bp);if(x.hr)o.push("HR "+x.hr);if(x.rr)o.push("RR "+x.rr);if(x.spo2)o.push("SpO2 "+x.spo2+"%");if(x.etco2)o.push("EtCO2 "+x.etco2);if(x.bgl)o.push("BGL "+x.bgl);if(x.temp)o.push("Temp "+x.temp);if(x.pain)o.push("pain "+x.pain+"/10");if(x.gcs)o.push("GCS "+x.gcs);return o.join(", ");}
-function build(){
+function computeSOAP(){
   const age=v("age"),ageu=v("ageu"),sex=v("sex"),cc=selv("cc")||"unspecified complaint",outcome=v("outcome");
   const ageTxt=age?`${age}-year-old`:"";
   const pt=[ageTxt,sex||"patient"].filter(Boolean).join(" ");
   const S=[],O=[],A=[],P=[];
-  const style=v("style"),hdr=v("hdrs")==="1";
   if(outcome==="nopt"){
     const nd=v("nopt_t");
     const disposition=nd?`No patient contact or transport occurred. Dispatch/disposition note: ${end(nd)}`:"No patient contact or transport occurred; specific cancellation/no-contact details not documented.";
-    const text=style==="terse"?terse(disposition):disposition;
-    return hdr?`P:\n${text}`:text;
+    return{nopt:true,noptText:disposition,S,O,A,P};
   }
   let intro=`Patient is a ${pt} ${/lift assist|interfacility/i.test(cc)?"requesting "+cc.toLowerCase():"complaining of "+cc.toLowerCase()}`;
   const found=v("found");if(found)intro+=`, found ${found}`;S.push(end(intro));
@@ -618,10 +687,28 @@ function build(){
     if(left)P.push(`Patient left ${left}${vr.length?" with vital signs within acceptable limits as documented":""}.`);
   } else {const nd=v("nopt_t");P.push(nd?`No patient contact or transport occurred. Dispatch/disposition note: ${end(nd)}`:"No patient contact or transport occurred; specific cancellation/no-contact details not documented.");}
   const pt2=v("p_t");if(pt2)P.push(end(pt2));
+  return{nopt:false,S,O,A,P};
+}
+function build(){
+  const r=computeSOAP(),style=v("style"),hdr=v("hdrs")==="1";
+  if(r.nopt){const text=style==="terse"?terse(r.noptText):r.noptText;return hdr?`P:\n${text}`:text;}
   const fmt=a=>{let t=a.length?a.join(" "):"No findings documented.";if(style==="terse")t=terse(t);return t;};
   const blk=(h,a)=>(hdr?h+":\n":"")+fmt(a);
-  return [blk("S",S),blk("O",O),blk("A",A),blk("P",P)].join("\n\n");
+  return [blk("S",r.S),blk("O",r.O),blk("A",r.A),blk("P",r.P)].join("\n\n");
 }
+const escapeHTML=s=>s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function buildBlocksHTML(){
+  const r=computeSOAP(),style=v("style");
+  const fmt=a=>{let t=a.length?a.join(" "):"No findings documented.";if(style==="terse")t=terse(t);return t;};
+  if(r.nopt){const text=style==="terse"?terse(r.noptText):r.noptText;return `<div class="soap-block"><span class="soap-tag">P</span><div class="soap-text">${escapeHTML(text)}</div></div>`;}
+  return[["S","Subjective"],["O","Objective"],["A","Assessment"],["P","Plan"]].map(([k])=>`<div class="soap-block"><span class="soap-tag">${k}</span><div class="soap-text">${escapeHTML(fmt(r[k]))}</div></div>`).join("");
+}
+let lastNarrativeText="",lastSnapshot=null;
+function isStale(){return lastSnapshot!==null&&JSON.stringify(serializeForm())!==lastSnapshot;}
+function updateStaleUI(){const stale=isStale();$("staleBanner").classList.toggle("show",stale);
+  const hasOutput=$("out").style.display==="block";
+  $("copy").disabled=!hasOutput||stale;$("copy2").disabled=!hasOutput||stale;$("stickyCopy").disabled=!hasOutput||stale;}
+function renderNarrative(){lastNarrativeText=build();$("narr").innerHTML=buildBlocksHTML();lastSnapshot=JSON.stringify(serializeForm());updateStaleUI();}
 function terse(t){return t.replace(/\bPatient is a /g,"Pt is a ").replace(/\bPatient\b/g,"Pt").replace(/\bpatient\b/g,"pt").replace(/complaining of/g,"c/o").replace(/reports associated/g,"+").replace(/History obtained from/g,"Hx per").replace(/Prior to EMS arrival, /g,"PTA ").replace(/following treatment/g,"post tx").replace(/Care provided per Rhode Island EMS /g,"Per RI EMS ").replace(/ protocol\./g," protocol.").replace(/Care transferred to/g,"Care transferred to").replace(/no change in patient condition noted at time of transfer/g,"no change in pt condition at transfer").replace(/Field impression:/g,"Impression:").replace(/with report given/g,"w/ report").replace(/, and /g,", ").replace(/ and /g," & ").replace(/described as/g,"desc").replace(/duration approximately/g,"duration ~").replace(/Interventions:/g,"Tx:").replace(/\. /g,"; ").replace(/\.$/,"");}
 
 // =====================================================================
@@ -635,6 +722,96 @@ function doseCheck(m){const d=DOSES[m.drug];if(!d)return null;const dose=parseFl
     const lo2=+(lo*wt).toFixed(2),hi2=Math.min(+(hi*wt).toFixed(2),maxT);if(dose<lo2*0.9||dose>hi2*1.1)return `${m.drug} ${dose} ${unit} is outside the usual pediatric range for ${wt} kg (${lo2} to ${hi2} ${unit}, max ${maxT} ${unit}).`;return null;}
   const [lo,hi,unit]=d.adult;if(m.unit!==unit)return `${m.drug}: dose entered in ${m.unit}, expected ${unit}.`;
   if(dose<lo*0.9||dose>hi*1.1)return `${m.drug} ${dose} ${unit} is outside the usual adult range (${lo===hi?lo:lo+" to "+hi} ${unit}).`;return null;}
+// complaint/impression keyword -> protocols from D.proto that are consistent with it,
+// used to flag a selected protocol that doesn't match the documented complaint.
+const PROTO_MATCH=[
+ [/stemi/,["STEMI"]],
+ [/chest pain|coronary/,["Chest Pain / Acute Coronary Syndrome","STEMI"]],
+ [/chf|pulmonary edema/,["CHF / Pulmonary Edema"]],
+ [/copd|asthma|bronchospasm|wheez/,["Bronchospasm","Respiratory Distress"]],
+ [/shortness of breath|respiratory|pneumonia|pulmonary/,["Respiratory Distress","Bronchospasm","CHF / Pulmonary Edema"]],
+ [/stroke|tia|cva/,["Stroke"]],
+ [/seizure/,["Seizures"]],
+ [/behavioral|psychiatric/,["Behavioral Emergencies"]],
+ [/altered|weakness|syncope|intoxication/,["Altered Mental Status"]],
+ [/diabetic|hypoglyc|hyperglyc/,["Hypoglycemia / Hyperglycemia"]],
+ [/cardiac arrest/,["Cardiac Arrest"]],
+ [/bradycardia/,["Bradycardia"]],
+ [/tachycardia/,["Tachycardia"]],
+ [/overdose|poison|opioid/,["Overdose / Poisoning"]],
+ [/allergic|anaphylaxis/,["Anaphylaxis / Allergic Reaction"]],
+ [/burn/,["Burns"]],
+ [/head injury|traumatic brain/,["Traumatic Brain Injury"]],
+ [/hemorrhage|bleed control/,["Hemorrhage Control"]],
+ [/fall|motor vehicle|assault|trauma|injury|fracture|extremity|back pain/,["Trauma / Spinal Motion Restriction","Traumatic Brain Injury","Hemorrhage Control"]],
+ [/abdominal|nausea|vomiting/,["Nausea / Vomiting"]],
+ [/sepsis|fever/,["Sepsis"]],
+];
+// =====================================================================
+// PROTOCOL REFERENCE LIBRARY
+// Short, non-dosing summaries per RI EMS protocol: indications, key
+// treatments (also used to drive treatment-chip suggestions), and
+// contraindications/cautions. Not a substitute for the official protocol.
+// =====================================================================
+const PROTO_INFO={
+ "Routine Patient Care":{indications:"Baseline assessment and monitoring for any patient without a more specific protocol.",tx:["Scene safety and BSI","Primary and secondary assessment","Continuous reassessment"],caution:"Escalate to a specific protocol as soon as one applies."},
+ "Chest Pain / Acute Coronary Syndrome":{indications:"Chest pain or anginal equivalent suspicious for cardiac ischemia.",tx:["Cardiac monitor applied","12 lead ECG obtained and transmitted","IV access established","Aspirin administered","Nitroglycerin administered","Oxygen via nasal cannula"],caution:"Withhold aspirin if allergy or active bleeding; withhold nitroglycerin if hypotensive, right-sided MI, or recent ED medication use."},
+ "STEMI":{indications:"12 lead ECG meets STEMI criteria.",tx:["12 lead ECG obtained and transmitted","Serial 12 leads obtained","STEMI alert called","IV access established","Aspirin administered","Nitroglycerin administered"],caution:"Minimize scene time; transport to a PCI capable facility."},
+ "Respiratory Distress":{indications:"Dyspnea not clearly bronchospastic (e.g., pulmonary, cardiac, or unclear etiology).",tx:["Oxygen via nasal cannula","Oxygen via non rebreather","CPAP applied","Cardiac monitor applied","IV access established"],caution:"Use CPAP cautiously with hypotension, vomiting, or altered mental status."},
+ "Bronchospasm":{indications:"Wheezing/bronchospasm consistent with asthma or COPD exacerbation.",tx:["Albuterol nebulizer","Ipratropium nebulizer","Oxygen via nasal cannula","Cardiac monitor applied"],caution:"Monitor heart rate with repeated nebulized beta agonists, especially in cardiac patients."},
+ "CHF / Pulmonary Edema":{indications:"Signs of acute decompensated heart failure (JVD, rales, pedal edema, orthopnea).",tx:["CPAP applied","Nitroglycerin administered","Oxygen via nasal cannula","Cardiac monitor applied","12 lead ECG obtained and transmitted"],caution:"Withhold nitroglycerin if hypotensive; caution with concurrent PDE5 inhibitor use."},
+ "Stroke":{indications:"Acute focal neuro deficit or positive stroke screen within the treatment window.",tx:["Stroke alert called","Blood glucose obtained","Cardiac monitor applied","IV access established","Oxygen via nasal cannula"],caution:"Establish last known well time; rule out hypoglycemia as a stroke mimic."},
+ "Seizures":{indications:"Active or recently active seizure activity.",tx:["Midazolam administered","Blood glucose obtained","Suctioning performed","OPA/NPA inserted","Oxygen via nasal cannula","IV access established"],caution:"Monitor airway and respiratory status closely after benzodiazepine administration."},
+ "Altered Mental Status":{indications:"Decreased or altered level of consciousness without a more specific cause identified.",tx:["Blood glucose obtained","Naloxone administered","Cardiac monitor applied","IV access established","Oxygen via nasal cannula"],caution:"Consider and rule out hypoglycemia, opioid toxicity, and stroke."},
+ "Hypoglycemia / Hyperglycemia":{indications:"Blood glucose outside normal range with symptoms consistent with it.",tx:["Blood glucose obtained","Dextrose administered","Glucagon administered","IV access established"],caution:"Reassess blood glucose and mental status after treatment; glucagon if no IV access."},
+ "Cardiac Arrest":{indications:"Pulseless, apneic patient.",tx:["CPR initiated","Defibrillation","IO access established","Epinephrine IM","Airway management"],caution:"Minimize interruptions to compressions; confirm resuscitation/DNR status early."},
+ "Bradycardia":{indications:"Symptomatic bradycardia with hypotension, altered mental status, or signs of poor perfusion.",tx:["Cardiac monitor applied","12 lead ECG obtained and transmitted","Pacing","IV access established"],caution:"Treat the symptomatic patient, not the number alone."},
+ "Tachycardia":{indications:"Symptomatic tachycardia with hypotension, altered mental status, or signs of poor perfusion.",tx:["Cardiac monitor applied","12 lead ECG obtained and transmitted","Cardioversion","Adenosine administered","IV access established"],caution:"Distinguish stable vs unstable; confirm rhythm before cardioversion/antiarrhythmics."},
+ "Anaphylaxis / Allergic Reaction":{indications:"Allergic reaction with airway, breathing, or circulatory involvement.",tx:["Epinephrine IM","Oxygen via nasal cannula","Diphenhydramine administered","IV access established","Albuterol nebulizer"],caution:"Epinephrine is first-line for anaphylaxis; do not delay it for antihistamines."},
+ "Overdose / Poisoning":{indications:"Suspected toxic ingestion/exposure or opioid overdose with respiratory depression.",tx:["Naloxone administered","Oxygen via nasal cannula","IV access established","Cardiac monitor applied"],caution:"Titrate naloxone to adequate respirations, not full arousal, to reduce withdrawal/agitation."},
+ "Pain Management":{indications:"Acute pain from a known cause without a contraindication to analgesia.",tx:["Fentanyl administered","IV access established","Cardiac monitor applied"],caution:"Monitor for hypotension/respiratory depression; use caution with hemodynamic instability."},
+ "Nausea / Vomiting":{indications:"Nausea/vomiting, isolated or associated with another complaint.",tx:["Ondansetron administered","IV access established"],caution:"Treat the underlying cause as indicated by the primary complaint."},
+ "Trauma / Spinal Motion Restriction":{indications:"Mechanism or exam findings concerning for spinal injury.",tx:["Spinal motion restriction","Primary and secondary assessment","IV access established"],caution:"Selective spinal motion restriction per exam criteria; avoid unnecessary restriction."},
+ "Traumatic Brain Injury":{indications:"Head injury with altered mental status or concerning mechanism/exam.",tx:["Oxygen via nasal cannula","Spinal motion restriction","Blood glucose obtained","Cardiac monitor applied"],caution:"Avoid hypoxia and hypotension, which worsen secondary brain injury; monitor GCS trend."},
+ "Hemorrhage Control":{indications:"Significant external bleeding.",tx:["Direct pressure applied","Tourniquet applied","Wound dressed and bandaged","IV access established"],caution:"Apply a tourniquet early for life-threatening extremity hemorrhage; note application time."},
+ "Burns":{indications:"Thermal, chemical, or electrical burn injury.",tx:["Cooling measures","Wound dressed and bandaged","IV access established","Oxygen via nasal cannula"],caution:"Stop the burning process first; avoid over-cooling large body surface area burns (hypothermia risk)."},
+ "Behavioral Emergencies":{indications:"Behavioral/psychiatric emergency with safety concerns.",tx:["Restraints applied","Blood glucose obtained","Continuous reassessment"],caution:"Rule out medical causes of altered behavior; use restraint only per policy, with documented justification."},
+ "Sepsis":{indications:"Suspected infection with signs of systemic compromise (e.g., fever, tachycardia, hypotension).",tx:["IV access established","Normal saline bolus","Oxygen via nasal cannula","Cardiac monitor applied"],caution:"Identify and document suspected source; call ahead if sepsis criteria are met."},
+ "Refusal of Care":{indications:"Patient with capacity declines evaluation and/or transport.",tx:["Primary and secondary assessment"],caution:"Confirm and document decision-making capacity, risks explained, and alternatives offered before accepting a refusal."},
+ "Other":{indications:"No listed protocol applies; describe the situation and care provided in your own words.",tx:[],caution:"Document the clinical rationale clearly since no specific protocol is referenced."},
+};
+function renderProtoLibrary(filter){
+  const q=(filter||"").trim().toLowerCase();
+  const html=D.proto.map(name=>{
+    const info=PROTO_INFO[name];if(!info)return "";
+    const hay=(name+" "+info.indications+" "+info.tx.join(" ")+" "+info.caution).toLowerCase();
+    if(q&&!hay.includes(q))return "";
+    return `<div class="proto-card"><h3>${escapeHTML(name)}</h3><p><span class="pc-label">Indications: </span>${escapeHTML(info.indications)}</p>${info.tx.length?`<p><span class="pc-label">Typical treatments: </span>${escapeHTML(info.tx.join(", "))}</p>`:""}<p><span class="pc-label">Caution: </span>${escapeHTML(info.caution)}</p></div>`;
+  }).join("");
+  $("protoList").innerHTML=html||`<p class="hint">No protocols match "${escapeHTML(filter)}".</p>`;
+}
+$("protoLibBtn").onclick=()=>{$("protoSearch").value="";renderProtoLibrary("");$("protoOv").classList.add("show");setTimeout(()=>$("protoSearch").focus(),50);};
+$("protoClose").onclick=()=>$("protoOv").classList.remove("show");
+$("protoSearch").addEventListener("input",()=>renderProtoLibrary($("protoSearch").value));
+function updateProtoUI(){
+  const name=selv("proto"),info=name&&PROTO_INFO[name];
+  const note=$("protoNote");
+  if(info){note.innerHTML=`<span class="pc-label">${escapeHTML(name)}: </span>${escapeHTML(info.indications)} <span class="pc-label">Caution:</span> ${escapeHTML(info.caution)} <a id="protoNoteLink">Full reference</a>`;note.classList.add("show");
+    const link=document.getElementById("protoNoteLink");if(link)link.onclick=()=>{$("protoSearch").value=name;renderProtoLibrary(name);$("protoOv").classList.add("show");};
+  }else{note.classList.remove("show");note.innerHTML="";}
+  const sug=$("txSuggest"),label=sug.querySelector(".ts-label"),wrap=sug.querySelector(".ts-chips");
+  const suggestions=(info&&info.tx||[]).filter(t=>D.tx.includes(t));
+  if(!suggestions.length){sug.classList.remove("show");wrap.innerHTML="";return;}
+  label.textContent=`Suggested treatments for ${name} (based on the protocol reference):`;
+  wrap.innerHTML=suggestions.map(t=>{const box=document.querySelector(`.chips[data-group="tx"] input[value="${CSS.escape(t)}"]`);const pressed=box&&box.checked?"true":"false";return `<button type="button" class="ts-chip" data-tx="${escapeHTML(t)}" aria-pressed="${pressed}">${escapeHTML(t)}</button>`;}).join("");
+  sug.classList.add("show");
+}
+document.querySelector("#txSuggest").addEventListener("click",e=>{
+  const btn=e.target.closest(".ts-chip");if(!btn)return;
+  const box=document.querySelector(`.chips[data-group="tx"] input[value="${CSS.escape(btn.dataset.tx)}"]`);
+  if(!box)return;box.checked=!box.checked;box.dispatchEvent(new Event("change",{bubbles:true}));btn.setAttribute("aria-pressed",box.checked?"true":"false");applyLayout();
+});
+$("proto").addEventListener("change",updateProtoUI);
 function check(){
   const f=[],dose=[];
   const cc=(selv("cc")||"").toLowerCase(),imp=((selv("imp1")||"")+" "+v("imp2")).toLowerCase(),ctx=cc+" "+imp,outcome=v("outcome");
@@ -649,6 +826,13 @@ function check(){
   if(!picked("skin").length)f.push("Skin findings");
   if(!selv("imp1"))f.push("Primary field impression");
   if(!selv("proto"))f.push("RI protocol followed");
+  else{
+    const protoSel=selv("proto");
+    if(!["Routine Patient Care","Refusal of Care","Other"].includes(protoSel)){
+      const match=PROTO_MATCH.find(([re])=>re.test(ctx));
+      if(match&&!match[1].includes(protoSel))f.push(`Protocol followed ("${protoSel}") doesn't match the chief complaint / impression — expected ${match[1].join(" or ")}`);
+    }
+  }
   if(!picked("src").length)f.push("Who provided the history");
   if(!sxAll.length)f.push("Associated symptoms admitted or denied");
   if(!picked("events").length&&!v("onset")&&!v("s_t"))f.push("Events leading up to the call");
@@ -760,7 +944,7 @@ function check(){
   if(any(/sepsis|fever/)){if(!v0.temp)f.push("Temperature");if(!v0.etco2)f.push("EtCO2");if(!/infection|uti|pneumonia|wound|source/i.test(v("s_t")+v("a_t")))f.push("Suspected source of infection");}
   return{f,dose};
 }
-const REQUIRED_RE=/^Sex$|initial|primary|destination|capacity|risk|transport|signature|contact|vital|medication|dose|route|access|ECG|GCS|LAMS|airway|lung|blood glucose|mechanism/i;
+const REQUIRED_RE=/^Sex$|initial|primary|destination|capacity|risk|transport|signature|contact|vital|medication|dose|route|access|ECG|GCS|LAMS|airway|lung|blood glucose|mechanism|protocol/i;
 // message keyword -> field/group selector, used for "go to field" links and section warning badges (added)
 const FIELD_MAP=[
  [/full set of initial vitals|EtCO2|blood glucose|temperature|GCS|reassessment/i,"#vitrows"],
@@ -834,17 +1018,30 @@ function showFlags(){const {f,dose}=check(),box=$("flags"),wrap=$("flaggroups"),
 // ACTIONS
 // =====================================================================
 const toast=m=>{const s=$("toast");s.textContent=m;s.style.display="block";setTimeout(()=>s.style.display="none",1400);};
-$("gen").onclick=()=>{if(!v("age")){say("Patient age is required.");$("age").focus();return;}if(!v("sex")){say("Sex is required.");$("sex").focus();return;}if(!v("cc")){say("Chief complaint is required.");$("cc").focus();return;}showFlags();$("narr").textContent=build();$("out").style.display="block";$("copy").disabled=false;$("copy2").disabled=false;$("gen").textContent="Update narrative";updateSummary();$("flags").scrollIntoView?.({behavior:"smooth"});};
-const doCopy=async()=>{const t=$("narr").textContent||build();let ok=false;try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(t);ok=true;}}catch(e){}if(!ok)try{const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();ok=document.execCommand("copy");ta.remove();}catch(e){}if(ok)toast("Copied");else storageNotice("Copy failed. Select the narrative and copy it manually.");};
-$("copy").onclick=doCopy;$("copy2").onclick=doCopy;$("top").onclick=()=>window.scrollTo({top:0,behavior:"smooth"});
-$("print").onclick=()=>{if(!$("narr").textContent){$("narr").textContent=build();$("out").style.display="block";$("copy").disabled=false;$("copy2").disabled=false;$("gen").textContent="Update narrative";}$("printstamp").textContent=`Generated ${new Date().toLocaleString()} • SOAP Narrative Builder, RI EMS protocol reference v2026.1`;window.print();};
-$("clear").onclick=async()=>{if(await ask("Clear everything?")){clearForm();window.scrollTo({top:0});}};
-["style","hdrs"].forEach(id=>$(id).addEventListener("change",()=>{store.set("soap_"+id,v(id));if($("out").style.display==="block")$("narr").textContent=build();}));
+const ESSENTIALS=[["age","Age","needed to apply age based vital sign ranges and pediatric dosing"],["sex","Sex","used in the narrative description"],["cc","Chief complaint","drives which findings and QA checks are shown"]];
+function essentialsCheck(){const missing=ESSENTIALS.filter(([id])=>!v(id));
+  ESSENTIALS.forEach(([id])=>$(id).classList.toggle("fieldErr",missing.some(m=>m[0]===id)));
+  const box=$("essentialsMsg");
+  if(missing.length){box.style.display="block";box.innerHTML="Before generating, complete: "+missing.map(([id,label,why])=>`<strong>${label}</strong> (${why})`).join("; ")+".";}
+  else box.style.display="none";
+  return missing;}
+["age","sex","cc"].forEach(id=>$(id).addEventListener("input",essentialsCheck));$("cc").addEventListener("change",essentialsCheck);
+$("gen").onclick=()=>{const missing=essentialsCheck();if(missing.length){const sec=document.getElementById("sec-0");if(sec&&sec.classList.contains("collapsed")){sec.classList.remove("collapsed");const t=sec.querySelector(".toggleSec");if(t){t.setAttribute("aria-expanded","true");t.textContent="Collapse";}}sec?.scrollIntoView?.({behavior:"smooth",block:"start"});$(missing[0][0]).focus();return;}
+  showFlags();renderNarrative();$("out").style.display="block";$("copy").disabled=false;$("copy2").disabled=false;$("stickyCopy").disabled=false;$("gen").textContent="Update narrative";updateSummary();$("flags").scrollIntoView?.({behavior:"smooth"});};
+const doCopy=async()=>{const t=lastNarrativeText||build();let ok=false;try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(t);ok=true;}}catch(e){}if(!ok)try{const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();ok=document.execCommand("copy");ta.remove();}catch(e){}if(ok)toast("Copied");else storageNotice("Copy failed. Select the narrative and copy it manually.");};
+$("copy").onclick=doCopy;$("copy2").onclick=doCopy;$("stickyCopy").onclick=doCopy;$("top").onclick=()=>window.scrollTo({top:0,behavior:"smooth"});
+$("staleUpdate").onclick=()=>$("gen").click();
+$("stickyReview").onclick=()=>{if($("out").style.display!=="block")$("gen").click();else $("reviewSection").scrollIntoView?.({behavior:"smooth",block:"start"});};
+$("print").onclick=()=>{if($("out").style.display!=="block"){$("gen").click();if($("out").style.display!=="block")return;}
+  if(isStale()){say("The narrative is out of date. Click \"Update narrative\" to refresh it, review the changes, then print.");return;}
+  $("printstamp").textContent=`Generated ${new Date().toLocaleString()} • SOAP Narrative Builder, RI EMS protocol reference v2026.02`;window.print();};
+$("clear").onclick=async()=>{if(await ask("Start a new patient? This clears all current fields.")){clearForm();window.scrollTo({top:0});}};
+["style","hdrs"].forEach(id=>$(id).addEventListener("change",()=>{store.set("soap_"+id,v(id));if($("out").style.display==="block")renderNarrative();}));
 $("style").value=store.get("soap_style","full");$("hdrs").value=store.get("soap_hdrs","1");
 const setTheme=t=>{document.documentElement.dataset.theme=t;$("theme").textContent=t==="dark"?"Light mode":"Dark mode";store.set("soap_theme",t);};
 $("theme").onclick=()=>setTheme(document.documentElement.dataset.theme==="dark"?"light":"dark");
 setTheme(store.get("soap_theme",window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));
-applyLayout();pedsUI();
+applyLayout();pedsUI();updateProtoUI();
 
 // =====================================================================
 // SECTION NAV, SUMMARY BAR, QUICK START, DRAFT AUTOSAVE (added)
@@ -852,7 +1049,9 @@ applyLayout();pedsUI();
 const NAV_ITEMS=[...sections.map((s,i)=>({id:`sec-${i}`,label:s.title})),{id:"reviewSection",label:"Review"}];
 const touchedSections=new Set();
 function buildSecNav(){const nav=$("secnav");nav.innerHTML=NAV_ITEMS.map(it=>`<button type="button" data-target="${it.id}"><span class="dot" data-dot="${it.id}"></span>${it.label}<span class="badge" data-badge="${it.id}" style="display:none"></span></button>`).join("");
-  nav.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{const el=document.getElementById(b.dataset.target);if(!el)return;if(el.classList.contains("collapsed")){el.classList.remove("collapsed");const t=el.querySelector(".toggleSec");if(t){t.setAttribute("aria-expanded","true");t.textContent="Collapse";}}setCurrentSection(b.dataset.target);el.scrollIntoView?.({behavior:"smooth",block:"start"});}));}
+  nav.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{const el=document.getElementById(b.dataset.target);if(!el)return;if(el.classList.contains("collapsed")){el.classList.remove("collapsed");const t=el.querySelector(".toggleSec");if(t){t.setAttribute("aria-expanded","true");t.textContent="Collapse";}}
+    if(guidedMode){currentStep=NAV_ITEMS.findIndex(it=>it.id===b.dataset.target);guidedRender();}
+    setCurrentSection(b.dataset.target);el.scrollIntoView?.({behavior:"smooth",block:"start"});}));}
 function setCurrentSection(id){document.querySelectorAll("#secnav button").forEach(b=>b.classList.toggle("current",b.dataset.target===id));}
 function updateNavState(){const nav=$("secnav");if(!nav.innerHTML)return;const buckets=computeSectionBuckets();
   NAV_ITEMS.forEach(it=>{const dot=nav.querySelector(`[data-dot="${it.id}"]`),badge=nav.querySelector(`[data-badge="${it.id}"]`),btn=nav.querySelector(`[data-target="${it.id}"]`);
@@ -869,8 +1068,9 @@ function updateSummary(){const sb=$("sumbar"),age=v("age"),ageu=v("ageu"),cc=sel
   sb.innerHTML=`<span><strong>${age?age+" "+ageu:"Age not set"}</strong></span><span>${cc||"Complaint not set"}</span><span>${outLabel}</span><span>${imp1?"Impression: "+imp1:"Impression pending"}</span><span class="${warn?"swarn":""}">${warn} warning${warn===1?"":"s"}</span><span class="draft" id="draftind"></span>`;
   updateDraftIndicatorText();}
 function updateDraftIndicatorText(){const el=$("draftind");if(!el)return;const ts=store.get("soap_draft_ts",null);el.textContent=ts?`Draft saved ${new Date(ts).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}`:"";}
-document.addEventListener("input",()=>{requestAnimationFrame(()=>{updateSummary();scheduleAutosave();});});
-document.addEventListener("change",e=>{const blk=e.target.closest&&e.target.closest(".block");if(blk)touchedSections.add(blk.id);requestAnimationFrame(()=>{updateSummary();updateNavState();scheduleAutosave();});});
+document.addEventListener("input",()=>{requestAnimationFrame(()=>{updateSummary();updateStaleUI();scheduleAutosave();});});
+document.addEventListener("change",e=>{const blk=e.target.closest&&e.target.closest(".block");if(blk)touchedSections.add(blk.id);requestAnimationFrame(()=>{updateSummary();updateNavState();updateStaleUI();scheduleAutosave();});});
+document.addEventListener("click",e=>{if(e.target.closest&&(e.target.closest(".tri-item")||e.target.closest(".rows .r")))requestAnimationFrame(()=>{updateSummary();updateStaleUI();scheduleAutosave();});});
 document.getElementById("app").addEventListener("click",e=>{const blk=e.target.closest&&e.target.closest(".block");if(blk)touchedSections.add(blk.id);});
 
 // quick start reveal
@@ -896,8 +1096,8 @@ function serializeForm(){const data={vals:{},chips:{},tri:triv("sx"),meds:medRow
 function applyDraft(data){
   Object.entries(data.vals||{}).forEach(([id,val])=>{const el=$(id);if(el)el.value=val;});
   Object.entries(data.chips||{}).forEach(([g,arr])=>arr.forEach(val=>{const i=document.querySelector(`[data-group="${g}"] input[value="${CSS.escape(val)}"]`);if(i)i.checked=true;}));
-  (data.tri?.a||[]).forEach(val=>{const l=document.querySelector(`[data-tri="sx"] button[data-v="${CSS.escape(val)}"]`);if(l){l.dataset.state="admits";l.setAttribute("aria-pressed","true");l.setAttribute("aria-label",val+": admits");}});
-  (data.tri?.d||[]).forEach(val=>{const l=document.querySelector(`[data-tri="sx"] button[data-v="${CSS.escape(val)}"]`);if(l){l.dataset.state="denies";l.setAttribute("aria-pressed","true");l.setAttribute("aria-label",val+": denies");}});
+  (data.tri?.a||[]).forEach(val=>{const l=document.querySelector(`[data-tri="sx"] .tri-item[data-v="${CSS.escape(val)}"]`);if(l)setTriItemState(l,"admits");});
+  (data.tri?.d||[]).forEach(val=>{const l=document.querySelector(`[data-tri="sx"] .tri-item[data-v="${CSS.escape(val)}"]`);if(l)setTriItemState(l,"denies");});
   document.querySelectorAll("#medrows .r,#accrows .r,#vitrows .r").forEach(e=>e.remove());
   (data.meds||[]).forEach(addMed);(data.acc||[]).forEach(addAcc);
   if(data.vit&&data.vit.length)data.vit.forEach(addVit);else addVit();
@@ -905,11 +1105,39 @@ function applyDraft(data){
   outcomeUI();pedsUI();lamsUI();applyLayout();markVitals();updateSummary();updateNavState();qsCheck();}
 let autosaveTimer=null;
 function scheduleAutosave(){clearTimeout(autosaveTimer);autosaveTimer=setTimeout(()=>{if(!v("age")&&!v("cc"))return;store.set("soap_draft",serializeForm());store.set("soap_draft_ts",Date.now());updateDraftIndicatorText();},700);}
-(async function initDraftPrompt(){const d=store.get("soap_draft",null);if(d&&(d.vals?.age||d.vals?.cc)){if(await ask("Restore your unsaved draft from this browser?")){applyDraft(d);toast("Draft restored");}else{store.set("soap_draft",null);}}})();
+(async function initDraftPrompt(){const d=store.get("soap_draft",null);
+  if(d&&(d.vals?.age||d.vals?.cc)){
+    const ts=store.get("soap_draft_ts",null);
+    const when=ts?new Date(ts).toLocaleString([],{dateStyle:"medium",timeStyle:"short"}):"an earlier session";
+    const cc=d.vals?.cc||"complaint not set";
+    if(await ask(`Resume draft from ${when}? Complaint: ${cc}`)){applyDraft(d);toast("Draft restored");}else{store.set("soap_draft",null);}
+  }
+})();
 
-buildSecNav();updateNavState();updateSummary();qsCheck();updateChipSummaries();
-setCurrentSection("sec-0");
-if("IntersectionObserver" in window){const sectionObserver=new IntersectionObserver(entries=>{const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];if(visible)setCurrentSection(visible.target.id);},{rootMargin:"-72px 0px -55% 0px",threshold:[0,.25,.5]});document.querySelectorAll("main .block,#reviewSection").forEach(section=>sectionObserver.observe(section));}
+// =====================================================================
+// GUIDED ENTRY MODE (Back / Next wizard, keeps section nav available)
+// =====================================================================
+let guidedMode=store.get("soap_guided",false),currentStep=0;
+function guidedRender(){
+  document.querySelectorAll("main .block,#reviewSection").forEach(sec=>sec.classList.remove("wizardHide"));
+  $("wizardbar").classList.toggle("show",guidedMode);
+  if(!guidedMode)return;
+  NAV_ITEMS.forEach((it,i)=>{const el=document.getElementById(it.id);if(!el)return;el.classList.toggle("wizardHide",i!==currentStep);
+    if(i===currentStep&&el.classList.contains("collapsed")){el.classList.remove("collapsed");const t=el.querySelector(".toggleSec");if(t){t.setAttribute("aria-expanded","true");t.textContent="Collapse";}}});
+  $("wizBack").disabled=currentStep===0;
+  $("wizNext").textContent=currentStep===NAV_ITEMS.length-1?"Generate":"Next →";
+  $("wizLabel").textContent=`Step ${currentStep+1} of ${NAV_ITEMS.length}: ${NAV_ITEMS[currentStep].label}`;
+  setCurrentSection(NAV_ITEMS[currentStep].id);
+}
+function gotoStep(i){currentStep=Math.max(0,Math.min(NAV_ITEMS.length-1,i));guidedRender();document.getElementById(NAV_ITEMS[currentStep].id)?.scrollIntoView?.({behavior:"smooth",block:"start"});}
+$("wizBack").onclick=()=>gotoStep(currentStep-1);
+$("wizNext").onclick=()=>{if(currentStep<NAV_ITEMS.length-1)gotoStep(currentStep+1);else $("gen").click();};
+$("guided").onclick=()=>{guidedMode=!guidedMode;$("guided").textContent="Guided mode: "+(guidedMode?"on":"off");store.set("soap_guided",guidedMode);if(guidedMode)currentStep=0;guidedRender();};
+$("guided").textContent="Guided mode: "+(guidedMode?"on":"off");
+
+buildSecNav();updateNavState();updateSummary();qsCheck();updateChipSummaries();updateStaleUI();
+setCurrentSection("sec-0");guidedRender();
+if("IntersectionObserver" in window){const sectionObserver=new IntersectionObserver(entries=>{if(guidedMode)return;const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];if(visible)setCurrentSection(visible.target.id);},{rootMargin:"-72px 0px -55% 0px",threshold:[0,.25,.5]});document.querySelectorAll("main .block,#reviewSection").forEach(section=>sectionObserver.observe(section));}
 
 </script>
 </body>
