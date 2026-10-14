@@ -611,15 +611,15 @@ function apply(p){clearForm();
 function vitStr(x){const o=[];if(x.bp)o.push("BP "+x.bp);if(x.hr)o.push("HR "+x.hr);if(x.rr)o.push("RR "+x.rr);if(x.spo2)o.push("SpO2 "+x.spo2+"%");if(x.etco2)o.push("EtCO2 "+x.etco2);if(x.bgl)o.push("BGL "+x.bgl);if(x.temp)o.push("Temp "+x.temp);if(x.pain)o.push("pain "+x.pain+"/10");if(x.gcs)o.push("GCS "+x.gcs);return o.join(", ");}
 function computeSOAP(){
   const age=v("age"),ageu=v("ageu"),sex=v("sex"),cc=selv("cc")||"unspecified complaint",outcome=v("outcome");
-  const ageTxt=age?`${age}-year-old`:"";
-  const pt=[ageTxt,sex||"patient"].filter(Boolean).join(" ");
+  const ageTxt=age?`${age}-${ageu}-old`:"";
+  const demographic=[ageTxt,sex&&sex!=="not specified"?sex:"patient"].filter(Boolean).join(" ");
   const S=[],O=[],A=[],P=[];
   if(outcome==="nopt"){
     const nd=v("nopt_t");
     const disposition=nd?`No patient contact or transport occurred. Dispatch/disposition note: ${end(nd)}`:"No patient contact or transport occurred; specific cancellation/no-contact details not documented.";
     return{nopt:true,noptText:disposition,S,O,A,P};
   }
-  let intro=pt?`Patient is a ${pt} with a chief complaint of ${cc.toLowerCase()}`:`Patient presents with a chief complaint of ${cc.toLowerCase()}`;
+  let intro=age?`A ${demographic} presents with a chief complaint of ${cc.toLowerCase()}`:`Patient presents with a chief complaint of ${cc.toLowerCase()}`;
   const found=v("found");if(found)intro+=`, found ${found}`;S.push(end(intro));
   const src=picked("src");if(src.length)S.push(`History obtained from ${list(src)}.`);
   const op=[];const on=v("onset"),du=v("dur"),pr=v("prov"),qu=v("qual"),ra=v("rad"),se=v("sev");
