@@ -175,19 +175,13 @@ body{padding-bottom:84px}
 #protoNote{display:none;font-size:12.5px;color:var(--muted);margin:6px 0 0;background:var(--field);border:1px solid var(--line);border-radius:7px;padding:7px 10px}
 #protoNote.show{display:block}
 #protoNote a{cursor:pointer;color:var(--navy);font-weight:600;text-decoration:underline}
-#txSuggest{display:none;margin:0 0 10px;padding:8px 10px;background:var(--field);border:1px solid var(--line);border-radius:8px}
-#txSuggest.show{display:block}
-#txSuggest .ts-label{font-size:12px;color:var(--muted);margin:0 0 6px}
-#txSuggest .ts-chip{font:inherit;font-size:12.5px;background:var(--white);border:1px solid var(--line);border-radius:999px;padding:5px 10px;margin:0 6px 6px 0;cursor:pointer}
-#txSuggest .ts-chip[aria-pressed="true"]{background:var(--green);color:#fff;border-color:var(--green)}
 </style>
 </head>
 <body>
 <header><div class="hwrap">
-  <h1>SOAP Narrative Builder</h1>
-  <p>Rhode Island EMS protocols · Protocol reference v2026.02 · Last reviewed October 2026. Check what applies, fill the blanks, generate.</p>
+  <h1>ALS Narrative Builder</h1>
+  <p>Rhode Island EMS · Document the assessment, ALS care, response, reassessments, and disposition.</p>
   <div class="ctrl">
-    <select id="style"><option value="full">Full sentences</option><option value="terse">Terse charting</option></select>
     <select id="hdrs"><option value="1">SOAP headers on</option><option value="0">Headers off</option></select>
     <button id="guided" type="button" title="Step through Patient, History, Exam, Treatment, Review one at a time">Guided mode: off</button>
     <button id="protoLibBtn" type="button" title="Search RI EMS protocol summaries">Protocol reference</button>
@@ -198,7 +192,7 @@ body{padding-bottom:84px}
 <div id="sumbar" aria-live="polite"></div>
 <div id="wizardbar"><button id="wizBack" type="button">&larr; Back</button><span id="wizLabel"></span><button id="wizNext" type="button">Next &rarr;</button></div>
 <main id="app" aria-describedby="orientation"></main>
-<p id="orientation" class="hint" style="max-width:832px;margin:10px auto;padding:0 14px">First use: select a complaint, record what was actually assessed (including reassessment vitals), choose a disposition, then review the audit before copying. Blank fields remain blank; this tool does not infer care.</p>
+<p id="orientation" class="hint" style="max-width:832px;margin:10px auto;padding:0 14px">Record the findings assessed and care provided, including times and reassessments. Review the narrative against your ePCR and source record before copying. Blank fields remain blank; care is not inferred.</p>
 <div class="bar">
   <button id="clear" title="Start a new patient (clears all fields)">New patient</button>
   <button id="gen" class="primary" title="Generate narrative (Ctrl/Cmd+Enter)">Generate narrative</button>
@@ -208,7 +202,7 @@ body{padding-bottom:84px}
 <section class="block" id="reviewSection"><div class="tag">R</div><div class="body">
 <h2>Review</h2>
 <div id="readystate" class="readystate" style="display:none"></div>
-<div id="flags" aria-live="polite"><h2>QA audit: required, recommended, or not applicable</h2><div id="flaggroups"></div></div>
+<div id="flags" aria-live="polite"><h2>Documentation review: required, recommended, or not applicable</h2><div id="flaggroups"></div></div>
 <div id="out"><p id="printstamp"></p><h2>Narrative</h2><div id="staleBanner" role="status"><span>&#9888; Changes since last generation &mdash; update before copying or printing.</span><button type="button" id="staleUpdate">Update narrative</button></div><div id="narr"></div><div style="margin-top:12px;display:flex;gap:10px"><button id="copy2" class="add" style="flex:1;padding:12px;font-weight:600;background:var(--navy);color:#fff;border-color:var(--navy)" disabled>Copy narrative</button><button id="top" class="add" style="padding:12px">Back to top</button></div></div>
 </div></section>
 <div id="ov"><div id="dlg"><p id="dlgmsg"></p><input type="text" id="dlgin" style="display:none"><div class="b"><button id="dlgno">Cancel</button><button id="dlgok" class="p">OK</button></div></div></div>
@@ -250,7 +244,7 @@ const D = {
   monitor:["not applied","sinus rhythm","sinus tachycardia","sinus bradycardia","atrial fibrillation","atrial flutter","SVT","1st degree AV block","2nd degree AV block","3rd degree AV block","frequent PVCs","paced rhythm","ventricular tachycardia","ventricular fibrillation","asystole","PEA","artifact limits interpretation"],
   impress:["Chest pain, suspected cardiac","Chest pain, non cardiac","STEMI","Acute coronary syndrome","Respiratory distress","COPD exacerbation","Asthma exacerbation","CHF exacerbation","Pneumonia","Stroke/TIA","Seizure","Syncope","Altered mental status","Hypoglycemia","Hyperglycemia","Opioid overdose","Alcohol intoxication","Anaphylaxis","Allergic reaction","Abdominal pain","GI bleed","Dehydration","Sepsis","Cardiac arrest","Dysrhythmia","Behavioral emergency","Trauma, minor","Trauma, multisystem","Head injury","Extremity fracture/dislocation","Fall with injury","Fall without injury","Back pain","Generalized weakness","No acute findings","Lift assist, no injury","Other"],
   proto:["Routine Patient Care","Chest Pain / Acute Coronary Syndrome","STEMI","Respiratory Distress","Bronchospasm","CHF / Pulmonary Edema","Stroke","Seizures","Altered Mental Status","Hypoglycemia / Hyperglycemia","Cardiac Arrest","Bradycardia","Tachycardia","Anaphylaxis / Allergic Reaction","Overdose / Poisoning","Pain Management","Nausea / Vomiting","Trauma / Spinal Motion Restriction","Traumatic Brain Injury","Hemorrhage Control","Burns","Behavioral Emergencies","Sepsis","Refusal of Care","Other"],
-  tx:["Scene safety and BSI","Primary and secondary assessment","Patient placed in position of comfort","Patient placed supine","Oxygen via nasal cannula","Oxygen via non rebreather","BVM ventilation","CPAP applied","Suctioning performed","OPA/NPA inserted","iGel placed","Endotracheal intubation","Cardiac monitor applied","12 lead ECG obtained and transmitted","Serial 12 leads obtained","IV access established","IO access established","Normal saline bolus","Blood glucose obtained","Aspirin administered","Nitroglycerin administered","Albuterol nebulizer","Ipratropium nebulizer","Epinephrine IM","Naloxone administered","Dextrose administered","Glucagon administered","Ondansetron administered","Fentanyl administered","Ketamine administered","Midazolam administered","Diphenhydramine administered","Amiodarone administered","Adenosine administered","Spinal motion restriction","Splint applied","Wound dressed and bandaged","Direct pressure applied","Tourniquet applied","Pelvic binder applied","Cooling measures","Warming measures","CPR initiated","Defibrillation","Cardioversion","Pacing","Restraints applied","Stroke alert called","STEMI alert called","Trauma alert called","Sepsis alert called","Assisted patient to standing","Assisted patient to bed/chair","Continuous reassessment"],
+  tx:["Primary and secondary assessment","Patient placed in position of comfort","Patient placed supine","Oxygen via nasal cannula","Oxygen via non rebreather","BVM ventilation","CPAP applied","Suctioning performed","OPA/NPA inserted","iGel placed","Endotracheal intubation","Cardiac monitor applied","12 lead ECG obtained and transmitted","Serial 12 leads obtained","IV access established","IO access established","Normal saline bolus","Blood glucose obtained","Aspirin administered","Nitroglycerin administered","Albuterol nebulizer","Ipratropium nebulizer","Epinephrine IM","Naloxone administered","Dextrose administered","Glucagon administered","Ondansetron administered","Fentanyl administered","Ketamine administered","Midazolam administered","Diphenhydramine administered","Amiodarone administered","Adenosine administered","Spinal motion restriction","Splint applied","Wound dressed and bandaged","Direct pressure applied","Tourniquet applied","Pelvic binder applied","Cooling measures","Warming measures","CPR initiated","Defibrillation","Cardioversion","Pacing","Restraints applied","Stroke alert called","STEMI alert called","Trauma alert called","Sepsis alert called","Assisted patient to standing","Assisted patient to bed/chair","Continuous reassessment"],
   resp:["improved","unchanged","worsened","pain decreased","pain resolved","breathing improved","mental status improved","became responsive","remained stable","became unstable","tolerated treatment well"],
   dest:["Rhode Island Hospital","Hasbro Children's Hospital","The Miriam Hospital","Kent Hospital","Newport Hospital","Landmark Medical Center","Roger Williams Medical Center","Our Lady of Fatima Hospital","Women & Infants Hospital","Westerly Hospital","South County Hospital","Charlton Memorial Hospital","St. Anne's Hospital","St. Luke's Hospital","Other"],
   mode:["non emergent","emergent","emergent due to patient condition"],
@@ -339,7 +333,7 @@ const VH='<div class="vh"><span>Time</span><span>BP</span><span>HR</span><span>R
 
 const sections=[
  {tag:"",pre:true,title:"Patient",html:`
-  <div class="startpanel" id="startpanel">Start by selecting the chief complaint. Then record the patient's age, outcome, and only the findings you actually assessed. <button type="button" id="qsContinue" style="display:none">Continue to Subjective &rarr;</button></div>
+  <div class="startpanel" id="startpanel">Start with the patient and chief complaint. Document only findings you assessed and care you provided. <button type="button" id="qsContinue" style="display:none">Continue to Subjective &rarr;</button></div>
   <div class="row">
    <div><label class="f">Age</label><input type="number" id="age" min="0" inputmode="numeric"></div>
    <div><label class="f">Unit</label><select id="ageu"><option>year</option><option>month</option><option>day</option></select></div>
@@ -406,10 +400,11 @@ const sections=[
   <fieldset style="margin-top:12px"><legend>Clinical reasoning (your words)</legend><textarea id="a_t" placeholder="Why this impression, what was ruled in or out, differentials considered"></textarea></fieldset>`},
  {tag:"Tx",title:"Treatment",html:`
   <div id="txSuggest"><p class="ts-label"></p><div class="ts-chips"></div></div>
-  <fieldset><legend>Interventions</legend>${chips("tx",D.tx)}</fieldset>
+  <fieldset><legend>ALS interventions actually performed</legend>${chips("tx",D.tx)}</fieldset>
   <fieldset><legend>Vascular access</legend><div class="rows acc" id="accrows"></div><button type="button" class="add" id="addacc">Add IV / IO</button></fieldset>
   <fieldset><legend>Medications given</legend><div class="rows" id="medrows"></div><button type="button" class="add" id="addmed">Add medication</button>
-   <textarea id="med_t" placeholder="Anything else about medications (contraindications, withheld and why, med not carried)" style="margin-top:8px"></textarea></fieldset>
+   <textarea id="med_t" placeholder="Additional medication details, including contraindications or medications withheld and why" style="margin-top:8px"></textarea></fieldset>
+   <fieldset><legend>ALS procedures and clinical details</legend><textarea id="procedure_t" placeholder="Document procedure details, attempts, findings, complications, and times"></textarea></fieldset>
   <fieldset><legend>Response to treatment / reassessment notes</legend>${chips("resp",D.resp)}<textarea id="resp_t" placeholder="Reassessment findings, response, or reason no reassessment was obtained" style="margin-top:8px"></textarea></fieldset>`},
  {tag:"Dx",title:"Disposition",html:`
   <fieldset id="transport"><legend>Transport</legend>
