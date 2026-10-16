@@ -128,6 +128,10 @@ button[disabled]{opacity:.5;cursor:not-allowed}
  #printstamp{display:block!important;font-size:11px;color:#555;margin:0 0 8px}
 }
 #printstamp{display:none}
+.exam-details{border:1px solid var(--line);border-radius:8px;padding:12px;margin:0 0 14px}
+.exam-details summary{font-weight:600;cursor:pointer;min-height:32px}
+.tri .tri-item button{min-height:32px}
+@media(max-width:600px){.tri .tri-item{width:100%;border-radius:10px;flex-wrap:wrap}.tri .tri-item .tri-btns{flex-wrap:wrap}}
 /* ---- sticky bottom action bar, explicit tri-state, staleness, search, guided mode, SOAP blocks (added) ---- */
 body{padding-bottom:84px}
 #stickybar{position:fixed;left:0;right:0;bottom:0;z-index:55;background:var(--white);border-top:1px solid var(--line);display:flex;gap:10px;padding:10px 14px calc(10px + env(safe-area-inset-bottom));box-shadow:0 -2px 10px rgba(0,0,0,.1)}
@@ -180,16 +184,42 @@ body{padding-bottom:84px}
 #txSuggest .ts-label{font-size:12px;color:var(--muted);margin:0 0 6px}
 #txSuggest .ts-chip{font:inherit;font-size:12.5px;background:var(--white);border:1px solid var(--line);border-radius:999px;padding:5px 10px;margin:0 6px 6px 0;cursor:pointer}
 #txSuggest .ts-chip[aria-pressed="true"]{background:var(--green);color:#fff;border-color:var(--green)}
+
+/* Five-step entry, compact assessment, and live draft. */
+.header-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start}.header-actions>button,#displayOptions>summary{font:inherit;font-size:13px;font-weight:500;color:var(--hdrtext);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:10px 12px;min-height:44px;cursor:pointer}
+#displayOptions .ctrl{margin-top:10px}#displayOptions[open]{flex:1 1 100%}#displayOptions summary{list-style:none}#displayOptions summary::-webkit-details-marker{display:none}
+@media(max-width:600px){#wizardbar{display:none!important}#stepProgress{font-size:12px}header p{margin-bottom:10px}.header-actions>button,#displayOptions>summary{font-size:12px}}
+@media print{.header-actions{display:none!important}}
+#workspace{max-width:1320px;margin:auto;display:grid;grid-template-columns:minmax(0,860px) minmax(280px,1fr);gap:16px;align-items:start;padding:0 16px}
+#entry main{padding-left:0;padding-right:0}#entry{min-width:0}
+#livePreview{position:sticky;top:130px;margin:26px 0 16px;background:var(--white);border:1px solid var(--line);border-radius:10px;padding:16px;max-height:calc(100vh - 230px);overflow:auto}
+#livePreview{scroll-margin-top:80px}#livePreview h2{font-size:16px;margin:0 0 6px}#livePreview summary{cursor:pointer;font-weight:600;min-height:44px}
+#liveNarrative{font-size:13px;line-height:1.6}#liveNarrative h3{font-size:13px;color:var(--navy);margin:14px 0 4px}#liveNarrative p{margin:0;white-space:pre-wrap}
+.als-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.als-grid fieldset{border:1px solid var(--line);border-radius:8px;padding:10px;margin:0;min-width:0}
+.als-grid{margin-bottom:16px}.optional-details{margin:12px 0;border:1px solid var(--line);border-radius:8px;padding:10px}.optional-details>summary{font-weight:600;cursor:pointer;min-height:44px;display:list-item;padding:10px 0}
+#symptomNoneLabel{display:flex;gap:10px;align-items:center;min-height:44px;margin-top:10px;font-size:13px}#sx_none{width:20px;height:20px;flex:0 0 auto}
+#focusHint{padding:10px;background:var(--field);border-radius:8px;margin-bottom:12px;font-size:13px}
+#stepProgress{font-size:13px;color:var(--muted);padding:8px 0}#wizardbar{position:static;max-width:1320px;margin:auto;border:0;padding:10px 16px}
+#sumbar{position:static;font-size:12px}#secnav{top:0}#secnav button{min-height:44px}#secnav{justify-content:center}
+#stickybar{max-width:none}#stickybar button{flex:0 1 260px}#stickybar{justify-content:center}#stickyBack{flex:0 1 100px!important}
+#stickybar #stickyCopy{background:var(--white);color:var(--ink)}#stickyReview.primary{background:var(--navy);color:#fff}
+button,.add,.more,.seclink,.chips label,.tri .tri-item button{min-height:44px}.tri .tri-item .tri-btns{flex-wrap:wrap}.tri .tri-item{border-radius:10px;flex-wrap:wrap}
+#toast{bottom:100px}section.block{scroll-margin-top:80px}.bar{flex-wrap:wrap}.bar button{min-width:130px}
+#reviewSection{max-width:832px;margin:14px 0}.review-priority{background:var(--white);padding:12px;border-radius:8px;margin:10px 0}.review-priority h3{font-size:14px;margin:0 0 8px}
+#flaggroups .golink{display:inline-block;min-height:36px;padding:8px 0}#flaggroups summary{min-height:44px;padding:10px 0}
+@media(max-width:1050px){#workspace{display:block;max-width:860px;padding:0 14px}#livePreview{position:static;max-height:none;margin-top:12px}#livePreview:not([open]){padding-bottom:0}#secnav{justify-content:flex-start}}
+@media(max-width:600px){.als-grid{grid-template-columns:1fr}section.block{grid-template-columns:1fr}section.block .tag{display:none}section.block .body{padding:14px 12px}.sechead{align-items:flex-start;flex-wrap:wrap}.tri .tri-item{width:100%}.tri .tri-item .tri-label{flex-basis:100%}#secnav button{font-size:12px}#sumbar{gap:6px}#sumbar .draft{display:none}.ctrl{gap:6px}.ctrl>*{flex-basis:45%}.ctrl button{flex:1 1 45%}.rows .r button{min-height:44px!important;width:44px!important;top:4px!important;right:4px!important}.rows .r{padding-top:54px!important}#stickybar{padding:8px 10px calc(8px + env(safe-area-inset-bottom));gap:6px}#stickybar button{font-size:13px;padding:10px 6px}.rows.vit .r{grid-template-columns:1fr 1fr!important}}
+@media print{#workspace{display:block}#entry main,#entry>.bar,#orientation,#livePreview,#wizardbar,#stepProgress,#readystate{display:none!important}#reviewSection{display:block!important;border:0;max-width:none}#reviewSection .tag,#reviewSection .sechead,#reviewSection #out>div:last-child button{display:none!important}#out{border:0}.wizardHide{display:block!important}}
 </style>
 </head>
 <body>
 <header><div class="hwrap">
   <h1>SOAP Narrative Builder</h1>
-  <p>Rhode Island EMS protocols · Protocol reference v2026.02 · Last reviewed October 2026. Check what applies, fill the blanks, generate.</p>
+  <p>ALS SOAP documentation · Rhode Island EMS · v2026.02</p>
   <div class="ctrl">
     <select id="style"><option value="full">Full sentences</option><option value="terse">Terse charting</option></select>
     <select id="hdrs"><option value="1">SOAP headers on</option><option value="0">Headers off</option></select>
-    <button id="guided" type="button" title="Step through Patient, History, Exam, Treatment, Review one at a time">Guided mode: off</button>
+    <button id="guided" type="button" title="Step through Patient, History, Exam, Treatment, Review one at a time">View all fields</button>
     <button id="protoLibBtn" type="button" title="Search RI EMS protocol summaries">Protocol reference</button>
     <button id="theme">Dark mode</button>
   </div>
@@ -197,24 +227,25 @@ body{padding-bottom:84px}
 <nav id="secnav" aria-label="Section navigation"></nav>
 <div id="sumbar" aria-live="polite"></div>
 <div id="wizardbar"><button id="wizBack" type="button">&larr; Back</button><span id="wizLabel"></span><button id="wizNext" type="button">Next &rarr;</button></div>
-<main id="app" aria-describedby="orientation"></main>
+<div id="workspace"><div id="entry"><div id="stepProgress" role="status"></div><main id="app" aria-describedby="orientation"></main>
 <p id="orientation" class="hint" style="max-width:832px;margin:10px auto;padding:0 14px">First use: select a complaint, record what was actually assessed (including reassessment vitals), choose a disposition, then review the audit before copying. Blank fields remain blank; this tool does not infer care.</p>
 <div class="bar">
   <button id="clear" title="Start a new patient (clears all fields)">New patient</button>
-  <button id="gen" class="primary" title="Generate narrative (Ctrl/Cmd+Enter)">Generate narrative</button>
+  <button id="gen" class="primary" title="Generate narrative (Ctrl/Cmd+Enter)">Review current narrative</button>
   <button id="copy" title="Copy narrative (Ctrl/Cmd+Shift+C)" disabled>Copy</button>
   <button id="print" title="Print / export PDF">Print / export PDF</button>
 </div>
 <section class="block" id="reviewSection"><div class="tag">R</div><div class="body">
 <h2>Review</h2>
 <div id="readystate" class="readystate" style="display:none"></div>
-<div id="flags" aria-live="polite"><h2>QA audit: required, recommended, or not applicable</h2><div id="flaggroups"></div></div>
-<div id="out"><p id="printstamp"></p><h2>Narrative</h2><div id="staleBanner" role="status"><span>&#9888; Changes since last generation &mdash; update before copying or printing.</span><button type="button" id="staleUpdate">Update narrative</button></div><div id="narr"></div><div style="margin-top:12px;display:flex;gap:10px"><button id="copy2" class="add" style="flex:1;padding:12px;font-weight:600;background:var(--navy);color:#fff;border-color:var(--navy)" disabled>Copy narrative</button><button id="top" class="add" style="padding:12px">Back to top</button></div></div>
+<div id="flags" aria-live="polite"><h2>Documentation review</h2><div id="flaggroups"></div></div>
+<div id="out"><p id="printstamp"></p><h2>Narrative</h2><div id="staleBanner" role="status"><span>&#9888; Changes since last generation &mdash; update before copying or printing.</span><button type="button" id="staleUpdate">Review current narrative</button></div><div id="narr"></div><div style="margin-top:12px;display:flex;gap:10px"><button id="copy2" class="add" style="flex:1;padding:12px;font-weight:600;background:var(--navy);color:#fff;border-color:var(--navy)" disabled>Copy narrative</button><button id="top" class="add" style="padding:12px">Back to top</button></div></div>
 </div></section>
+</div><details id="livePreview" open><summary>Live SOAP draft</summary><p class="hint">Updates as you document. Review the current narrative before copying.</p><div id="liveNarrative"></div></details></div>
 <div id="ov"><div id="dlg"><p id="dlgmsg"></p><input type="text" id="dlgin" style="display:none"><div class="b"><button id="dlgno">Cancel</button><button id="dlgok" class="p">OK</button></div></div></div>
 <div id="protoOv"><div id="protoDlg"><h2>RI EMS protocol reference</h2><input type="text" id="protoSearch" placeholder="Search protocols, indications, treatments…"><div id="protoList"></div><div class="b"><button id="protoClose" type="button">Close</button></div></div></div>
 <div id="toast" role="status" aria-live="polite">Copied</div>
-<div id="stickybar"><button id="stickyReview" type="button">Review narrative</button><button id="stickyCopy" type="button" class="primary" disabled>Copy narrative</button></div>
+<div id="stickybar"><button id="stickyBack" type="button">Back</button><button id="stickyReview" type="button" class="primary">Next: ALS assessment</button><button id="previewDraft" type="button">Preview draft</button><button id="stickyCopy" type="button" class="primary" disabled>Copy narrative</button></div>
 
 <script>
 // =====================================================================
@@ -250,7 +281,7 @@ const D = {
   monitor:["not applied","sinus rhythm","sinus tachycardia","sinus bradycardia","atrial fibrillation","atrial flutter","SVT","1st degree AV block","2nd degree AV block","3rd degree AV block","frequent PVCs","paced rhythm","ventricular tachycardia","ventricular fibrillation","asystole","PEA","artifact limits interpretation"],
   impress:["Chest pain, suspected cardiac","Chest pain, non cardiac","STEMI","Acute coronary syndrome","Respiratory distress","COPD exacerbation","Asthma exacerbation","CHF exacerbation","Pneumonia","Stroke/TIA","Seizure","Syncope","Altered mental status","Hypoglycemia","Hyperglycemia","Opioid overdose","Alcohol intoxication","Anaphylaxis","Allergic reaction","Abdominal pain","GI bleed","Dehydration","Sepsis","Cardiac arrest","Dysrhythmia","Behavioral emergency","Trauma, minor","Trauma, multisystem","Head injury","Extremity fracture/dislocation","Fall with injury","Fall without injury","Back pain","Generalized weakness","No acute findings","Lift assist, no injury","Other"],
   proto:["Routine Patient Care","Chest Pain / Acute Coronary Syndrome","STEMI","Respiratory Distress","Bronchospasm","CHF / Pulmonary Edema","Stroke","Seizures","Altered Mental Status","Hypoglycemia / Hyperglycemia","Cardiac Arrest","Bradycardia","Tachycardia","Anaphylaxis / Allergic Reaction","Overdose / Poisoning","Pain Management","Nausea / Vomiting","Trauma / Spinal Motion Restriction","Traumatic Brain Injury","Hemorrhage Control","Burns","Behavioral Emergencies","Sepsis","Refusal of Care","Other"],
-  tx:["Scene safety and BSI","Primary and secondary assessment","Patient placed in position of comfort","Patient placed supine","Oxygen via nasal cannula","Oxygen via non rebreather","BVM ventilation","CPAP applied","Suctioning performed","OPA/NPA inserted","iGel placed","Endotracheal intubation","Cardiac monitor applied","12 lead ECG obtained and transmitted","Serial 12 leads obtained","IV access established","IO access established","Normal saline bolus","Blood glucose obtained","Aspirin administered","Nitroglycerin administered","Albuterol nebulizer","Ipratropium nebulizer","Epinephrine IM","Naloxone administered","Dextrose administered","Glucagon administered","Ondansetron administered","Fentanyl administered","Ketamine administered","Midazolam administered","Diphenhydramine administered","Amiodarone administered","Adenosine administered","Spinal motion restriction","Splint applied","Wound dressed and bandaged","Direct pressure applied","Tourniquet applied","Pelvic binder applied","Cooling measures","Warming measures","CPR initiated","Defibrillation","Cardioversion","Pacing","Restraints applied","Stroke alert called","STEMI alert called","Trauma alert called","Sepsis alert called","Assisted patient to standing","Assisted patient to bed/chair","Continuous reassessment"],
+  tx:["Patient placed in position of comfort","Patient placed supine","Oxygen via nasal cannula","Oxygen via non rebreather","BVM ventilation","CPAP applied","Suctioning performed","OPA/NPA inserted","iGel placed","Endotracheal intubation","Cardiac monitor applied","12 lead ECG obtained and transmitted","Serial 12 leads obtained","IV access established","IO access established","Normal saline bolus","Blood glucose obtained","Aspirin administered","Nitroglycerin administered","Albuterol nebulizer","Ipratropium nebulizer","Epinephrine IM","Naloxone administered","Dextrose administered","Glucagon administered","Ondansetron administered","Fentanyl administered","Ketamine administered","Midazolam administered","Diphenhydramine administered","Amiodarone administered","Adenosine administered","Spinal motion restriction","Splint applied","Wound dressed and bandaged","Direct pressure applied","Tourniquet applied","Pelvic binder applied","Cooling measures","Warming measures","CPR initiated","Defibrillation","Cardioversion","Pacing","Restraints applied","Stroke alert called","STEMI alert called","Trauma alert called","Sepsis alert called","Assisted patient to standing","Assisted patient to bed/chair","Continuous reassessment"],
   resp:["improved","unchanged","worsened","pain decreased","pain resolved","breathing improved","mental status improved","became responsive","remained stable","became unstable","tolerated treatment well"],
   dest:["Rhode Island Hospital","Hasbro Children's Hospital","The Miriam Hospital","Kent Hospital","Newport Hospital","Landmark Medical Center","Roger Williams Medical Center","Our Lady of Fatima Hospital","Women & Infants Hospital","Westerly Hospital","South County Hospital","Charlton Memorial Hospital","St. Anne's Hospital","St. Luke's Hospital","Other"],
   mode:["non emergent","emergent","emergent due to patient condition"],
@@ -277,7 +308,7 @@ const PRI = {
   "Nausea/vomiting":{sx:["abdominal pain","diarrhea","fever","chills","headache","dizziness","chest pain","hematemesis","decreased oral intake","urinary symptoms"],abd:["soft","non tender","tender","distended","epigastric tenderness"],skin:["warm, dry, normal color","pale","diaphoretic","dry","delayed cap refill"],heent:["dry mucous membranes","pupils PERRL"],tx:["IV access established","Normal saline bolus","Ondansetron administered","Cardiac monitor applied","12 lead ECG obtained and transmitted","Blood glucose obtained","Continuous reassessment"]},
   "Generalized weakness":{sx:["dizziness","lightheadedness","shortness of breath","chest pain","fever","decreased oral intake","decreased appetite","urinary symptoms","recent illness","nausea","vomiting","diarrhea"],pmh:["diabetes","CKD/dialysis","CHF","cancer","dementia"],base:D.base,neuro:["no focal deficits","stroke screen negative","gait unsteady","gait normal","left sided weakness","right sided weakness"],tx:["Blood glucose obtained","Cardiac monitor applied","12 lead ECG obtained and transmitted","IV access established","Normal saline bolus","Continuous reassessment"]},
   "Fall":{sx:["loss of consciousness","neck pain","back pain","headache","dizziness","nausea","numbness/tingling","weakness","chest pain","syncope"],pmh:["dementia","hypertension","afib","CVA/TIA"],meds:["takes anticoagulants","takes antiplatelets"],events:["witnessed event","unwitnessed event","found down, unknown down time","symptoms began after a fall","facility staff called 911","family called 911"],base:["ambulatory without assistance","ambulates with walker","ambulates with cane","at normal baseline per family","at normal baseline per facility staff","not at normal baseline per facility staff","lives alone","lives in skilled nursing facility"],heent:["atraumatic","hematoma noted","laceration noted","abrasions noted","pupils PERRL"],chest:["atraumatic","non tender","tender to palpation"],abd:["soft","non tender","pelvis stable","pelvis unstable"],ext:["moves all extremities","CSM intact x4","deformity","swelling","bruising","tenderness","open wound"],neuro:["no focal deficits","gait normal","gait unsteady"],tx:["Spinal motion restriction","Assisted patient to standing","Assisted patient to bed/chair","Splint applied","Wound dressed and bandaged","Cardiac monitor applied","12 lead ECG obtained and transmitted","Blood glucose obtained","IV access established","Fentanyl administered","Continuous reassessment"]},
-  "Lift assist":{sx:["loss of consciousness","neck pain","back pain","headache","dizziness","weakness","chest pain","shortness of breath"],events:["found down, unknown down time","called 911 themselves","medical alert service","witnessed event","unwitnessed event"],base:D.base,heent:["atraumatic"],ext:["moves all extremities","CSM intact x4","no edema"],neuro:["no focal deficits","gait normal","gait unsteady"],tx:["Assisted patient to standing","Assisted patient to bed/chair","Primary and secondary assessment","Blood glucose obtained"]},
+  "Lift assist":{sx:["loss of consciousness","neck pain","back pain","headache","dizziness","weakness","chest pain","shortness of breath"],events:["found down, unknown down time","called 911 themselves","medical alert service","witnessed event","unwitnessed event"],base:D.base,heent:["atraumatic"],ext:["moves all extremities","CSM intact x4","no edema"],neuro:["no focal deficits","gait normal","gait unsteady"],tx:["Assisted patient to standing","Assisted patient to bed/chair","Blood glucose obtained"]},
   "Overdose/poisoning":{sx:["nausea","vomiting","shortness of breath","chest pain","hallucinations","suicidal ideation","anxiety","similar episode in the past"],pmh:["substance use","psychiatric history","anxiety/depression"],events:["symptoms began after drug use","symptoms began after alcohol use","found down, unknown down time","bystander called 911","family called 911"],loc:["unresponsive","responds to pain","responds to verbal","A&Ox4","confused","intoxicated appearing"],air:["patent","snoring respirations","gurgling","secretions present","maintained with NPA","maintained with OPA"],breath:["bradypneic","shallow","apneic","unlabored","agonal"],heent:["pupils pinpoint","pupils dilated","pupils PERRL","pupils sluggish"],tx:["Naloxone administered","BVM ventilation","Oxygen via non rebreather","OPA/NPA inserted","Cardiac monitor applied","12 lead ECG obtained and transmitted","IV access established","Blood glucose obtained","Continuous reassessment"],resp:["became responsive","breathing improved","mental status improved","improved","unchanged"]},
   "Allergic reaction":{sx:["itching","rash","swelling","shortness of breath","wheezing","nausea","vomiting","abdominal pain","dizziness","anxiety"],pmh:["asthma"],self:["took own medication","received no treatment"],air:["patent","stridor","self maintained"],breath:["unlabored","labored","speaking in full sentences","speaking in short sentences"],lung:["clear bilaterally","wheezes bilaterally","wheezes expiratory","stridor"],skin:["hives","urticaria","angioedema","flushed","warm, dry, normal color","pale"],tx:["Epinephrine IM","Diphenhydramine administered","Albuterol nebulizer","Oxygen via non rebreather","IV access established","Normal saline bolus","Cardiac monitor applied","Continuous reassessment"],resp:["improved","breathing improved","unchanged","worsened"]},
   "Diabetic emergency":{sx:["weakness","dizziness","diaphoresis","confusion","nausea","vomiting","decreased oral intake","urinary symptoms","recent illness"],pmh:["diabetes","CKD/dialysis","hypertension"],meds:["takes insulin","takes oral hypoglycemics","compliant with medications","non compliant with medications"],self:["checked own blood sugar","ate or drank something for symptoms","received no treatment"],loc:["confused","A&Ox4","A&Ox3","responds to verbal","unresponsive"],skin:["diaphoretic","cool","pale","warm, dry, normal color","dry"],tx:["Blood glucose obtained","Dextrose administered","Glucagon administered","IV access established","Normal saline bolus","Cardiac monitor applied","Continuous reassessment"],resp:["mental status improved","became responsive","improved","unchanged"]},
@@ -287,7 +318,7 @@ const PRI = {
   "Cardiac dysrhythmia":{sx:["palpitations","chest pain","shortness of breath","dizziness","lightheadedness","syncope","near syncope","weakness","diaphoresis"],pmh:["afib","CAD","CHF","hypertension"],meds:["takes anticoagulants","takes beta blockers","compliant with medications"],ecg:D.ecg,tx:["Cardiac monitor applied","12 lead ECG obtained and transmitted","IV access established","Adenosine administered","Amiodarone administered","Cardioversion","Pacing","Oxygen via nasal cannula","Continuous reassessment"]},
   "Headache":{sx:["nausea","vomiting","visual changes","dizziness","fever","neck pain","numbness/tingling","weakness","difficulty speaking","similar episode in the past","first time episode"],pmh:["hypertension","CVA/TIA","cancer"],onset:["sudden","gradual"],heent:["pupils PERRL","pupils unequal","no facial droop","atraumatic"],neuro:["no focal deficits","stroke screen negative","speech clear","visual field deficit","nuchal rigidity"],tx:["Blood glucose obtained","Cardiac monitor applied","IV access established","Ondansetron administered","Continuous reassessment"]},
   "Back pain":{sx:["numbness/tingling","weakness","urinary symptoms","fever","abdominal pain","recent trauma","chest pain"],events:["symptoms began after a fall","symptoms began during exertion"],abd:["soft","non tender","pulsatile mass"],ext:["CSM intact x4","moves all extremities","decreased sensation","equal grip strength"],neuro:["no focal deficits","gait normal","gait unsteady","normal sensation","decreased sensation"],tx:["Patient placed in position of comfort","Spinal motion restriction","Fentanyl administered","Ketamine administered","IV access established","Cardiac monitor applied","Continuous reassessment"],resp:["pain decreased","pain resolved","unchanged","tolerated treatment well"]},
-  "Interfacility transfer":{base:["has DNR/MOLST","full code","lives in skilled nursing facility","dependent with ADLs","independent with ADLs"],src:["facility staff","patient","family"],gen:["no acute distress","calm and cooperative","lethargic"],tx:["Primary and secondary assessment","Cardiac monitor applied","Oxygen via nasal cannula","Continuous reassessment"],resp:["remained stable","unchanged"]}
+  "Interfacility transfer":{base:["has DNR/MOLST","full code","lives in skilled nursing facility","dependent with ADLs","independent with ADLs"],src:["facility staff","patient","family"],gen:["no acute distress","calm and cooperative","lethargic"],tx:["Cardiac monitor applied","Oxygen via nasal cannula","Continuous reassessment"],resp:["remained stable","unchanged"]}
 };
 PRI["Motor vehicle collision"]=PRI["Assault"]=PRI["Extremity injury"]=Object.assign({},PRI["Fall"],{events:["witnessed event","symptoms began after an injury","bystander called 911","called 911 themselves"],sx:["loss of consciousness","neck pain","back pain","chest pain","abdominal pain","shortness of breath","headache","nausea","numbness/tingling","weakness"]});
 
@@ -332,14 +363,29 @@ const DOSES = {
 // =====================================================================
 // FORM
 // =====================================================================
+const TX_ENTRY={
+ "Aspirin administered":{drug:"Aspirin"},"Nitroglycerin administered":{drug:"Nitroglycerin"},"Albuterol nebulizer":{drug:"Albuterol"},"Ipratropium nebulizer":{drug:"Ipratropium"},"Epinephrine IM":{drug:"Epinephrine 1:1,000 IM"},"Naloxone administered":{drug:"Naloxone"},"Dextrose administered":{drug:"Dextrose 10%"},"Glucagon administered":{drug:"Glucagon"},"Ondansetron administered":{drug:"Ondansetron"},"Fentanyl administered":{drug:"Fentanyl"},"Ketamine administered":{drug:"Ketamine"},"Midazolam administered":{drug:"Midazolam"},"Diphenhydramine administered":{drug:"Diphenhydramine"},"Amiodarone administered":{drug:"Amiodarone"},"Adenosine administered":{drug:"Adenosine"},"Normal saline bolus":{drug:"Normal saline bolus"},"IV access established":{type:"IV"},"IO access established":{type:"IO"}
+};
+function entryMatches(name,meds=medRows(),access=accRows()){
+ const entry=TX_ENTRY[name];if(!entry)return false;
+ if(entry.type)return access.some(a=>(entry.type==="IV"?/IV|Saline lock/.test(a.type):a.type==="IO")&&/^(patent|flushed and locked)$/.test(a.ok));
+ return meds.some(m=>/nebulizer$/.test(name)?m.drug===entry.drug&&m.route==="Neb":name==="Dextrose administered"?/^Dextrose/.test(m.drug):name==="Epinephrine IM"?/^Epinephrine/.test(m.drug)&&m.route==="IM":m.drug===entry.drug);
+}
+function effectiveTx(){const meds=medRows(),access=accRows();return [...new Set([...picked("tx"),...Object.keys(TX_ENTRY).filter(name=>entryMatches(name,meds,access))])];}
+function startTreatment(name){const entry=TX_ENTRY[name];if(!entry)return;
+ const target=entry.type?"accrows":"medrows";
+ if(entry.type)addAcc({type:entry.type});else addMed({drug:entry.drug,unit:DOSES[entry.drug]?.adult[2]||"mg"});
+ const row=document.getElementById(target).lastElementChild;row.querySelector(entry.type?".site":".dose").focus();row.scrollIntoView({block:"center",behavior:"smooth"});queueRefresh();
+}
+
 const sel=(id,opts,blank)=>`<select id="${id}">${blank?'<option value="">Not documented</option>':''}${opts.map(o=>`<option>${o}</option>`).join("")}</select>`;
-const chips=(id,opts)=>`<div class="chips" data-group="${id}">${opts.map(o=>`<label><input type="checkbox" value="${o}">${o}</label>`).join("")}<label><input type="checkbox" value="__other">other</label></div><div class="other" id="${id}_o"><input type="text" id="${id}_t" placeholder="Add your own wording"></div>`;
-const tri=(id,opts)=>`<div class="chips tri" data-tri="${id}" data-group="${id}" role="group" aria-label="Associated symptoms"><input type="text" class="chipsearch" id="${id}_search" placeholder="Search symptoms&hellip;" style="display:none"><div class="tri-list" data-tri-list="${id}">${opts.map(o=>`<div class="tri-item" data-v="${o}"><span class="tri-label">${o}</span><span class="tri-btns" role="group" aria-label="${o} status"><button type="button" data-state="admits" aria-pressed="false">Present</button><button type="button" data-state="denies" aria-pressed="false">Denied</button><button type="button" data-state="" aria-pressed="true">N/D</button></span></div>`).join("")}</div></div>`;
+const chips=(id,opts)=>`<div class="chips" data-group="${id}">${opts.map(o=>`<label><input type="checkbox" value="${o}">${o}</label>`).join("")}<label><input type="checkbox" value="__other">other</label></div><div class="other" id="${id}_o"><input type="text" id="${id}_otherText" placeholder="Add your own wording"></div>`;
+const tri=(id,opts)=>`<div class="chips tri" data-tri="${id}" data-group="${id}" role="group" aria-label="Associated symptoms"><input type="text" class="chipsearch" id="${id}_search" placeholder="Search symptoms&hellip;" style="display:none"><div class="tri-list" data-tri-list="${id}">${opts.map(o=>`<div class="tri-item" data-v="${o}"><span class="tri-label">${o}</span><span class="tri-btns" role="group" aria-label="${o} status"><button type="button" data-state="admits" aria-pressed="false">Present</button><button type="button" data-state="denies" aria-pressed="false">Denied</button><button type="button" data-state="" aria-pressed="true">Not documented</button></span></div>`).join("")}</div></div>`;
 const VH='<div class="vh"><span>Time</span><span>BP</span><span>HR</span><span>RR</span><span>SpO2</span><span>EtCO2</span><span>BGL</span><span>Temp</span><span>Pain</span><span>GCS</span><span></span></div>';
 
 const sections=[
  {tag:"",pre:true,title:"Patient",html:`
-  <div class="startpanel" id="startpanel">Start by selecting the chief complaint. Then record the patient's age, outcome, and only the findings you actually assessed. <button type="button" id="qsContinue" style="display:none">Continue to Subjective &rarr;</button></div>
+  <div class="startpanel" id="startpanel">Build an ALS SOAP narrative: complaint and history → ALS exam and vitals → impression, treatment, and reassessment. Select only findings you actually assessed. <button type="button" id="qsContinue" style="display:none">Continue to ALS assessment &rarr;</button></div>
   <div class="row">
    <div><label class="f">Age</label><input type="number" id="age" min="0" inputmode="numeric"></div>
    <div><label class="f">Unit</label><select id="ageu"><option>year</option><option>month</option><option>day</option></select></div>
@@ -361,8 +407,9 @@ const sections=[
    <div class="row" style="margin-top:8px"><div><label class="f">Provocation / palliation</label>${sel("prov",D.prov,true)}</div><div><label class="f">Quality</label>${sel("qual",D.qual,true)}</div></div>
    <div class="row" style="margin-top:8px"><div><label class="f">Radiation</label>${sel("rad",D.rad,true)}</div><div><label class="f">Severity (0 to 10)</label><input type="number" id="sev" min="0" max="10" inputmode="numeric"></div></div>
   </fieldset>
-  <fieldset><legend>Associated symptoms (tap once for admits, twice for denies, again to clear)</legend>${tri("sx",D.sx)}
+  <fieldset><legend>Associated symptoms — select Present, Denied, or Not documented</legend>${tri("sx",D.sx)}
    <div class="row" style="margin-top:8px"><div><label class="f">Other symptoms admitted</label><input type="text" id="sx_a"></div><div><label class="f">Other symptoms denied</label><input type="text" id="sx_d"></div></div></fieldset>
+  <label id="symptomNoneLabel"><input id="sx_none" type="checkbox">No additional symptoms reported when asked</label><p class="hint">Select only after asking. Individual symptoms remain Not documented unless you select Present or Denied.</p>
   <fieldset><legend>Events leading up to the call</legend>${chips("events",D.events)}</fieldset>
   <fieldset><legend>Treatment prior to arrival</legend>${chips("self",D.self)}</fieldset>
   <fieldset><legend>Baseline and living situation</legend>${chips("base",D.base)}</fieldset>
@@ -372,17 +419,14 @@ const sections=[
   <fieldset><legend>Last oral intake</legend><input type="text" id="loi" placeholder="e.g. lunch approx 1200"></fieldset>
   <fieldset><legend>Last known well (stroke, seizure, AMS)</legend><input type="text" id="lkw" placeholder="e.g. 0730, witnessed by spouse"></fieldset>
   <fieldset><legend>Additional subjective (your words)</legend><textarea id="s_t"></textarea></fieldset>`},
- {tag:"O",title:"Objective",html:`
+ {tag:"O",title:"ALS exam",html:`
+  <p class="hint">Document mental status, airway, breathing, circulation, neuro findings, vitals, and cardiac findings as assessed.</p>
   <fieldset><legend>General appearance</legend>${chips("gen",D.gen)}</fieldset>
   <fieldset><legend>Level of consciousness / orientation</legend>${chips("loc",D.loc)}</fieldset>
   <fieldset><legend>Airway</legend>${chips("air",D.air)}</fieldset>
   <fieldset><legend>Breathing</legend>${chips("breath",D.breath)}</fieldset>
   <fieldset><legend>Lung sounds</legend>${chips("lung",D.lung)}</fieldset>
   <fieldset><legend>Skin / circulation</legend>${chips("skin",D.skin)}</fieldset>
-  <fieldset><legend>HEENT / neck</legend>${chips("heent",D.heent)}</fieldset>
-  <fieldset><legend>Chest</legend>${chips("chest",D.chest)}</fieldset>
-  <fieldset><legend>Abdomen / pelvis</legend>${chips("abd",D.abd)}</fieldset>
-  <fieldset><legend>Extremities</legend>${chips("ext",D.ext)}</fieldset>
   <fieldset><legend>Neuro</legend>${chips("neuro",D.neuro)}</fieldset>
   <fieldset><legend>Stroke assessment (LAMS)</legend>
    <div class="row">
@@ -396,6 +440,12 @@ const sections=[
   <fieldset><legend>Vital signs (first row is initial, add rows for reassessments)</legend>${VH}<div class="rows vit" id="vitrows"></div><button type="button" class="add" id="addvit">Add vitals</button> <button type="button" class="add" id="dupvit">Duplicate last vitals</button><p class="hint">Values outside the expected range for this patient's age turn red. Record the actual GCS when assessed; it is not assumed.</p></fieldset>
   <fieldset><legend>12-lead ECG findings</legend>${chips("ecg",D.ecg)}</fieldset>
   <fieldset><legend>Cardiac monitor findings</legend>${chips("monitor",D.monitor)}</fieldset>
+  <details id="bodyExam" class="exam-details"><summary>Focused body exam — HEENT, chest, abdomen, extremities</summary><p class="hint">Expand for complaint-specific findings or injuries. No normal findings are assumed.</p>
+  <fieldset><legend>HEENT / neck</legend>${chips("heent",D.heent)}</fieldset>
+  <fieldset><legend>Chest</legend>${chips("chest",D.chest)}</fieldset>
+  <fieldset><legend>Abdomen / pelvis</legend>${chips("abd",D.abd)}</fieldset>
+  <fieldset><legend>Extremities</legend>${chips("ext",D.ext)}</fieldset>
+  </details>
   <fieldset><legend>Additional objective findings (your words)</legend><textarea id="o_t"></textarea></fieldset>`},
  {tag:"A",title:"Assessment",html:`
   <div class="row"><div><label class="f">Primary impression</label>${sel("imp1",D.impress,true).replace("Not documented","Select impression")}</div><div><label class="f">Secondary impression</label>${sel("imp2",D.impress,true)}</div></div>
@@ -432,6 +482,21 @@ const sections=[
   <fieldset><legend>Additional plan (your words)</legend><textarea id="p_t"></textarea></fieldset>`}
 ];
 document.getElementById("app").innerHTML=sections.map((s,i)=>`<section class="block" id="sec-${i}" data-title="${s.title}"><div class="tag${s.pre?' pre':''}">${s.tag||'&#9679;'}</div><div class="body"><div class="sechead"><h2>${s.title}</h2><div class="secactions"><button type="button" class="seclink clearSec" data-idx="${i}" title="Reset only this section">Clear section</button><button type="button" class="seclink toggleSec" data-idx="${i}" aria-expanded="true">Collapse</button></div></div><div class="secbody">${s.html}</div></div></section>`).join("");
+// Keep core ALS findings together and secondary details one click away.
+function wrapFields(id,title,nodes){const details=document.createElement("details");details.id=id;details.className="optional-details";const summary=document.createElement("summary");summary.textContent=title;details.appendChild(summary);nodes=nodes.filter(Boolean);if(!nodes.length)return;nodes[0].before(details);nodes.forEach(node=>details.appendChild(node));return details;}
+const headerActions=document.createElement("div");headerActions.className="header-actions";
+const displayOptions=document.createElement("details");displayOptions.id="displayOptions";const optionsSummary=document.createElement("summary");optionsSummary.textContent="Display & references";displayOptions.appendChild(optionsSummary);
+const controls=document.querySelector("header .ctrl");controls.before(headerActions);headerActions.append(document.getElementById("guided"),displayOptions);displayOptions.appendChild(controls);
+document.querySelectorAll("label.f").forEach(label=>{const field=label.nextElementSibling;if(field?.id)label.htmlFor=field.id;});
+const fieldFor=id=>document.getElementById(id)?.closest("fieldset");
+wrapFields("historyDetails","Additional history — events, prior treatment, baseline, oral intake",[fieldFor("events_otherText"),fieldFor("self_otherText"),fieldFor("base_otherText"),fieldFor("loi")]);
+wrapFields("strokeDetails","Stroke assessment — LAMS",[fieldFor("lams_f")]);
+wrapFields("cardiacDetails","Cardiac assessment — monitor and 12-lead findings",[fieldFor("ecg_otherText"),fieldFor("monitor_otherText")]);
+const core=document.createElement("div");core.className="als-grid";fieldFor("gen_otherText").before(core);["gen","loc","air","breath","lung","skin"].forEach(id=>core.appendChild(fieldFor(id+"_otherText")));
+const vitals=fieldFor("vitrows");core.after(vitals);vitals.after(document.getElementById("cardiacDetails"));
+const focusHint=document.createElement("div");focusHint.id="focusHint";focusHint.textContent="Select a chief complaint to prioritize the ALS assessment.";core.before(focusHint);
+// Generic treatment chips are retained only for imported drafts that lack structured details.
+document.querySelectorAll('[data-group="tx"] label').forEach(label=>{if(TX_ENTRY[label.querySelector("input").value])label.dataset.structured="1";});
 // per-section collapse + clear (added)
 document.querySelectorAll(".toggleSec").forEach(btn=>btn.addEventListener("click",()=>{const sec=document.getElementById("sec-"+btn.dataset.idx);const collapsed=sec.classList.toggle("collapsed");btn.setAttribute("aria-expanded",collapsed?"false":"true");btn.textContent=collapsed?"Expand":"Collapse";}));
 document.querySelectorAll(".clearSec").forEach(btn=>btn.addEventListener("click",async()=>{const sec=document.getElementById("sec-"+btn.dataset.idx);if(!(await ask(`Clear all fields in "${sec.dataset.title}"?`)))return;
@@ -448,7 +513,7 @@ document.querySelectorAll(".clearSec").forEach(btn=>btn.addEventListener("click"
 // =====================================================================
 const $=id=>document.getElementById(id);
 const v=id=>($(id)?.value||"").trim();
-const picked=id=>{const a=[...document.querySelectorAll(`[data-group="${id}"] input:checked`)].map(i=>i.value).filter(x=>x!=="__other");const t=v(id+"_t");if(t)a.push(t);return a;};
+const picked=id=>{const a=[...document.querySelectorAll(`[data-group="${id}"] input:checked`)].map(i=>i.value).filter(x=>x!=="__other");const t=v(id+"_otherText");if(t&&document.querySelector(`[data-group="${id}"] input[value="__other"]`)?.checked)a.push(t);return a;};
 const triv=id=>{const a=[],d=[];document.querySelectorAll(`[data-tri="${id}"] .tri-item`).forEach(l=>{if(l.dataset.state==="admits")a.push(l.dataset.v);else if(l.dataset.state==="denies")d.push(l.dataset.v);});const oa=v(id+"_a"),od=v(id+"_d");if(oa)a.push(oa);if(od)d.push(od);return{a,d};};
 const selv=id=>{const x=v(id);return x==="Other"?v(id+"_t"):x;};
 const list=a=>a.length<2?a.join(""):a.length===2?a.join(" and "):a.slice(0,-1).join(", ")+", and "+a[a.length-1];
@@ -473,9 +538,9 @@ document.querySelectorAll(".chips:not(.tri)").forEach(g=>g.addEventListener("cha
 // tri state
 function setTriItemState(item,state){item.dataset.state=state;item.querySelectorAll(".tri-btns button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.state===state?"true":"false"));item.querySelector(".tri-label").setAttribute("title",item.querySelector(".tri-label").textContent+": "+(state||"not documented"));}
 document.querySelectorAll(".tri .tri-item").forEach(item=>{setTriItemState(item,"");item.querySelectorAll(".tri-btns button").forEach(btn=>btn.addEventListener("click",()=>setTriItemState(item,btn.dataset.state)));});
-document.querySelectorAll(".tri").forEach(group=>group.addEventListener("keydown",e=>{if(!["ArrowRight","ArrowLeft","ArrowDown","ArrowUp"].includes(e.key))return;const buttons=[...group.querySelectorAll(".tri-btns button")];const i=buttons.indexOf(document.activeElement);if(i<0)return;e.preventDefault();const dir=(e.key==="ArrowRight"||e.key==="ArrowDown")?1:-1;buttons[(i+dir+buttons.length)%buttons.length].focus();}));
+document.querySelectorAll(".tri").forEach(group=>group.addEventListener("keydown",e=>{if(!["ArrowRight","ArrowLeft","ArrowDown","ArrowUp"].includes(e.key))return;const buttons=[...group.querySelectorAll(".tri-item:not(.hide) .tri-btns button")];const i=buttons.indexOf(document.activeElement);if(i<0)return;e.preventDefault();const dir=(e.key==="ArrowRight"||e.key==="ArrowDown")?1:-1;buttons[(i+dir+buttons.length)%buttons.length].focus();}));
 // outcome toggles refusal wizard / transport
-const outcomeUI=()=>{const o=v("outcome");$("refusal").style.display=o==="refusal"?"block":"none";$("transport").style.display=o==="transport"?"block":"none";$("noptDetails").style.display=o==="nopt"?"block":"none";};
+const outcomeUI=()=>{const o=v("outcome");$("refusal").style.display=o==="refusal"||o==="nopt"?"block":"none";$("refusal").querySelectorAll(":scope > fieldset:not(#noptDetails),:scope > .row").forEach(el=>el.style.display=o==="refusal"?"":"none");$("transport").style.display=o==="transport"?"block":"none";$("noptDetails").style.display=o==="nopt"?"block":"none";};
 $("outcome").addEventListener("change",outcomeUI);outcomeUI();
 // peds note
 const pedsUI=()=>{$("pedsnote").textContent=isPeds()?"Pediatric patient: age based vital ranges and weight based dose checks are active."+(v("wt")?"":" Enter weight for dose checks."):"";};
@@ -486,10 +551,25 @@ const pedsUI=()=>{$("pedsnote").textContent=isPeds()?"Pediatric patient: age bas
 // =====================================================================
 const labelChecked=l=>l.dataset.state?l.dataset.state!=="":(l.querySelector("input")?.checked||false);
 const labelVal=l=>l.dataset.v||l.querySelector("input")?.value||"";
+let lastAssessmentContext=null;
 function applyLayout(){
   const cc=v("cc"), pri=PRI[cc]||{}, recent=store.get("soap_recent",{});
   document.querySelectorAll(".chips").forEach(g=>{
-    if(g.classList.contains("tri"))return;
+    if(g.classList.contains("tri")){
+      const list=g.querySelector(".tri-list"), items=[...list.querySelectorAll(".tri-item")];
+      const priority=pri.sx||D.sx.slice(0,10), q=$("sx_search").value.trim().toLowerCase();
+      const rank=item=>{const n=priority.indexOf(item.dataset.v);return n<0?999:n;};
+      items.sort((a,b)=>rank(a)-rank(b)).forEach(item=>list.appendChild(item));
+      let btn=g.querySelector(".more");
+      if(!btn){btn=document.createElement("button");btn.type="button";btn.className="more";btn.addEventListener("click",()=>{g.dataset.exp=g.dataset.exp==="1"?"":"1";applyLayout();});g.appendChild(btn);}
+      let hidden=0;
+      items.forEach(item=>{const val=item.dataset.v, active=!!item.dataset.state;
+        const show=active||(q?val.toLowerCase().includes(q):g.dataset.exp==="1"||priority.includes(val));
+        item.classList.toggle("hide",!show);if(!show)hidden++;});
+      btn.style.display=q||(!hidden&&g.dataset.exp!=="1")?"none":"inline-block";
+      btn.textContent=g.dataset.exp==="1"?"Show relevant symptoms":`Show all symptoms (${hidden} more)`;
+      return;
+    }
     const id=g.dataset.group, p=pri[id]||(recent[id]&&recent[id].length?recent[id]:null), labels=[...g.querySelectorAll("label")];
     // reorder: priority first
     if(p){const rank=x=>{const i=p.indexOf(labelVal(x));return i<0?999:i;};labels.slice().sort((a,b)=>rank(a)-rank(b)).forEach(l=>g.appendChild(l));}
@@ -507,22 +587,27 @@ function applyLayout(){
       let show=true;
       if(q){show=isOther?false:(val.toLowerCase().includes(q)||labelChecked(l));}
       else if(!exp&&!isOther&&!labelChecked(l)){const pos=p?p.indexOf(val):i;show=p?pos>=0:i<limit;}
-      if(!show)hidden++;l.classList.toggle("hide",!show);});
+      if(l.dataset.structured&&!labelChecked(l))show=false;
+      if(!show&&!l.dataset.structured)hidden++;l.classList.toggle("hide",!show);});
     btn.style.display=(q||(hidden===0&&!exp))?"none":"inline-block";
     if(!q)btn.textContent=exp?"Show fewer":`Show all (${hidden} more)`;
   });
+  updateAssessmentFocus();
+  const focusedGroups=["heent","chest","abd","ext"];
+  const focusedExamNeeded=/trauma|fall|injury|pain|burn|allerg|anaphyla|stroke/i.test(cc)||focusedGroups.some(id=>picked(id).length);
+  if(focusedExamNeeded&&$("bodyExam").dataset.complaint!==cc)$("bodyExam").open=true;$("bodyExam").dataset.complaint=cc;
   updateChipSummaries();
   syncTxSuggestState();
 }
 function syncTxSuggestState(){document.querySelectorAll("#txSuggest .ts-chip").forEach(btn=>{
   const box=document.querySelector(`.chips[data-group="tx"] input[value="${CSS.escape(btn.dataset.tx)}"]`);
-  btn.setAttribute("aria-pressed",box&&box.checked?"true":"false");});}
+  btn.setAttribute("aria-pressed",(box&&box.checked)||entryMatches(btn.dataset.tx)?"true":"false");});}
 function triSearchWire(){document.querySelectorAll('[data-tri-list]').forEach(list=>{
   const id=list.dataset.triList,total=list.querySelectorAll(".tri-item").length,box=$(id+"_search");
   if(!box)return;box.style.display=total>14?"block":"none";
   if(box.dataset.wired)return;box.dataset.wired="1";
-  box.addEventListener("input",()=>{const q=box.value.trim().toLowerCase();
-    list.querySelectorAll(".tri-item").forEach(item=>{const val=item.dataset.v.toLowerCase();const active=item.dataset.state;item.classList.toggle("hide",!(!q||val.includes(q)||active));});});});}
+  box.addEventListener("input",applyLayout);});}
+
 triSearchWire();
 function updateChipSummaries(){document.querySelectorAll(".chips:not(.tri)").forEach(g=>{
   const id=g.dataset.group,checked=[...g.querySelectorAll("input:checked")].map(i=>i.value).filter(x=>x!=="__other");
@@ -547,27 +632,28 @@ const opts=(a,blank)=>(blank?`<option value="">${blank}</option>`:"")+a.map(o=>`
 const VF=["time","bp","hr","rr","spo2","etco2","bgl","temp","pain","gcs"];
 function addVit(vals){const r=document.createElement("div");r.className="r";
   r.innerHTML=VF.map(f=>`<label class="vh-input"><span class="vh-label">${f==="spo2"?"SpO2":f==="etco2"?"EtCO2":f.toUpperCase()}</span><input type="text" class="${f}" aria-label="${f==="spo2"?"oxygen saturation":f==="bp"?"blood pressure, e.g. 120/80":f}" placeholder="${f==="spo2"?"SpO2":f==="etco2"?"EtCO2":f==="bp"?"120/80":f.toUpperCase()}" inputmode="${f==="bp"?"text":"decimal"}"></label>`).join("")+`<button type="button" title="Remove vital signs row" aria-label="Remove vital signs row">&times;</button>`;
-  r.querySelector("button").onclick=()=>{if($("vitrows").children.length>1)r.remove();};
+  r.querySelector("button").onclick=()=>{if($("vitrows").children.length>1){r.remove();queueRefresh();}};
   r.addEventListener("input",markVitals);
   if(vals)VF.forEach(f=>r.querySelector("."+f).value=vals[f]||"");
   $("vitrows").appendChild(r);}
 function addMed(vals){const r=document.createElement("div");r.className="r";r.innerHTML=`<label><span class="vh-label">Medication</span><select class="drug" aria-label="Medication">${opts(DRUGS,"Medication")}</select></label><label><span class="vh-label">Dose</span><input type="text" class="dose" aria-label="Dose" placeholder="Dose" inputmode="decimal"></label><label><span class="vh-label">Unit</span><select class="unit" aria-label="Unit">${opts(UNITS)}</select></label><label><span class="vh-label">Route</span><select class="route" aria-label="Route">${opts(ROUTES,"Route")}</select></label><label><span class="vh-label">Time</span><input type="text" class="time" aria-label="Medication time" placeholder="Time" inputmode="numeric"></label><button type="button" title="Remove medication row" aria-label="Remove medication row">&times;</button>`;
-  r.querySelector("button").onclick=()=>r.remove();
+  r.querySelector("button").onclick=()=>{r.remove();queueRefresh();};
   const drug=r.querySelector(".drug");
   drug.onchange=async e=>{if(e.target.value==="Other"){const n=await askText("Medication name");if(n){const o=document.createElement("option");o.textContent=n;o.selected=true;e.target.appendChild(o);}else e.target.value="";}
     const d=DOSES[e.target.value];if(d)r.querySelector(".unit").value=(isPeds()&&d.peds?d.peds[2]:d.adult[2]);};
+  if(vals?.drug&&!DRUGS.includes(vals.drug)){const option=document.createElement("option");option.textContent=vals.drug;drug.appendChild(option);}
   if(vals){["drug","dose","unit","route","time"].forEach(f=>r.querySelector("."+f).value=vals[f]||"");}
   $("medrows").appendChild(r);}
-function addAcc(vals){const r=document.createElement("div");r.className="r";r.innerHTML=`<label><span class="vh-label">Access</span><select class="type" aria-label="Access type"><option>IV</option><option>IO</option><option>Saline lock</option></select></label><label><span class="vh-label">Gauge</span><select class="gauge" aria-label="Gauge">${opts(GAUGE,"Gauge")}</select></label><label><span class="vh-label">Site</span><select class="site" aria-label="Access site">${opts(SITES,"Site")}</select></label><label><span class="vh-label">Attempts</span><input type="text" class="att" aria-label="Access attempts" placeholder="Attempts" inputmode="numeric"></label><label><span class="vh-label">Status</span><select class="ok" aria-label="Access status"><option>patent</option><option>unsuccessful</option><option>infiltrated</option><option>flushed and locked</option></select></label><label><span class="vh-label">Time</span><input type="text" class="time" aria-label="Access time" placeholder="Time" inputmode="numeric"></label><button type="button" title="Remove access row" aria-label="Remove access row">&times;</button>`;
-  r.querySelector("button").onclick=()=>r.remove();
+function addAcc(vals){const r=document.createElement("div");r.className="r";r.innerHTML=`<label><span class="vh-label">Access</span><select class="type" aria-label="Access type"><option>IV</option><option>IO</option><option>Saline lock</option></select></label><label><span class="vh-label">Gauge</span><select class="gauge" aria-label="Gauge">${opts(GAUGE,"Gauge")}</select></label><label><span class="vh-label">Site</span><select class="site" aria-label="Access site">${opts(SITES,"Site")}</select></label><label><span class="vh-label">Attempts</span><input type="text" class="att" aria-label="Access attempts" placeholder="Attempts" inputmode="numeric"></label><label><span class="vh-label">Status</span><select class="ok" aria-label="Access status"><option value="">Status</option><option>patent</option><option>unsuccessful</option><option>infiltrated</option><option>flushed and locked</option></select></label><label><span class="vh-label">Time</span><input type="text" class="time" aria-label="Access time" placeholder="Time" inputmode="numeric"></label><button type="button" title="Remove access row" aria-label="Remove access row">&times;</button>`;
+  r.querySelector("button").onclick=()=>{r.remove();queueRefresh();};
   if(vals){["type","gauge","site","att","ok","time"].forEach(f=>r.querySelector("."+f).value=vals[f]||"");}
   $("accrows").appendChild(r);}
-$("addvit").onclick=()=>addVit();$("addmed").onclick=()=>addMed();$("addacc").onclick=()=>addAcc();
+$("addvit").onclick=()=>{addVit();queueRefresh();};$("addmed").onclick=()=>{addMed();queueRefresh();};$("addacc").onclick=()=>{addAcc();queueRefresh();};
 addVit();
 const rowsOf=(id,fields)=>[...document.querySelectorAll(`#${id} .r`)].map(r=>{const o={};fields.forEach(f=>o[f]=r.querySelector("."+f).value.trim());return o;});
 const vitRows=()=>rowsOf("vitrows",VF).filter(x=>VF.some(f=>f!=="time"&&x[f]));
 const medRows=()=>rowsOf("medrows",["drug","dose","unit","route","time"]).filter(m=>m.drug);
-const accRows=()=>rowsOf("accrows",["type","gauge","site","att","ok","time"]);
+const accRows=()=>rowsOf("accrows",["type","gauge","site","att","ok","time"]).filter(a=>a.gauge||a.site||a.att||a.ok||a.time);
 
 // vital ranges by age
 function ranges(){const y=ageYears();
@@ -587,23 +673,24 @@ function markVitals(){document.querySelectorAll("#vitrows .r").forEach(r=>{const
 // PRESETS
 // =====================================================================
 const BUILTIN={
- "Lift assist, no injury":{cc:"Lift assist",found:"on the floor",outcome:"refusal",tri:{a:[],d:["chest pain","shortness of breath","headache","neck pain","back pain","dizziness","loss of consciousness","weakness","numbness/tingling"]},chips:{src:["patient"],events:["called 911 themselves","unwitnessed event"],self:["received no treatment"],base:["at normal baseline per family","ambulatory without assistance","lives alone"],gen:["no acute distress","calm and cooperative"],loc:["A&Ox4"],air:["patent"],breath:["unlabored"],lung:["clear bilaterally"],skin:["warm, dry, normal color"],heent:["atraumatic","pupils PERRL"],chest:["atraumatic"],abd:["soft","non tender","pelvis stable"],ext:["moves all extremities","CSM intact x4"],neuro:["no focal deficits","gait normal"],tx:["Primary and secondary assessment","Assisted patient to standing","Assisted patient to bed/chair"],refcap:D.refcap.slice(0,6),refrisk:["worsening of condition","that symptoms may return without warning"],refalt:["transport offered multiple times","advised to call 911 at any time","advised to follow up with PCP today"]},fields:{imp1:"Lift assist, no injury",proto:"Refusal of Care",refsig:"patient signed refusal form",refomc:"not contacted, not required",refleft:"in care of self"}},
- "Nursing home fall":{cc:"Fall",found:"on the floor",outcome:"transport",tri:{a:[],d:["chest pain","shortness of breath","headache","neck pain","back pain","loss of consciousness","nausea","numbness/tingling"]},chips:{src:["facility staff","patient"],events:["unwitnessed event","facility staff called 911"],self:["received no treatment"],base:["lives in skilled nursing facility","ambulates with walker","at normal baseline per facility staff"],gen:["no acute distress"],loc:["A&Ox4"],air:["patent"],breath:["unlabored"],lung:["clear bilaterally"],skin:["warm, dry, normal color"],heent:["atraumatic","pupils PERRL"],chest:["atraumatic","non tender"],abd:["soft","non tender","pelvis stable"],ext:["moves all extremities","CSM intact x4"],neuro:["no focal deficits"],tx:["Primary and secondary assessment","Cardiac monitor applied","Blood glucose obtained","Continuous reassessment"],resp:["remained stable"]},fields:{imp1:"Fall without injury",proto:"Trauma / Spinal Motion Restriction",mode:"non emergent",pos:"position of comfort",toc:"RN",tocby:"verbal at bedside, ePCR transmitted"}},
+ "Lift assist, no injury":{cc:"Lift assist",found:"on the floor",outcome:"refusal",tri:{a:[],d:["chest pain","shortness of breath","headache","neck pain","back pain","dizziness","loss of consciousness","weakness","numbness/tingling"]},chips:{src:["patient"],events:["called 911 themselves","unwitnessed event"],self:["received no treatment"],base:["at normal baseline per family","ambulatory without assistance","lives alone"],gen:["no acute distress","calm and cooperative"],loc:["A&Ox4"],air:["patent"],breath:["unlabored"],lung:["clear bilaterally"],skin:["warm, dry, normal color"],heent:["atraumatic","pupils PERRL"],chest:["atraumatic"],abd:["soft","non tender","pelvis stable"],ext:["moves all extremities","CSM intact x4"],neuro:["no focal deficits","gait normal"],tx:["Assisted patient to standing","Assisted patient to bed/chair"],refcap:D.refcap.slice(0,6),refrisk:["worsening of condition","that symptoms may return without warning"],refalt:["transport offered multiple times","advised to call 911 at any time","advised to follow up with PCP today"]},fields:{imp1:"Lift assist, no injury",proto:"Refusal of Care",refsig:"patient signed refusal form",refomc:"not contacted, not required",refleft:"in care of self"}},
+ "Nursing home fall":{cc:"Fall",found:"on the floor",outcome:"transport",tri:{a:[],d:["chest pain","shortness of breath","headache","neck pain","back pain","loss of consciousness","nausea","numbness/tingling"]},chips:{src:["facility staff","patient"],events:["unwitnessed event","facility staff called 911"],self:["received no treatment"],base:["lives in skilled nursing facility","ambulates with walker","at normal baseline per facility staff"],gen:["no acute distress"],loc:["A&Ox4"],air:["patent"],breath:["unlabored"],lung:["clear bilaterally"],skin:["warm, dry, normal color"],heent:["atraumatic","pupils PERRL"],chest:["atraumatic","non tender"],abd:["soft","non tender","pelvis stable"],ext:["moves all extremities","CSM intact x4"],neuro:["no focal deficits"],tx:["Cardiac monitor applied","Blood glucose obtained","Continuous reassessment"],resp:["remained stable"]},fields:{imp1:"Fall without injury",proto:"Trauma / Spinal Motion Restriction",mode:"non emergent",pos:"position of comfort",toc:"RN",tocby:"verbal at bedside, ePCR transmitted"}},
  "Chest pain, standard workup":{cc:"Chest pain",found:"sitting",outcome:"transport",tri:{a:[],d:["shortness of breath","nausea","diaphoresis","syncope","palpitations"]},chips:{src:["patient"],self:["received no treatment"],gen:["no acute distress"],loc:["A&Ox4"],air:["patent"],breath:["unlabored","speaking in full sentences"],lung:["clear bilaterally"],skin:["warm, dry, normal color"],heent:["no JVD","pupils PERRL"],chest:["atraumatic","non reproducible pain"],abd:["soft","non tender"],ext:["no edema","CSM intact x4"],tx:["Cardiac monitor applied","12 lead ECG obtained and transmitted","IV access established","Aspirin administered","Continuous reassessment"]},fields:{proto:"Chest Pain / Acute Coronary Syndrome",imp1:"Chest pain, suspected cardiac",mode:"non emergent",pos:"position of comfort",toc:"RN"},meds:[{drug:"Aspirin",dose:"324",unit:"mg",route:"PO"}],acc:[{type:"IV",gauge:"18g",site:"left AC",att:"1",ok:"patent"}]},
  "Shortness of breath, COPD":{cc:"Shortness of breath",found:"sitting",outcome:"transport",tri:{a:["cough","wheezing"],d:["chest pain","fever","swelling"]},chips:{src:["patient"],pmh:["COPD","hypertension"],self:["used inhaler"],gen:["mild distress"],loc:["A&Ox4"],air:["patent"],breath:["labored","speaking in short sentences","accessory muscle use"],lung:["wheezes bilaterally","diminished bilaterally"],skin:["warm, dry, normal color"],heent:["no JVD"],ext:["no edema"],tx:["Oxygen via nasal cannula","Albuterol nebulizer","Ipratropium nebulizer","Cardiac monitor applied","12 lead ECG obtained and transmitted","IV access established","Continuous reassessment"],resp:["breathing improved"]},fields:{proto:"Bronchospasm",imp1:"COPD exacerbation",mode:"non emergent",pos:"position of comfort",toc:"RN"},meds:[{drug:"Albuterol",dose:"5",unit:"mg",route:"Neb"},{drug:"Ipratropium",dose:"0.5",unit:"mg",route:"Neb"}]},
- "Intoxicated, no injury":{cc:"Altered mental status",found:"sitting",outcome:"transport",tri:{a:[],d:["chest pain","shortness of breath","headache","recent trauma","suicidal ideation"]},chips:{src:["patient","police"],events:["symptoms began after alcohol use","bystander called 911"],pmh:["substance use"],gen:["disheveled","calm and cooperative"],loc:["intoxicated appearing","A&Ox3"],air:["patent"],breath:["unlabored"],lung:["clear bilaterally"],skin:["warm, dry, normal color","flushed"],heent:["atraumatic","pupils PERRL"],ext:["moves all extremities","CSM intact x4"],neuro:["slurred speech (dysarthria)","gait unsteady","no focal deficits"],tx:["Primary and secondary assessment","Blood glucose obtained","Cardiac monitor applied","Continuous reassessment"],resp:["remained stable"]},fields:{proto:"Altered Mental Status",imp1:"Alcohol intoxication",mode:"non emergent",pos:"left lateral recumbent",toc:"RN"}}
+ "Intoxicated, no injury":{cc:"Altered mental status",found:"sitting",outcome:"transport",tri:{a:[],d:["chest pain","shortness of breath","headache","recent trauma","suicidal ideation"]},chips:{src:["patient","police"],events:["symptoms began after alcohol use","bystander called 911"],pmh:["substance use"],gen:["disheveled","calm and cooperative"],loc:["intoxicated appearing","A&Ox3"],air:["patent"],breath:["unlabored"],lung:["clear bilaterally"],skin:["warm, dry, normal color","flushed"],heent:["atraumatic","pupils PERRL"],ext:["moves all extremities","CSM intact x4"],neuro:["slurred speech (dysarthria)","gait unsteady","no focal deficits"],tx:["Blood glucose obtained","Cardiac monitor applied","Continuous reassessment"],resp:["remained stable"]},fields:{proto:"Altered Mental Status",imp1:"Alcohol intoxication",mode:"non emergent",pos:"left lateral recumbent",toc:"RN"}}
 };
 function capture(){const p={cc:v("cc"),found:v("found"),outcome:v("outcome"),tri:triv("sx"),chips:{},fields:{},meds:medRows(),acc:accRows()};
   document.querySelectorAll(".chips:not(.tri)").forEach(g=>{const a=[...g.querySelectorAll("input:checked")].map(i=>i.value).filter(x=>x!=="__other");if(a.length)p.chips[g.dataset.group]=a;});
   ["imp1","imp2","proto","mode","pos","toc","tocby","dest","refsig","refomc","refleft","onset","dur","prov","qual","rad","lams_f","lams_a","lams_g","lams_s","resp_t","nopt_t"].forEach(id=>{if(v(id))p.fields[id]=v(id);});
   return p;}
-function clearForm(){document.querySelectorAll("input,select,textarea").forEach(e=>{if(e.type==="checkbox")e.checked=false;else if(e.tagName==="SELECT")e.selectedIndex=0;else e.value="";});
+function clearForm(){clearTimeout(autosaveTimer);document.querySelectorAll("#app input,#app select,#app textarea").forEach(e=>{if(e.type==="checkbox")e.checked=false;else if(e.tagName==="SELECT")e.selectedIndex=0;else e.value="";});
   document.querySelectorAll(".other").forEach(e=>e.classList.remove("show"));
   document.querySelectorAll(".tri .tri-item").forEach(l=>setTriItemState(l,""));
   document.querySelectorAll("#medrows .r,#accrows .r,#vitrows .r").forEach(e=>e.remove());addVit();
   document.querySelectorAll(".chips").forEach(g=>g.dataset.exp="");
+  document.querySelectorAll(".optional-details,#bodyExam").forEach(el=>el.open=false);$("narr").textContent="";lastNarrativeText="";store.set("soap_draft_ts",null);
   ["age","sex","cc"].forEach(id=>$(id).classList.remove("fieldErr"));$("essentialsMsg").style.display="none";
-  $("flags").style.display="none";$("out").style.display="none";$("copy").disabled=true;$("copy2").disabled=true;$("stickyCopy").disabled=true;$("gen").textContent="Generate narrative";$("readystate").style.display="none";lastSnapshot=null;$("staleBanner").classList.remove("show");outcomeUI();pedsUI();lamsUI();applyLayout();updateChipSummaries();store.set("soap_draft",null);updateSummary();updateNavState();}
+  $("flags").style.display="none";$("out").style.display="none";$("copy").disabled=true;$("copy2").disabled=true;$("stickyCopy").disabled=true;$("gen").textContent="Review current narrative";$("readystate").style.display="none";lastSnapshot=null;$("staleBanner").classList.remove("show");outcomeUI();pedsUI();lamsUI();applyLayout();updateChipSummaries();store.set("soap_draft",null);updateSummary();updateNavState();gotoStep(0);queueRefresh();}
 function apply(p){clearForm();
   $("cc").value=p.cc||"";$("found").value=p.found||"";$("outcome").value=p.outcome||"transport";
   Object.entries(p.chips||{}).forEach(([g,arr])=>arr.forEach(val=>{const i=document.querySelector(`[data-group="${g}"] input[value="${CSS.escape(val)}"]`);if(i)i.checked=true;}));
@@ -612,7 +699,7 @@ function apply(p){clearForm();
   Object.entries(p.fields||{}).forEach(([id,val])=>{if($(id))$(id).value=val;});
   (p.meds||[]).forEach(addMed);(p.acc||[]).forEach(addAcc);
   ["cc","imp1","proto","dest"].forEach(id=>$(id).dispatchEvent(new Event("change")));
-  outcomeUI();lamsUI();applyLayout();updateSummary();updateNavState();qsCheck();}
+  outcomeUI();lamsUI();applyLayout();updateSummary();updateNavState();qsCheck();queueRefresh();}
 
 // =====================================================================
 // NARRATIVE
@@ -620,7 +707,7 @@ function apply(p){clearForm();
 function vitStr(x){const o=[];if(x.bp)o.push("BP "+x.bp);if(x.hr)o.push("HR "+x.hr);if(x.rr)o.push("RR "+x.rr);if(x.spo2)o.push("SpO2 "+x.spo2+"%");if(x.etco2)o.push("EtCO2 "+x.etco2);if(x.bgl)o.push("BGL "+x.bgl);if(x.temp)o.push("Temp "+x.temp);if(x.pain)o.push("pain "+x.pain+"/10");if(x.gcs)o.push("GCS "+x.gcs);return o.join(", ");}
 function computeSOAP(){
   const age=v("age"),ageu=v("ageu"),sex=v("sex"),cc=selv("cc")||"unspecified complaint",outcome=v("outcome");
-  const ageTxt=age?`${age}-year-old`:"";
+  const ageTxt=age?`${age}-${ageu}-old`:"";
   const pt=[ageTxt,sex||"patient"].filter(Boolean).join(" ");
   const S=[],O=[],A=[],P=[];
   if(outcome==="nopt"){
@@ -636,6 +723,7 @@ function computeSOAP(){
   if(op.length)S.push(cap(op.join(", "))+".");
   const ev=picked("events");if(ev.length)S.push(cap(list(ev))+".");
   const sx=triv("sx");if(sx.a.length)S.push(`Patient reports associated ${list(sx.a)}.`);if(sx.d.length)S.push(`Patient denies ${list(sx.d)}.`);
+  if($("sx_none").checked)S.push("Patient reports no additional symptoms when asked.");
   const sf=picked("self");if(sf.length)S.push(`Prior to EMS arrival, patient ${list(sf)}.`);
   const bs=picked("base");if(bs.length)S.push(`Baseline and living situation: ${list(bs)}.`);
   const pmh=picked("pmh"),pmht=v("pmh_t");if(pmh.length||pmht)S.push(`PMH includes ${list([...pmh,pmht].filter(Boolean))}.`);
@@ -664,9 +752,9 @@ function computeSOAP(){
   const pro=selv("proto");if(pro)A.push(`Care provided per Rhode Island EMS ${pro} protocol.`);
   const at=v("a_t");if(at)A.push(end(at));
   // P
-  const tx=picked("tx");if(tx.length)P.push(`Interventions: ${list(tx)}.`);
-  const support=tx.filter(x=>/oxygen|CPAP|BVM|iGel|intubat|OPA|NPA|suction|ventilat/i.test(x));if(support.length)P.push(`Airway/oxygen support documented: ${list(support)}.`);
-  const acc=accRows();if(acc.length)P.push(acc.map(a=>{let t=`${a.type} access ${a.ok==="unsuccessful"?"attempted":"established"}`;const d=[a.gauge,a.site].filter(Boolean).join(" ");if(d)t+=`, ${d}`;if(a.att)t+=`, ${a.att} attempt${a.att==="1"?"":"s"}`;if(a.ok!=="unsuccessful")t+=`, ${a.ok}`;if(a.time)t+=` at ${a.time}`;return t+".";}).join(" "));
+  const tx=picked("tx").filter(name=>!entryMatches(name));if(tx.length)P.push(`Interventions: ${list(tx)}.`);
+
+  const acc=accRows();if(acc.length)P.push(acc.map(a=>{const detail=[a.gauge,a.site,a.att?`${a.att} attempt${a.att==="1"?"":"s"}`:"",a.ok,a.time?"at "+a.time:""].filter(Boolean);return `${a.type} access${detail.length?": "+detail.join(", "):""}.`;}).join(" "));
   const mr=medRows();if(mr.length)P.push("Medications: "+mr.map(m=>[m.drug,m.dose?m.dose+" "+m.unit:"",m.route,m.time?"at "+m.time:""].filter(Boolean).join(" ")).join("; ")+".");
   const mt=v("med_t");if(mt)P.push(end(mt));
   const rs=picked("resp"),rt=v("resp_t");if(rs.length)P.push(`Patient ${list(rs)} following treatment.`);if(rt)P.push(end(rt));
@@ -674,7 +762,7 @@ function computeSOAP(){
   if(outcome==="transport"){
     const dest=selv("dest"),mode=v("mode"),pos=v("pos");
     if(dest||mode||pos){let t="Patient transported";if(pos)t+=` in ${pos}`;if(dest)t+=` to ${dest}`;if(mode)t+=` ${mode}`;P.push(t+".");}
-    const toc=v("toc"),tocby=v("tocby");if(toc||tocby)P.push(`Care transferred to ${toc||"receiving staff"}${tocby?" with report given "+tocby:" with full verbal report"}, no change in patient condition noted at time of transfer.`);
+    const toc=v("toc"),tocby=v("tocby");if(toc||tocby)P.push(`Care transferred to ${toc||"receiving staff"}${tocby?" with report given "+tocby:""}.`);
   } else if(outcome==="refusal"){
     const c=picked("refcap"),r=picked("refrisk"),al=picked("refalt"),w=picked("refwit");
     P.push("Disposition documented as refusal / no transport; only the elements selected below are documented.");
@@ -684,7 +772,7 @@ function computeSOAP(){
     const sig=v("refsig"),omc=v("refomc"),left=v("refleft");
     if(sig)P.push(cap(sig)+(w.length?` witnessed by ${list(w)}`:"")+".");else if(w.length)P.push(`Refusal witnessed by ${list(w)}.`);
     if(omc)P.push(`Online medical control ${omc}.`);
-    if(left)P.push(`Patient left ${left}${vr.length?" with vital signs within acceptable limits as documented":""}.`);
+    if(left)P.push(`Patient left ${left}.`);
   } else {const nd=v("nopt_t");P.push(nd?`No patient contact or transport occurred. Dispatch/disposition note: ${end(nd)}`:"No patient contact or transport occurred; specific cancellation/no-contact details not documented.");}
   const pt2=v("p_t");if(pt2)P.push(end(pt2));
   return{nopt:false,S,O,A,P};
@@ -704,11 +792,12 @@ function buildBlocksHTML(){
   return[["S","Subjective"],["O","Objective"],["A","Assessment"],["P","Plan"]].map(([k])=>`<div class="soap-block"><span class="soap-tag">${k}</span><div class="soap-text">${escapeHTML(fmt(r[k]))}</div></div>`).join("");
 }
 let lastNarrativeText="",lastSnapshot=null;
-function isStale(){return lastSnapshot!==null&&JSON.stringify(serializeForm())!==lastSnapshot;}
+function clinicalSnapshot(){return JSON.stringify({...serializeForm(),style:v("style"),headers:v("hdrs")});}
+function isStale(){return lastSnapshot!==null&&clinicalSnapshot()!==lastSnapshot;}
 function updateStaleUI(){const stale=isStale();$("staleBanner").classList.toggle("show",stale);
   const hasOutput=$("out").style.display==="block";
   $("copy").disabled=!hasOutput||stale;$("copy2").disabled=!hasOutput||stale;$("stickyCopy").disabled=!hasOutput||stale;}
-function renderNarrative(){lastNarrativeText=build();$("narr").innerHTML=buildBlocksHTML();lastSnapshot=JSON.stringify(serializeForm());updateStaleUI();}
+function renderNarrative(){lastNarrativeText=build();$("narr").innerHTML=buildBlocksHTML();lastSnapshot=clinicalSnapshot();updateStaleUI();}
 function terse(t){return t.replace(/\bPatient is a /g,"Pt is a ").replace(/\bPatient\b/g,"Pt").replace(/\bpatient\b/g,"pt").replace(/complaining of/g,"c/o").replace(/reports associated/g,"+").replace(/History obtained from/g,"Hx per").replace(/Prior to EMS arrival, /g,"PTA ").replace(/following treatment/g,"post tx").replace(/Care provided per Rhode Island EMS /g,"Per RI EMS ").replace(/ protocol\./g," protocol.").replace(/Care transferred to/g,"Care transferred to").replace(/no change in patient condition noted at time of transfer/g,"no change in pt condition at transfer").replace(/Field impression:/g,"Impression:").replace(/with report given/g,"w/ report").replace(/, and /g,", ").replace(/ and /g," & ").replace(/described as/g,"desc").replace(/duration approximately/g,"duration ~").replace(/Interventions:/g,"Tx:").replace(/\. /g,"; ").replace(/\.$/,"");}
 
 // =====================================================================
@@ -754,7 +843,7 @@ const PROTO_MATCH=[
 // contraindications/cautions. Not a substitute for the official protocol.
 // =====================================================================
 const PROTO_INFO={
- "Routine Patient Care":{indications:"Baseline assessment and monitoring for any patient without a more specific protocol.",tx:["Scene safety and BSI","Primary and secondary assessment","Continuous reassessment"],caution:"Escalate to a specific protocol as soon as one applies."},
+ "Routine Patient Care":{indications:"Baseline assessment and monitoring for any patient without a more specific protocol.",tx:["Continuous reassessment"],caution:"Escalate to a specific protocol as soon as one applies."},
  "Chest Pain / Acute Coronary Syndrome":{indications:"Chest pain or anginal equivalent suspicious for cardiac ischemia.",tx:["Cardiac monitor applied","12 lead ECG obtained and transmitted","IV access established","Aspirin administered","Nitroglycerin administered","Oxygen via nasal cannula"],caution:"Withhold aspirin if allergy or active bleeding; withhold nitroglycerin if hypotensive, right-sided MI, or recent ED medication use."},
  "STEMI":{indications:"12 lead ECG meets STEMI criteria.",tx:["12 lead ECG obtained and transmitted","Serial 12 leads obtained","STEMI alert called","IV access established","Aspirin administered","Nitroglycerin administered"],caution:"Minimize scene time; transport to a PCI capable facility."},
  "Respiratory Distress":{indications:"Dyspnea not clearly bronchospastic (e.g., pulmonary, cardiac, or unclear etiology).",tx:["Oxygen via nasal cannula","Oxygen via non rebreather","CPAP applied","Cardiac monitor applied","IV access established"],caution:"Use CPAP cautiously with hypotension, vomiting, or altered mental status."},
@@ -764,20 +853,20 @@ const PROTO_INFO={
  "Seizures":{indications:"Active or recently active seizure activity.",tx:["Midazolam administered","Blood glucose obtained","Suctioning performed","OPA/NPA inserted","Oxygen via nasal cannula","IV access established"],caution:"Monitor airway and respiratory status closely after benzodiazepine administration."},
  "Altered Mental Status":{indications:"Decreased or altered level of consciousness without a more specific cause identified.",tx:["Blood glucose obtained","Naloxone administered","Cardiac monitor applied","IV access established","Oxygen via nasal cannula"],caution:"Consider and rule out hypoglycemia, opioid toxicity, and stroke."},
  "Hypoglycemia / Hyperglycemia":{indications:"Blood glucose outside normal range with symptoms consistent with it.",tx:["Blood glucose obtained","Dextrose administered","Glucagon administered","IV access established"],caution:"Reassess blood glucose and mental status after treatment; glucagon if no IV access."},
- "Cardiac Arrest":{indications:"Pulseless, apneic patient.",tx:["CPR initiated","Defibrillation","IO access established","Epinephrine IM","Airway management"],caution:"Minimize interruptions to compressions; confirm resuscitation/DNR status early."},
+ "Cardiac Arrest":{indications:"Pulseless, apneic patient.",tx:["CPR initiated","Defibrillation","IO access established"],caution:"Minimize interruptions to compressions; confirm resuscitation/DNR status early."},
  "Bradycardia":{indications:"Symptomatic bradycardia with hypotension, altered mental status, or signs of poor perfusion.",tx:["Cardiac monitor applied","12 lead ECG obtained and transmitted","Pacing","IV access established"],caution:"Treat the symptomatic patient, not the number alone."},
  "Tachycardia":{indications:"Symptomatic tachycardia with hypotension, altered mental status, or signs of poor perfusion.",tx:["Cardiac monitor applied","12 lead ECG obtained and transmitted","Cardioversion","Adenosine administered","IV access established"],caution:"Distinguish stable vs unstable; confirm rhythm before cardioversion/antiarrhythmics."},
  "Anaphylaxis / Allergic Reaction":{indications:"Allergic reaction with airway, breathing, or circulatory involvement.",tx:["Epinephrine IM","Oxygen via nasal cannula","Diphenhydramine administered","IV access established","Albuterol nebulizer"],caution:"Epinephrine is first-line for anaphylaxis; do not delay it for antihistamines."},
  "Overdose / Poisoning":{indications:"Suspected toxic ingestion/exposure or opioid overdose with respiratory depression.",tx:["Naloxone administered","Oxygen via nasal cannula","IV access established","Cardiac monitor applied"],caution:"Titrate naloxone to adequate respirations, not full arousal, to reduce withdrawal/agitation."},
  "Pain Management":{indications:"Acute pain from a known cause without a contraindication to analgesia.",tx:["Fentanyl administered","IV access established","Cardiac monitor applied"],caution:"Monitor for hypotension/respiratory depression; use caution with hemodynamic instability."},
  "Nausea / Vomiting":{indications:"Nausea/vomiting, isolated or associated with another complaint.",tx:["Ondansetron administered","IV access established"],caution:"Treat the underlying cause as indicated by the primary complaint."},
- "Trauma / Spinal Motion Restriction":{indications:"Mechanism or exam findings concerning for spinal injury.",tx:["Spinal motion restriction","Primary and secondary assessment","IV access established"],caution:"Selective spinal motion restriction per exam criteria; avoid unnecessary restriction."},
+ "Trauma / Spinal Motion Restriction":{indications:"Mechanism or exam findings concerning for spinal injury.",tx:["Spinal motion restriction","IV access established"],caution:"Selective spinal motion restriction per exam criteria; avoid unnecessary restriction."},
  "Traumatic Brain Injury":{indications:"Head injury with altered mental status or concerning mechanism/exam.",tx:["Oxygen via nasal cannula","Spinal motion restriction","Blood glucose obtained","Cardiac monitor applied"],caution:"Avoid hypoxia and hypotension, which worsen secondary brain injury; monitor GCS trend."},
  "Hemorrhage Control":{indications:"Significant external bleeding.",tx:["Direct pressure applied","Tourniquet applied","Wound dressed and bandaged","IV access established"],caution:"Apply a tourniquet early for life-threatening extremity hemorrhage; note application time."},
  "Burns":{indications:"Thermal, chemical, or electrical burn injury.",tx:["Cooling measures","Wound dressed and bandaged","IV access established","Oxygen via nasal cannula"],caution:"Stop the burning process first; avoid over-cooling large body surface area burns (hypothermia risk)."},
  "Behavioral Emergencies":{indications:"Behavioral/psychiatric emergency with safety concerns.",tx:["Restraints applied","Blood glucose obtained","Continuous reassessment"],caution:"Rule out medical causes of altered behavior; use restraint only per policy, with documented justification."},
  "Sepsis":{indications:"Suspected infection with signs of systemic compromise (e.g., fever, tachycardia, hypotension).",tx:["IV access established","Normal saline bolus","Oxygen via nasal cannula","Cardiac monitor applied"],caution:"Identify and document suspected source; call ahead if sepsis criteria are met."},
- "Refusal of Care":{indications:"Patient with capacity declines evaluation and/or transport.",tx:["Primary and secondary assessment"],caution:"Confirm and document decision-making capacity, risks explained, and alternatives offered before accepting a refusal."},
+ "Refusal of Care":{indications:"Patient with capacity declines evaluation and/or transport.",tx:[],caution:"Confirm and document decision-making capacity, risks explained, and alternatives offered before accepting a refusal."},
  "Other":{indications:"No listed protocol applies; describe the situation and care provided in your own words.",tx:[],caution:"Document the clinical rationale clearly since no specific protocol is referenced."},
 };
 function renderProtoLibrary(filter){
@@ -803,11 +892,12 @@ function updateProtoUI(){
   const suggestions=(info&&info.tx||[]).filter(t=>D.tx.includes(t));
   if(!suggestions.length){sug.classList.remove("show");wrap.innerHTML="";return;}
   label.textContent=`Suggested treatments for ${name} (based on the protocol reference):`;
-  wrap.innerHTML=suggestions.map(t=>{const box=document.querySelector(`.chips[data-group="tx"] input[value="${CSS.escape(t)}"]`);const pressed=box&&box.checked?"true":"false";return `<button type="button" class="ts-chip" data-tx="${escapeHTML(t)}" aria-pressed="${pressed}">${escapeHTML(t)}</button>`;}).join("");
+  wrap.innerHTML=suggestions.map(t=>{const box=document.querySelector(`.chips[data-group="tx"] input[value="${CSS.escape(t)}"]`);const pressed=(box&&box.checked)||entryMatches(t)?"true":"false";return `<button type="button" class="ts-chip" data-tx="${escapeHTML(t)}" aria-pressed="${pressed}">${escapeHTML(TX_ENTRY[t]?"Record "+(TX_ENTRY[t].drug||TX_ENTRY[t].type+" access"):t)}</button>`;}).join("");
   sug.classList.add("show");
 }
 document.querySelector("#txSuggest").addEventListener("click",e=>{
   const btn=e.target.closest(".ts-chip");if(!btn)return;
+  if(TX_ENTRY[btn.dataset.tx]){startTreatment(btn.dataset.tx);return;}
   const box=document.querySelector(`.chips[data-group="tx"] input[value="${CSS.escape(btn.dataset.tx)}"]`);
   if(!box)return;box.checked=!box.checked;box.dispatchEvent(new Event("change",{bubbles:true}));btn.setAttribute("aria-pressed",box.checked?"true":"false");applyLayout();
 });
@@ -815,8 +905,8 @@ $("proto").addEventListener("change",updateProtoUI);
 function check(){
   const f=[],dose=[];
   const cc=(selv("cc")||"").toLowerCase(),imp=((selv("imp1")||"")+" "+v("imp2")).toLowerCase(),ctx=cc+" "+imp,outcome=v("outcome");
-  const has=(id,re)=>picked(id).some(x=>re.test(x));const any=(...res)=>res.some(re=>re.test(ctx));
-  const tx=picked("tx"),meds=medRows(),acc=accRows(),SX=triv("sx"),sxAll=[...SX.a,...SX.d],vr=vitRows(),v0=vr[0]||{};
+  const has=(id,re)=>(id==="tx"?effectiveTx():picked(id)).some(x=>re.test(x));const any=(...res)=>res.some(re=>re.test(ctx));
+  const tx=effectiveTx(),meds=medRows(),acc=accRows(),SX=triv("sx"),sxAll=[...SX.a,...SX.d],vr=vitRows(),v0=vr[0]||{};
   const reass=vr.length>1;
   if(outcome==="nopt")return{f:[],dose:[]};
   if(!v("sex"))f.push("Sex");
@@ -824,6 +914,9 @@ function check(){
   if(!v0.bp||!v0.hr||!v0.rr||!v0.spo2)f.push("Full set of initial vitals (BP, HR, RR, SpO2)");
   if(!picked("loc").length)f.push("Level of consciousness / orientation");
   if(!picked("skin").length)f.push("Skin findings");
+  if(!picked("air").length)f.push("Airway status");
+  if(!picked("breath").length)f.push("Work of breathing / ability to speak");
+  if(!picked("lung").length)f.push("Lung sounds");
   if(!selv("imp1"))f.push("Primary field impression");
   if(!selv("proto"))f.push("RI protocol followed");
   else{
@@ -834,7 +927,7 @@ function check(){
     }
   }
   if(!picked("src").length)f.push("Who provided the history");
-  if(!sxAll.length)f.push("Associated symptoms admitted or denied");
+  if(!sxAll.length&&!$("sx_none").checked)f.push("Associated symptoms admitted or denied");
   if(!picked("events").length&&!v("onset")&&!v("s_t"))f.push("Events leading up to the call");
   if(!picked("base").length&&any(/altered|weakness|fall|stroke|dementia|lift/))f.push("Baseline mental and functional status");
   if(outcome==="transport"){if(!selv("dest"))f.push("Transport destination");if(selv("dest")&&!v("toc"))f.push("Who care was transferred to");}
@@ -850,13 +943,13 @@ function check(){
     if(!vr.length)f.push("Refusal: a full set of vitals before release");
     if(!v("refomc")&&(any(/chest pain|stroke|altered|syncope|overdose|seizure|cardiac/)||isPeds()))f.push("Refusal: online medical control contact for a high risk refusal");
   }
-  if(tx.length&&!picked("resp").length)f.push("Response to treatment");
+  if((tx.length||meds.length||acc.length)&&!picked("resp").length&&!v("resp_t"))f.push("Response to treatment");
   if(has("tx",/administered|nebulizer|bolus|Epinephrine/)&&!meds.length)f.push("Medication rows with dose, route, and time (interventions list a medication)");
   if(has("tx",/IV access|IO access/)&&!acc.length)f.push("Access row with gauge and site (interventions list IV/IO)");
   if(meds.some(m=>!m.dose||!m.route))f.push("Every medication needs a dose and route");
   if(meds.some(m=>!m.time))f.push("Medication times");
   if(meds.some(m=>/IV|IO/.test(m.route))&&!acc.length)f.push("IV/IO medication given but no access documented");
-  if(acc.some(a=>!a.gauge||!a.site))f.push("Every access row needs a gauge and site");
+  if(acc.some(a=>!a.gauge||!a.site||!a.ok))f.push("Every access row needs gauge, site, and status");
   if(meds.length&&!reass)f.push("Reassessment vitals after medication administration");
   if(meds.some(m=>/Nitroglycerin/.test(m.drug))){if(!v0.bp)f.push("BP before nitroglycerin");if(!vr.slice(1).some(x=>x.bp))f.push("Repeat BP after nitroglycerin");if(!/pde|viagra|sildenafil|tadalafil|cialis/i.test(v("s_t")+v("med_t")))f.push("PDE inhibitor use asked before nitroglycerin");}
   if(meds.some(m=>/Fentanyl|Morphine|Ketamine|Midazolam|Lorazepam/.test(m.drug))&&!vr.slice(1).some(x=>x.rr||x.spo2||x.etco2))f.push("Repeat RR, SpO2, or EtCO2 after sedating or analgesic medication");
@@ -868,7 +961,7 @@ function check(){
   if(any(/chest pain|cardiac|coronary|stemi|dysrhythmia|syncope|palpit/)){
     if(!picked("ecg").length||has("ecg",/not obtained/))f.push("12 lead ECG interpretation");
     if(!has("tx",/12 lead/))f.push("12 lead ECG listed as an intervention");
-    if(!has("tx",/Cardiac monitor/)&&!picked("monitor").length)f.push("Cardiac monitor findings");
+    if(!picked("monitor").length||has("monitor",/not applied/))f.push("Cardiac monitor findings");
     if(!has("tx",/IV access|IO access/)&&!acc.length)f.push("IV access");
   }
   if(any(/chest pain|coronary|stemi/)){
@@ -942,11 +1035,17 @@ function check(){
     if(!/rosc|pronounc|termination|tor/i.test(v("p_t")+v("resp")))f.push("ROSC or termination of resuscitation with times");
   }
   if(any(/sepsis|fever/)){if(!v0.temp)f.push("Temperature");if(!v0.etco2)f.push("EtCO2");if(!/infection|uti|pneumonia|wound|source/i.test(v("s_t")+v("a_t")))f.push("Suspected source of infection");}
-  return{f,dose};
+  return{f:[...new Set(f)],dose};
 }
 const REQUIRED_RE=/^Sex$|initial|primary|destination|capacity|risk|transport|signature|contact|vital|medication|dose|route|access|ECG|GCS|LAMS|airway|lung|blood glucose|mechanism|protocol/i;
 // message keyword -> field/group selector, used for "go to field" links and section warning badges (added)
 const FIELD_MAP=[
+ [/^Sex$/,"#sex"],
+ [/allergy documentation|allergen/i,"#allg_t"],
+ [/level of consciousness/i,'[data-group="loc"]'],
+ [/work of breathing/i,'[data-group="breath"]'],
+ [/cardiac monitor findings/i,'[data-group="monitor"]'],
+ [/LAMS/i,"#lams_f"],
  [/full set of initial vitals|EtCO2|blood glucose|temperature|GCS|reassessment/i,"#vitrows"],
  [/level of consciousness/i,'[data-group="loc"]'],
  [/skin findings/i,'[data-group="skin"]'],
@@ -988,55 +1087,55 @@ const FIELD_MAP=[
  [/ROSC or termination/i,"#p_t"],
  [/patient weight/i,"#wt"]
 ];
-function flagLink(msg){const m=FIELD_MAP.find(([re])=>re.test(msg));if(!m)return"";return ` <a href="javascript:void(0)" class="golink" data-sel='${m[1].replace(/'/g,"&#39;")}'>Go to field</a>`;}
-function goToFlag(sel){const el=document.querySelector(sel);if(!el)return;const blk=el.closest(".block");if(blk&&blk.classList.contains("collapsed")){blk.classList.remove("collapsed");const btn=blk.querySelector(".toggleSec");if(btn){btn.setAttribute("aria-expanded","true");btn.textContent="Collapse";}}
-  (blk||el).scrollIntoView?.({behavior:"smooth",block:"center"});
-  setTimeout(()=>{if(el.focus)el.focus({preventScroll:true});},350);}
+function flagLink(msg){const m=FIELD_MAP.find(([re])=>re.test(msg))||[/./,"#s_t"];return ` <a href="#app" class="golink" data-sel='${m[1].replace(/'/g,"&#39;")}'>Go to field</a>`;}
+function goToFlag(sel){const el=document.querySelector(sel);if(!el)return;const group=NAV_ITEMS.findIndex(it=>it.ids.includes(el.closest(".block")?.id));if(group>=0)gotoStep(group);const blk=el.closest(".block");if(blk&&blk.classList.contains("collapsed")){blk.classList.remove("collapsed");const btn=blk.querySelector(".toggleSec");if(btn){btn.setAttribute("aria-expanded","true");btn.textContent="Collapse";}}
+  let details=el.closest("details");while(details){details.open=true;details=details.parentElement.closest("details");}
+  el.scrollIntoView?.({behavior:"smooth",block:"center"});
+  setTimeout(()=>{const control=el.matches("input,select,textarea,button")?el:el.querySelector("input:not([type=checkbox]),select,textarea,button");if(control)control.focus({preventScroll:true});},350);}
 function updateReadyState(ready,reqCount,recCount){const el=$("readystate");el.style.display="block";el.classList.toggle("ready",ready);el.classList.toggle("notready",!ready);
   el.textContent=ready?`Ready to copy — required items complete${recCount?`, ${recCount} recommended item${recCount===1?"":"s"} open`:""}.`:`Not ready — ${reqCount} required item${reqCount===1?"":"s"} remaining.`;}
 function computeSectionBuckets(){const {f,dose}=check();const all=[...dose,...f];const buckets={};
   all.forEach(msg=>{const m=FIELD_MAP.find(([re])=>re.test(msg));let id="reviewSection";if(m){const el=document.querySelector(m[1]);const blk=el&&el.closest(".block");if(blk)id=blk.id;}buckets[id]=(buckets[id]||0)+1;});
   buckets.reviewSection=all.length;return buckets;}
-function showFlags(){const {f,dose}=check(),box=$("flags"),wrap=$("flaggroups"),vr=vitRows();
-  const ab=[];vr.forEach((x,i)=>{const a=abnormal(x);if(a.length)ab.push(`${i===0?"Initial":"Reassessment "+i}: ${a.map(k=>k.toUpperCase()).join(", ")}`);});
-  box.style.display="block";
-  const li=(msg,dose)=>`<li${dose?' class="dose"':''}>${msg}${flagLink(msg)}</li>`;
-  if(!f.length&&!dose.length&&!ab.length){box.classList.add("ok");
-    wrap.innerHTML=`<details open><summary>Required (0)</summary><ul><li>Nothing obvious missing for this complaint.</li></ul></details><details><summary>Recommended (0)</summary><ul><li>Review the narrative against your ePCR and protocol.</li></ul></details><p class="hint">Not applicable: complaint-specific checks not triggered.</p>`;
-    updateReadyState(true,0,0);return;}
-  box.classList.remove("ok");
-  const required=f.filter(x=>REQUIRED_RE.test(x)),recommended=f.filter(x=>!REQUIRED_RE.test(x));
-  if(ab.length)recommended.push(`Abnormal values flagged in vitals (${ab.join("; ")}); address them in the narrative.`);
-  wrap.innerHTML=`<details open><summary>Required (${dose.length+required.length})</summary><ul>${dose.map(m=>li(m,true)).join("")}${required.map(m=>li(m,false)).join("")||(dose.length?"":"<li>Nothing required is missing.</li>")}</ul></details>`+
-    `<details${recommended.length?" open":""}><summary>Recommended (${recommended.length})</summary><ul>${recommended.map(m=>li(m,false)).join("")||"<li>No additional recommendations.</li>"}</ul></details>`+
-    `<p class="hint">Not applicable: checks for other complaints or dispositions were not triggered.</p>`;
-  wrap.querySelectorAll(".golink").forEach(a=>a.addEventListener("click",()=>goToFlag(a.dataset.sel)));
-  updateReadyState(dose.length+required.length===0,dose.length+required.length,recommended.length);
-  updateNavState();}
+function showFlags(){
+ const {f,dose}=check(),box=$("flags"),wrap=$("flaggroups"),vr=vitRows();box.style.display="block";
+ const required=f.filter(msg=>REQUIRED_RE.test(msg)),recommended=f.filter(msg=>!REQUIRED_RE.test(msg));
+ const abnormalRows=vr.map((row,i)=>{const fields=abnormal(row);return fields.length?`${i===0?"Initial":"Reassessment "+i}: ${fields.map(f=>f.toUpperCase()).join(", ")}`:"";}).filter(Boolean);
+ if(abnormalRows.length)recommended.unshift(`Abnormal vitals (${abnormalRows.join("; ")}); document assessment and response.`);
+ const li=(msg,isDose=false)=>`<li${isDose?' class="dose"':''}>${escapeHTML(msg)}${flagLink(msg)||flagLink("Additional subjective")}</li>`;
+ const priority=[...dose.map(msg=>({msg,isDose:true})),...required.map(msg=>({msg,isDose:false}))];
+ const top=priority.slice(0,5),remaining=priority.slice(5);
+ box.classList.toggle("ok",!priority.length&&!recommended.length);
+ wrap.innerHTML=`<div class="review-priority"><h3>${priority.length?`Start here · ${priority.length} important items to review`:"No required gaps detected"}</h3>${top.length?`<ol>${top.map(item=>li(item.msg,item.isDose)).join("")}</ol>`:'<p class="hint">Read the narrative and confirm it matches the encounter.</p>'}</div>`+
+ (remaining.length?`<details><summary>${remaining.length} more important items</summary><ul>${remaining.map(item=>li(item.msg,item.isDose)).join("")}</ul></details>`:"")+
+ `<details><summary>Additional documentation suggestions (${recommended.length})</summary><ul>${recommended.map(msg=>li(msg)).join("")||"<li>No additional suggestions.</li>"}</ul></details>`;
+ wrap.querySelectorAll(".golink").forEach(link=>link.addEventListener("click",event=>{event.preventDefault();goToFlag(link.dataset.sel);}));
+ updateReadyState(!priority.length,priority.length,recommended.length);updateNavState();
+}
 
 // =====================================================================
 // ACTIONS
 // =====================================================================
 const toast=m=>{const s=$("toast");s.textContent=m;s.style.display="block";setTimeout(()=>s.style.display="none",1400);};
 const ESSENTIALS=[["age","Age","needed to apply age based vital sign ranges and pediatric dosing"],["sex","Sex","used in the narrative description"],["cc","Chief complaint","drives which findings and QA checks are shown"]];
-function essentialsCheck(){const missing=ESSENTIALS.filter(([id])=>!v(id));
+function essentialsCheck(){const missing=v("outcome")==="nopt"?[]:ESSENTIALS.filter(([id])=>!v(id));
   ESSENTIALS.forEach(([id])=>$(id).classList.toggle("fieldErr",missing.some(m=>m[0]===id)));
   const box=$("essentialsMsg");
   if(missing.length){box.style.display="block";box.innerHTML="Before generating, complete: "+missing.map(([id,label,why])=>`<strong>${label}</strong> (${why})`).join("; ")+".";}
   else box.style.display="none";
   return missing;}
 ["age","sex","cc"].forEach(id=>$(id).addEventListener("input",essentialsCheck));$("cc").addEventListener("change",essentialsCheck);
-$("gen").onclick=()=>{const missing=essentialsCheck();if(missing.length){const sec=document.getElementById("sec-0");if(sec&&sec.classList.contains("collapsed")){sec.classList.remove("collapsed");const t=sec.querySelector(".toggleSec");if(t){t.setAttribute("aria-expanded","true");t.textContent="Collapse";}}sec?.scrollIntoView?.({behavior:"smooth",block:"start"});$(missing[0][0]).focus();return;}
-  showFlags();renderNarrative();$("out").style.display="block";$("copy").disabled=false;$("copy2").disabled=false;$("stickyCopy").disabled=false;$("gen").textContent="Update narrative";updateSummary();$("flags").scrollIntoView?.({behavior:"smooth"});};
-const doCopy=async()=>{const t=lastNarrativeText||build();let ok=false;try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(t);ok=true;}}catch(e){}if(!ok)try{const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();ok=document.execCommand("copy");ta.remove();}catch(e){}if(ok)toast("Copied");else storageNotice("Copy failed. Select the narrative and copy it manually.");};
+$("gen").onclick=()=>{const missing=essentialsCheck();if(missing.length){gotoStep(0);const sec=document.getElementById("sec-0");if(sec&&sec.classList.contains("collapsed")){sec.classList.remove("collapsed");const t=sec.querySelector(".toggleSec");if(t){t.setAttribute("aria-expanded","true");t.textContent="Collapse";}}sec?.scrollIntoView?.({behavior:"smooth",block:"start"});$(missing[0][0]).focus();return;}
+  gotoStep(4);showFlags();renderNarrative();$("out").style.display="block";$("copy").disabled=false;$("copy2").disabled=false;$("stickyCopy").disabled=false;$("gen").textContent="Review current narrative";updateSummary();$("flags").scrollIntoView?.({behavior:"smooth"});};
+const doCopy=async()=>{if(lastSnapshot===null||isStale()){say("Review the current narrative before copying.");return;}const t=lastNarrativeText||build();let ok=false;try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(t);ok=true;}}catch(e){}if(!ok)try{const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();ok=document.execCommand("copy");ta.remove();}catch(e){}if(ok)toast("Copied");else storageNotice("Copy failed. Select the narrative and copy it manually.");};
 $("copy").onclick=doCopy;$("copy2").onclick=doCopy;$("stickyCopy").onclick=doCopy;$("top").onclick=()=>window.scrollTo({top:0,behavior:"smooth"});
 $("staleUpdate").onclick=()=>$("gen").click();
 $("stickyReview").onclick=()=>{if($("out").style.display!=="block")$("gen").click();else $("reviewSection").scrollIntoView?.({behavior:"smooth",block:"start"});};
 $("print").onclick=()=>{if($("out").style.display!=="block"){$("gen").click();if($("out").style.display!=="block")return;}
-  if(isStale()){say("The narrative is out of date. Click \"Update narrative\" to refresh it, review the changes, then print.");return;}
+  if(isStale()){say("The narrative is out of date. Click \"Review current narrative\" to refresh it, review the changes, then print.");return;}
   $("printstamp").textContent=`Generated ${new Date().toLocaleString()} • SOAP Narrative Builder, RI EMS protocol reference v2026.02`;window.print();};
 $("clear").onclick=async()=>{if(await ask("Start a new patient? This clears all current fields.")){clearForm();window.scrollTo({top:0});}};
-["style","hdrs"].forEach(id=>$(id).addEventListener("change",()=>{store.set("soap_"+id,v(id));if($("out").style.display==="block")renderNarrative();}));
+["style","hdrs"].forEach(id=>$(id).addEventListener("change",()=>{store.set("soap_"+id,v(id));queueRefresh();}));
 $("style").value=store.get("soap_style","full");$("hdrs").value=store.get("soap_hdrs","1");
 const setTheme=t=>{document.documentElement.dataset.theme=t;$("theme").textContent=t==="dark"?"Light mode":"Dark mode";store.set("soap_theme",t);};
 $("theme").onclick=()=>setTheme(document.documentElement.dataset.theme==="dark"?"light":"dark");
@@ -1046,39 +1145,33 @@ applyLayout();pedsUI();updateProtoUI();
 // =====================================================================
 // SECTION NAV, SUMMARY BAR, QUICK START, DRAFT AUTOSAVE (added)
 // =====================================================================
-const NAV_ITEMS=[...sections.map((s,i)=>({id:`sec-${i}`,label:s.title})),{id:"reviewSection",label:"Review"}];
+const NAV_ITEMS=[
+ {id:"sec-0",label:"Patient & history",ids:["sec-0","sec-1"]},
+ {id:"sec-2",label:"ALS assessment",ids:["sec-2","sec-3"]},
+ {id:"sec-4",label:"Treatment & response",ids:["sec-4"]},
+ {id:"sec-5",label:"Disposition",ids:["sec-5"]},
+ {id:"reviewSection",label:"Review",ids:["reviewSection"]}
+];
 const touchedSections=new Set();
-function buildSecNav(){const nav=$("secnav");nav.innerHTML=NAV_ITEMS.map(it=>`<button type="button" data-target="${it.id}"><span class="dot" data-dot="${it.id}"></span>${it.label}<span class="badge" data-badge="${it.id}" style="display:none"></span></button>`).join("");
-  nav.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{const el=document.getElementById(b.dataset.target);if(!el)return;if(el.classList.contains("collapsed")){el.classList.remove("collapsed");const t=el.querySelector(".toggleSec");if(t){t.setAttribute("aria-expanded","true");t.textContent="Collapse";}}
-    if(guidedMode){currentStep=NAV_ITEMS.findIndex(it=>it.id===b.dataset.target);guidedRender();}
-    setCurrentSection(b.dataset.target);el.scrollIntoView?.({behavior:"smooth",block:"start"});}));}
-function setCurrentSection(id){document.querySelectorAll("#secnav button").forEach(b=>b.classList.toggle("current",b.dataset.target===id));}
-function updateNavState(){const nav=$("secnav");if(!nav.innerHTML)return;const buckets=computeSectionBuckets();
-  NAV_ITEMS.forEach(it=>{const dot=nav.querySelector(`[data-dot="${it.id}"]`),badge=nav.querySelector(`[data-badge="${it.id}"]`),btn=nav.querySelector(`[data-target="${it.id}"]`);
-    const count=buckets[it.id]||0;
-    if(count>0){dot.className="dot warn";badge.style.display="inline-block";badge.textContent=count;}
-    else{badge.style.display="none";dot.className="dot"+(touchedSections.has(it.id)?" ok":"");}
-    if(it.id==="reviewSection"){badge.style.display=count>0?"inline-block":"none";}
-  });}
+function buildSecNav(){const nav=$("secnav");nav.innerHTML=NAV_ITEMS.map((it,i)=>`<button type="button" data-target="${it.id}"><span>${i+1}.</span> ${it.label}<span class="badge" data-badge="${it.id}" style="display:none"></span></button>`).join("");nav.querySelectorAll("button").forEach((button,i)=>button.addEventListener("click",()=>gotoStep(i)));}
+function setCurrentSection(id){const step=NAV_ITEMS.findIndex(it=>it.ids.includes(id));document.querySelectorAll("#secnav button").forEach((button,i)=>{button.classList.toggle("current",i===step);if(i===step)button.setAttribute("aria-current","step");else button.removeAttribute("aria-current");});}
+function updateNavState(){const nav=$("secnav");if(!nav.innerHTML)return;const buckets=computeSectionBuckets();NAV_ITEMS.forEach(it=>{const badge=nav.querySelector(`[data-badge="${it.id}"]`);const count=it.id==="reviewSection"?buckets.reviewSection||0:it.ids.reduce((n,id)=>n+(buckets[id]||0),0);badge.style.display=currentStep===4&&count?"inline-block":"none";badge.textContent=count;});}
 function updateSummary(){const sb=$("sumbar"),age=v("age"),ageu=v("ageu"),cc=selv("cc"),outcome=v("outcome"),imp1=selv("imp1");
   if(!age&&!cc){sb.classList.remove("show");return;}
   const {f,dose}=check(),warn=f.length+dose.length;
   const outLabel={transport:"Transport",refusal:"Refusal",nopt:"No contact"}[outcome]||"Outcome not set";
   sb.classList.add("show");
-  sb.innerHTML=`<span><strong>${age?age+" "+ageu:"Age not set"}</strong></span><span>${cc||"Complaint not set"}</span><span>${outLabel}</span><span>${imp1?"Impression: "+imp1:"Impression pending"}</span><span class="${warn?"swarn":""}">${warn} warning${warn===1?"":"s"}</span><span class="draft" id="draftind"></span>`;
+  sb.innerHTML=`<span><strong>${escapeHTML(age?age+" "+ageu:"Age not set")}</strong></span><span>${escapeHTML(cc||"Complaint not set")}</span><span>${outLabel}</span><span>${escapeHTML(imp1?"Impression: "+imp1:"Impression pending")}</span><span>${currentStep===4?warn+" review items":"Draft in progress"}</span><span class="draft" id="draftind"></span>`;
   updateDraftIndicatorText();}
 function updateDraftIndicatorText(){const el=$("draftind");if(!el)return;const ts=store.get("soap_draft_ts",null);el.textContent=ts?`Draft saved ${new Date(ts).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}`:"";}
-document.addEventListener("input",()=>{requestAnimationFrame(()=>{updateSummary();updateStaleUI();scheduleAutosave();});});
-document.addEventListener("change",e=>{const blk=e.target.closest&&e.target.closest(".block");if(blk)touchedSections.add(blk.id);requestAnimationFrame(()=>{updateSummary();updateNavState();updateStaleUI();scheduleAutosave();});});
-document.addEventListener("click",e=>{if(e.target.closest&&(e.target.closest(".tri-item")||e.target.closest(".rows .r")))requestAnimationFrame(()=>{updateSummary();updateStaleUI();scheduleAutosave();});});
-document.getElementById("app").addEventListener("click",e=>{const blk=e.target.closest&&e.target.closest(".block");if(blk)touchedSections.add(blk.id);});
-
-// quick start reveal
-function qsCheck(){const done=v("age")&&v("cc")&&v("outcome");const btn=$("qsContinue");if(btn)btn.style.display=done?"inline-block":"none";}
-document.addEventListener("DOMContentLoaded",qsCheck);
-$("qsContinue")?.addEventListener("click",()=>{const el=$("sec-1")||document.getElementById("sec-1");if(!el)return;el.scrollIntoView?.({behavior:"smooth",block:"start"});const first=el.querySelector("input,select,textarea,button:not(.seclink)");first?.focus({preventScroll:true});});
-["age","cc","outcome"].forEach(id=>$(id)?.addEventListener("input",qsCheck));
-["cc","outcome"].forEach(id=>$(id)?.addEventListener("change",qsCheck));
+let refreshPending=false;
+function queueRefresh(){if(refreshPending)return;refreshPending=true;requestAnimationFrame(()=>{refreshPending=false;updateSummary();updateStaleUI();updateLivePreview();syncTxSuggestState();if(currentStep===4)showFlags();scheduleAutosave();});}
+document.addEventListener("input",queueRefresh);
+document.addEventListener("change",e=>{const blk=e.target.closest?.(".block");if(blk)touchedSections.add(blk.id);queueRefresh();});
+document.addEventListener("click",e=>{if(e.target.closest?.(".tri-item,.rows .r,.chips"))queueRefresh();});
+function qsCheck(){const btn=$("qsContinue");if(btn)btn.style.display=v("age")&&v("cc")?"inline-block":"none";}
+$("qsContinue").addEventListener("click",()=>gotoStep(1));
+["age","cc"].forEach(id=>$(id).addEventListener("input",qsCheck));
 
 // duplicate last vitals
 $("dupvit")?.addEventListener("click",()=>{const rows=vitRows();if(!rows.length){toast("No vitals recorded yet");return;}const last={...rows[rows.length-1]};last.time="";addVit(last);markVitals();toast("Vitals duplicated; adjust time and reassessed values");});
@@ -1089,20 +1182,22 @@ document.addEventListener("keydown",e=>{const mod=e.metaKey||e.ctrlKey;
   else if(mod&&e.shiftKey&&(e.key==="C"||e.key==="c")){e.preventDefault();$("copy").click();}});
 
 // full-form draft autosave / restore
-function serializeForm(){const data={vals:{},chips:{},tri:triv("sx"),meds:medRows(),acc:accRows(),vit:vitRows()};
-  document.querySelectorAll('#app input[type="text"],#app input[type="number"],#app select,#app textarea').forEach(e=>{if(!e.id||e.closest(".rows"))return;data.vals[e.id]=e.value;});
-  document.querySelectorAll('#app .chips:not(.tri)').forEach(g=>{const a=[...g.querySelectorAll("input:checked")].map(i=>i.value).filter(x=>x!=="__other");if(a.length)data.chips[g.dataset.group]=a;});
+function serializeForm(){const data={version:2,vals:{},chips:{},tri:triv("sx"),meds:medRows(),acc:accRows(),vit:vitRows(),noAdditionalSymptoms:$("sx_none").checked};
+  document.querySelectorAll('#app input[type="text"],#app input[type="number"],#app select,#app textarea').forEach(e=>{if(!e.id||e.closest(".rows")||e.classList.contains("chipsearch"))return;data.vals[e.id]=e.value;});
+  document.querySelectorAll('#app .chips:not(.tri)').forEach(g=>{const a=[...g.querySelectorAll("input:checked")].map(i=>i.value);if(a.length)data.chips[g.dataset.group]=a;});
   return data;}
 function applyDraft(data){
-  Object.entries(data.vals||{}).forEach(([id,val])=>{const el=$(id);if(el)el.value=val;});
+  $("sx_none").checked=!!data.noAdditionalSymptoms;
+  Object.entries(data.vals||{}).forEach(([id,val])=>{const el=$(id)||$(id.replace(/_t$/,"_otherText"));if(el&&!el.classList.contains("chipsearch"))el.value=val;});
   Object.entries(data.chips||{}).forEach(([g,arr])=>arr.forEach(val=>{const i=document.querySelector(`[data-group="${g}"] input[value="${CSS.escape(val)}"]`);if(i)i.checked=true;}));
+  document.querySelectorAll('.chips:not(.tri)').forEach(group=>{const id=group.dataset.group,box=group.querySelector('input[value="__other"]');if(!data.version&&v(id+"_otherText"))box.checked=true;$(id+"_o")?.classList.toggle("show",box.checked);});
   (data.tri?.a||[]).forEach(val=>{const l=document.querySelector(`[data-tri="sx"] .tri-item[data-v="${CSS.escape(val)}"]`);if(l)setTriItemState(l,"admits");});
   (data.tri?.d||[]).forEach(val=>{const l=document.querySelector(`[data-tri="sx"] .tri-item[data-v="${CSS.escape(val)}"]`);if(l)setTriItemState(l,"denies");});
   document.querySelectorAll("#medrows .r,#accrows .r,#vitrows .r").forEach(e=>e.remove());
   (data.meds||[]).forEach(addMed);(data.acc||[]).forEach(addAcc);
   if(data.vit&&data.vit.length)data.vit.forEach(addVit);else addVit();
   ["cc","imp1","proto","dest"].forEach(id=>$(id).dispatchEvent(new Event("change")));
-  outcomeUI();pedsUI();lamsUI();applyLayout();markVitals();updateSummary();updateNavState();qsCheck();}
+  outcomeUI();pedsUI();lamsUI();applyLayout();markVitals();updateSummary();updateNavState();qsCheck();queueRefresh();}
 let autosaveTimer=null;
 function scheduleAutosave(){clearTimeout(autosaveTimer);autosaveTimer=setTimeout(()=>{if(!v("age")&&!v("cc"))return;store.set("soap_draft",serializeForm());store.set("soap_draft_ts",Date.now());updateDraftIndicatorText();},700);}
 (async function initDraftPrompt(){const d=store.get("soap_draft",null);
@@ -1115,30 +1210,41 @@ function scheduleAutosave(){clearTimeout(autosaveTimer);autosaveTimer=setTimeout
 })();
 
 // =====================================================================
-// GUIDED ENTRY MODE (Back / Next wizard, keeps section nav available)
+// FIVE-STEP WORKFLOW
 // =====================================================================
-let guidedMode=store.get("soap_guided",false),currentStep=0;
+let guidedMode=store.get("soap_workflow",true),currentStep=0;
 function guidedRender(){
-  document.querySelectorAll("main .block,#reviewSection").forEach(sec=>sec.classList.remove("wizardHide"));
-  $("wizardbar").classList.toggle("show",guidedMode);
-  if(!guidedMode)return;
-  NAV_ITEMS.forEach((it,i)=>{const el=document.getElementById(it.id);if(!el)return;el.classList.toggle("wizardHide",i!==currentStep);
-    if(i===currentStep&&el.classList.contains("collapsed")){el.classList.remove("collapsed");const t=el.querySelector(".toggleSec");if(t){t.setAttribute("aria-expanded","true");t.textContent="Collapse";}}});
-  $("wizBack").disabled=currentStep===0;
-  $("wizNext").textContent=currentStep===NAV_ITEMS.length-1?"Generate":"Next →";
-  $("wizLabel").textContent=`Step ${currentStep+1} of ${NAV_ITEMS.length}: ${NAV_ITEMS[currentStep].label}`;
-  setCurrentSection(NAV_ITEMS[currentStep].id);
+ document.querySelectorAll("main .block,#reviewSection").forEach(sec=>sec.classList.remove("wizardHide"));
+ $("wizardbar").classList.add("show");
+ NAV_ITEMS.forEach((it,i)=>it.ids.forEach(id=>{const el=$(id);el.classList.toggle("wizardHide",guidedMode&&i!==currentStep);if(i===currentStep){el.classList.remove("collapsed");const btn=el.querySelector(".toggleSec");if(btn){btn.setAttribute("aria-expanded","true");btn.textContent="Collapse";}}}));
+ $("previewDraft").style.display=currentStep===4?"none":"";$("stickyCopy").style.display=currentStep===4?"":"none";
+ $("wizBack").disabled=$("stickyBack").disabled=currentStep===0;
+ const next=currentStep===4?"Review current narrative":"Next: "+NAV_ITEMS[currentStep+1].label;
+ $("wizNext").textContent=$("stickyReview").textContent=next;
+ $("wizLabel").textContent=`Step ${currentStep+1} of 5: ${NAV_ITEMS[currentStep].label}`;
+ $("stepProgress").textContent=guidedMode?"Document only what was assessed. You can jump between steps at any time.":"All fields visible. Use the steps above to jump to a section.";
+ $("guided").textContent=guidedMode?"View all fields":"Use five steps";
+ setCurrentSection(NAV_ITEMS[currentStep].id);
 }
-function gotoStep(i){currentStep=Math.max(0,Math.min(NAV_ITEMS.length-1,i));guidedRender();document.getElementById(NAV_ITEMS[currentStep].id)?.scrollIntoView?.({behavior:"smooth",block:"start"});}
-$("wizBack").onclick=()=>gotoStep(currentStep-1);
-$("wizNext").onclick=()=>{if(currentStep<NAV_ITEMS.length-1)gotoStep(currentStep+1);else $("gen").click();};
-$("guided").onclick=()=>{guidedMode=!guidedMode;$("guided").textContent="Guided mode: "+(guidedMode?"on":"off");store.set("soap_guided",guidedMode);if(guidedMode)currentStep=0;guidedRender();};
-$("guided").textContent="Guided mode: "+(guidedMode?"on":"off");
-
-buildSecNav();updateNavState();updateSummary();qsCheck();updateChipSummaries();updateStaleUI();
-setCurrentSection("sec-0");guidedRender();
-if("IntersectionObserver" in window){const sectionObserver=new IntersectionObserver(entries=>{if(guidedMode)return;const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];if(visible)setCurrentSection(visible.target.id);},{rootMargin:"-72px 0px -55% 0px",threshold:[0,.25,.5]});document.querySelectorAll("main .block,#reviewSection").forEach(section=>sectionObserver.observe(section));}
-
+function gotoStep(index){currentStep=Math.max(0,Math.min(4,index));guidedRender();updateSummary();updateNavState();if(currentStep===4)showFlags();$(NAV_ITEMS[currentStep].id).scrollIntoView({behavior:"smooth",block:"start"});}
+function nextStep(){if(currentStep<4)gotoStep(currentStep+1);else $("gen").click();}
+$("wizBack").onclick=$("stickyBack").onclick=()=>gotoStep(currentStep-1);
+$("wizNext").onclick=$("stickyReview").onclick=nextStep;
+$("previewDraft").onclick=()=>{$("livePreview").open=true;$("livePreview").scrollIntoView({block:"start",behavior:"smooth"});};
+$("guided").onclick=()=>{guidedMode=!guidedMode;store.set("soap_workflow",guidedMode);guidedRender();};
+function updateLivePreview(){const target=$("liveNarrative");if(!v("age")&&!v("cc")&&!v("o_t")){target.innerHTML='<p class="hint">Your SOAP draft will appear here as you enter patient details and findings.</p>';return;}const data=computeSOAP();if(data.nopt){target.innerHTML=`<h3>P · Disposition</h3><p>${escapeHTML(data.noptText)}</p>`;return;}target.innerHTML=[["S","Subjective"],["O","ALS findings"],["A","Assessment"],["P","Treatment & disposition"]].map(([key,title])=>`<h3>${key} · ${title}</h3><p>${escapeHTML(data[key].length?(v("style")==="terse"?terse(data[key].join(" ")):data[key].join(" ")):"Not yet documented.")}</p>`).join("");}
+function updateAssessmentFocus(){
+ const cc=v("cc"),pri=PRI[cc]||{};
+ $("focusHint").textContent=cc?`${cc}: relevant findings appear first. Record the core ALS assessment, then expand focused findings as needed.`:"Select a chief complaint to prioritize the ALS assessment.";
+ const context=cc+" "+selv("imp1"),changed=context!==lastAssessmentContext;
+ const shouldOpen=(id,needed)=>{const el=$(id);const entered=[...el.querySelectorAll("input,select,textarea")].some(e=>e.type==="checkbox"?e.checked:!e.classList.contains("chipsearch")&&e.value);if(changed&&(needed||entered))el.open=true;};
+ shouldOpen("historyDetails",!!pri.base||/abdominal|nausea|vomiting|cardiac arrest|seizure|overdose/i.test(context));
+ shouldOpen("strokeDetails",/stroke|TIA|CVA/i.test(context));
+ shouldOpen("cardiacDetails",/chest pain|cardiac|coronary|STEMI|syncope|palpit|shortness of breath|respiratory|COPD|CHF/i.test(context));
+ lastAssessmentContext=context;
+}
+buildSecNav();guidedRender();updateNavState();updateSummary();qsCheck();updateChipSummaries();updateStaleUI();updateLivePreview();
+if(innerWidth<=1050)$("livePreview").open=false;
 </script>
 </body>
 </html>
