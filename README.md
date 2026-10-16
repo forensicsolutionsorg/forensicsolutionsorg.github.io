@@ -5,6 +5,7 @@ Single-file, offline SOAP narrative generator built around Rhode Island EMS prot
 server, or account is required.
 
 ## What it does
+- ALS-focused entry: complaint-relevant symptoms first, core ALS findings and vitals before an expandable focused body exam; no scene safety/BSI or generic assessment-performed checkboxes
 - Section navigation (Patient, Subjective, Objective, Assessment, Treatment, Disposition, Review) with collapsible sections, completion/warning indicators, a quick-start panel, and a sticky summary bar
 - Checkbox and dropdown driven S, O, A, P sections with free text for anything not listed
 - Structured medication rows (drug, dose, unit, route, time) and vascular access rows (IV/IO, gauge, site, attempts, patency, time)
