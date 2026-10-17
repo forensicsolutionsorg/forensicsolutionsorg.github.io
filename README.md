@@ -6,6 +6,7 @@ server, or account is required.
 
 ## What it does
 - Five-step workflow: Patient & history → ALS assessment → Treatment & response → Disposition → Review, with an all-fields view and sticky Back/Next controls
+- Desktop mouse/keyboard layout uses compact checkbox rows, a slim header, one action bar, and a narrative side panel; touch layouts retain larger controls
 - Compact ALS assessment groups mental status, airway, breathing, lung sounds, and circulation; vitals follow the core findings
 - Complaint-specific symptom priorities and expandable cardiac, stroke, focused body exam, and secondary history panels; all findings remain accessible
 - Live SOAP draft uses only entered findings and updates without approving a new copyable version; review the current narrative to enable copying or printing
