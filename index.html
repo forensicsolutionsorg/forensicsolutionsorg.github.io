@@ -37,7 +37,7 @@ input:focus,select:focus,textarea:focus,button:focus{outline:2px solid var(--nav
 .chips{display:flex;flex-wrap:wrap;gap:7px}
 .chips label{display:inline-flex;align-items:center;gap:6px;background:var(--field);border:1px solid var(--line);border-radius:999px;padding:7px 12px;font-size:13.5px;cursor:pointer;user-select:none}
 .chips label:has(input:checked){background:var(--navy);color:#fff;border-color:var(--navy)}
-.chips input{position:absolute;opacity:0;width:0;height:0}
+.chips input[type=checkbox]{position:absolute;opacity:0;width:0;height:0}
 .chips label.hide{display:none}
 .more{font:inherit;font-size:12.5px;color:var(--navy);background:none;border:1px dashed var(--line);border-radius:999px;padding:6px 12px;cursor:pointer}
 .other{margin-top:8px;display:none}
@@ -210,6 +210,93 @@ button,.add,.more,.seclink,.chips label,.tri .tri-item button{min-height:44px}.t
 @media(max-width:1050px){#workspace{display:block;max-width:860px;padding:0 14px}#livePreview{position:static;max-height:none;margin-top:12px}#livePreview:not([open]){padding-bottom:0}#secnav{justify-content:flex-start}}
 @media(max-width:600px){.als-grid{grid-template-columns:1fr}section.block{grid-template-columns:1fr}section.block .tag{display:none}section.block .body{padding:14px 12px}.sechead{align-items:flex-start;flex-wrap:wrap}.tri .tri-item{width:100%}.tri .tri-item .tri-label{flex-basis:100%}#secnav button{font-size:12px}#sumbar{gap:6px}#sumbar .draft{display:none}.ctrl{gap:6px}.ctrl>*{flex-basis:45%}.ctrl button{flex:1 1 45%}.rows .r button{min-height:44px!important;width:44px!important;top:4px!important;right:4px!important}.rows .r{padding-top:54px!important}#stickybar{padding:8px 10px calc(8px + env(safe-area-inset-bottom));gap:6px}#stickybar button{font-size:13px;padding:10px 6px}.rows.vit .r{grid-template-columns:1fr 1fr!important}}
 @media print{#workspace{display:block}#entry main,#entry>.bar,#orientation,#livePreview,#wizardbar,#stepProgress,#readystate{display:none!important}#reviewSection{display:block!important;border:0;max-width:none}#reviewSection .tag,#reviewSection .sechead,#reviewSection #out>div:last-child button{display:none!important}#out{border:0}.wizardHide{display:block!important}}
+
+/* Compact mouse/keyboard workspace. Touch layouts retain their larger controls. */
+.desktop-only{display:none}
+@media screen and (min-width:1000px) and (pointer:fine){
+ html,body{font-size:14px}
+ :root[data-theme="dark"]{color-scheme:dark}
+ body{padding-bottom:64px}
+ header{padding:10px 24px}
+ .hwrap{max-width:1392px;display:flex;align-items:center;gap:20px}
+ header h1{font-size:17px;white-space:nowrap}header p{display:none}
+ .header-actions{margin-left:auto;position:relative;align-items:center;flex-wrap:nowrap}
+ .header-actions>button,#displayOptions>summary{min-height:30px;padding:5px 10px;font-size:12px;border-radius:4px}
+ .desktop-only{display:block}
+ #displayOptions[open]{flex:0 0 auto}
+ #displayOptions .ctrl{position:absolute;right:0;top:34px;z-index:70;width:420px;max-width:90vw;background:var(--hdr);border:1px solid var(--line);border-radius:6px;padding:12px;margin:0}
+ header:has(#displayOptions[open]){position:relative;z-index:70}
+ #secnav{padding:0 24px;gap:20px;justify-content:flex-start;min-height:42px}
+ #secnav button{min-height:42px;padding:8px 0;border:0;border-bottom:3px solid transparent;background:none;border-radius:0;font-size:13px}
+ #secnav button.current{background:none;border-bottom-color:var(--red);font-weight:600}
+ #sumbar{padding:5px 24px;gap:14px}
+ #wizardbar.show,#stepProgress,#orientation,.startpanel{display:none!important}
+ #workspace{display:grid;max-width:1440px;grid-template-columns:minmax(0,1fr) 330px;gap:28px;padding:0 24px}
+ #entry main{max-width:none;padding:0}
+ section.block{display:block;background:var(--white);border:0;border-radius:0;margin:16px 0 22px;scroll-margin-top:56px}
+ section.block .tag{display:none}
+ section.block .body{padding:0 0 16px;border-bottom:1px solid var(--line)}
+ section.block h2{font-size:16px}
+ .sechead{margin-bottom:10px;align-items:center}
+ .secactions{gap:12px}
+ .seclink{min-height:28px;font-size:12px;border:0;padding:3px 0;border-radius:0}
+ .hint{font-size:12px;margin:3px 0 6px}
+ .secbody>.hint{display:none}
+ #focusHint{background:none;border:0;border-radius:0;padding:0;margin:0 0 8px;color:var(--muted);font-size:12px}
+ fieldset{margin-bottom:12px}legend{font-size:13px;margin-bottom:4px}
+ label.f{font-size:12px;margin-bottom:3px}
+ input[type=text],input[type=number],select,textarea{font-size:13px;min-height:32px;padding:6px 8px;border-radius:4px}
+ textarea{min-height:56px}
+ button,.add,.more,.seclink,.chips label,.tri .tri-item button{min-height:28px}
+ .chips{gap:2px 10px;align-items:center}
+ .chips label{background:none;border:1px solid transparent;border-radius:4px;padding:3px 5px;font-size:13px;gap:6px;line-height:1.35}
+ .chips input[type=checkbox]{position:static;opacity:1;width:14px;height:14px;margin:0;accent-color:var(--navy);flex:0 0 auto}
+ .chips label:has(input:checked){background:var(--field);border-color:var(--line);color:var(--ink)}
+ .chips label:focus-within{outline:2px solid var(--navy);outline-offset:1px}
+ .chip-summary{display:none!important}
+ .more{border:0;border-radius:0;padding:3px 0;font-size:12px;text-decoration:underline;text-underline-offset:3px}
+ .chipsearch{font-size:12px;min-height:30px;padding:5px 8px;margin-bottom:5px}
+ .als-grid{display:block;margin-bottom:12px}
+ .als-grid fieldset{position:relative;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:8px 0 8px 155px;margin:0;min-height:48px}
+ .als-grid legend{position:absolute;left:0;top:12px;width:145px;padding:0;margin:0;font-size:13px;line-height:1.4}
+ .als-grid fieldset:has(.chips:not([data-exp="1"])) .chipsearch:placeholder-shown{display:none!important}
+ .als-grid .more{margin:2px 0 0;min-height:24px}
+ .optional-details,.exam-details{border:0;border-top:1px solid var(--line);border-radius:0;padding:0;margin:10px 0}
+ .optional-details>summary,.exam-details>summary{min-height:32px;font-size:13px;padding:8px 0}
+ .optional-details[open]>summary,.exam-details[open]>summary{margin-bottom:6px}
+ .tri .tri-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px}
+ .tri .tri-item{flex-wrap:nowrap;gap:8px;border:0;border-bottom:1px solid var(--line);border-radius:0;background:none;padding:6px 0;min-width:0}
+ .tri .tri-item .tri-label{font-size:13px;flex:1 1 auto}
+ .tri .tri-item .tri-btns{gap:0;flex-wrap:nowrap;border:1px solid var(--line);border-radius:4px;overflow:hidden}
+ .tri .tri-item button{font-size:11px;border:0;border-radius:0;padding:5px 7px;min-height:26px;white-space:nowrap}
+ .tri .tri-item button+button{border-left:1px solid var(--line)}
+ #symptomNoneLabel{font-size:13px;min-height:30px;margin-top:8px}
+ #sx_none{width:16px;height:16px}
+ #livePreview{position:sticky;top:66px;max-height:calc(100vh - 144px);margin:18px 0 0;padding:0 0 0 22px;border:0;border-left:1px solid var(--line);border-radius:0;background:none;scroll-margin-top:60px}
+ #livePreview summary{min-height:28px;font-size:14px}#livePreview>.hint{font-size:12px;margin:4px 0 12px}
+ #liveNarrative{font-size:13px;line-height:1.6}#liveNarrative h3{margin:14px 0 4px;font-size:12px}
+ #entry>.bar{max-width:none;margin:0;padding:0;justify-content:flex-start;gap:8px}
+ body:not([data-step="4"]) #entry>.bar{display:none}
+ #entry>.bar #clear{display:none}
+ .bar button{flex:0 1 auto;min-width:0;max-width:none;font-size:13px;padding:7px 12px;min-height:32px}
+ #stickybar{padding:8px 24px;gap:8px;justify-content:flex-start;box-shadow:none}
+ #stickybar button{flex:0 1 auto;padding:7px 14px;min-height:34px;font-size:13px;border-radius:4px}
+ #stickybar #stickyBack{flex:0 1 auto!important}
+ #stickybar #previewDraft,#stickybar #stickyCopy{margin-left:auto}
+ #reviewSection{max-width:none;margin-top:16px}
+ #flags,#out{padding:12px;border-radius:4px}
+ .vh{display:none}
+ .rows .r input,.rows .r select{min-height:32px;font-size:13px;padding:5px 6px}
+ .rows .r button{min-height:32px;width:32px}
+ #txSuggest{border-radius:4px;padding:8px}#txSuggest .ts-chip{min-height:28px;border-radius:4px;font-size:12px}
+ #toast{bottom:72px}
+}
+@media screen and (min-width:1000px) and (max-width:1240px) and (pointer:fine){
+ #workspace{grid-template-columns:minmax(0,1fr) 290px;gap:22px}
+ .tri .tri-list{grid-template-columns:1fr}
+ .als-grid fieldset{padding-left:135px}.als-grid legend{width:125px;font-size:12px}
+ .chips{column-gap:5px}
+}
 </style>
 </head>
 <body>
@@ -485,8 +572,9 @@ document.getElementById("app").innerHTML=sections.map((s,i)=>`<section class="bl
 // Keep core ALS findings together and secondary details one click away.
 function wrapFields(id,title,nodes){const details=document.createElement("details");details.id=id;details.className="optional-details";const summary=document.createElement("summary");summary.textContent=title;details.appendChild(summary);nodes=nodes.filter(Boolean);if(!nodes.length)return;nodes[0].before(details);nodes.forEach(node=>details.appendChild(node));return details;}
 const headerActions=document.createElement("div");headerActions.className="header-actions";
+const desktopNewPatient=document.createElement("button");desktopNewPatient.type="button";desktopNewPatient.id="desktopNewPatient";desktopNewPatient.className="desktop-only";desktopNewPatient.textContent="New patient";desktopNewPatient.addEventListener("click",()=>document.getElementById("clear").click());
 const displayOptions=document.createElement("details");displayOptions.id="displayOptions";const optionsSummary=document.createElement("summary");optionsSummary.textContent="Display & references";displayOptions.appendChild(optionsSummary);
-const controls=document.querySelector("header .ctrl");controls.before(headerActions);headerActions.append(document.getElementById("guided"),displayOptions);displayOptions.appendChild(controls);
+const controls=document.querySelector("header .ctrl");controls.before(headerActions);headerActions.append(desktopNewPatient,document.getElementById("guided"),displayOptions);displayOptions.appendChild(controls);
 document.querySelectorAll("label.f").forEach(label=>{const field=label.nextElementSibling;if(field?.id)label.htmlFor=field.id;});
 const fieldFor=id=>document.getElementById(id)?.closest("fieldset");
 wrapFields("historyDetails","Additional history — events, prior treatment, baseline, oral intake",[fieldFor("events_otherText"),fieldFor("self_otherText"),fieldFor("base_otherText"),fieldFor("loi")]);
@@ -1214,6 +1302,7 @@ function scheduleAutosave(){clearTimeout(autosaveTimer);autosaveTimer=setTimeout
 // =====================================================================
 let guidedMode=store.get("soap_workflow",true),currentStep=0;
 function guidedRender(){
+ document.body.dataset.step=String(currentStep);
  document.querySelectorAll("main .block,#reviewSection").forEach(sec=>sec.classList.remove("wizardHide"));
  $("wizardbar").classList.add("show");
  NAV_ITEMS.forEach((it,i)=>it.ids.forEach(id=>{const el=$(id);el.classList.toggle("wizardHide",guidedMode&&i!==currentStep);if(i===currentStep){el.classList.remove("collapsed");const btn=el.querySelector(".toggleSec");if(btn){btn.setAttribute("aria-expanded","true");btn.textContent="Collapse";}}}));
@@ -1244,7 +1333,7 @@ function updateAssessmentFocus(){
  lastAssessmentContext=context;
 }
 buildSecNav();guidedRender();updateNavState();updateSummary();qsCheck();updateChipSummaries();updateStaleUI();updateLivePreview();
-if(innerWidth<=1050)$("livePreview").open=false;
+if(innerWidth<=1050&&!window.matchMedia("(min-width:1000px) and (pointer:fine)").matches)$("livePreview").open=false;
 </script>
 </body>
 </html>
